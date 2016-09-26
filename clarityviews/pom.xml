@@ -40,8 +40,8 @@
 			<groupId>com.clarpse</groupId>
 			<artifactId>clarpse</artifactId>
 			<scope>system</scope>
-			<version>2.3</version>
-			<systemPath>${basedir}/src/main/resources/clarpse-2.3-jar-with-dependencies.jar</systemPath>
+			<version>2.4</version>
+			<systemPath>${basedir}/src/main/resources/clarpse-2.4.jar</systemPath>
 		</dependency>
 		
 		<dependency>
