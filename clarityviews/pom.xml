@@ -33,7 +33,7 @@
 			<artifactId>plantuml</artifactId>
 			<scope>system</scope>
 			<version>1.0</version>
-			<systemPath>${basedir}/src/main/resources/plantuml.jar</systemPath>
+			<systemPath>${basedir}/src/main/resources/plantuml-1.0.jar</systemPath>
 		</dependency>
 		
 		<dependency>

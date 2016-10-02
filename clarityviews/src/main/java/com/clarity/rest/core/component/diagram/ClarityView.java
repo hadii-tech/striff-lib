@@ -19,11 +19,13 @@ import net.sourceforge.plantuml.svg.SvgGraphics;
 public class ClarityView implements Serializable {
 
     private static final long serialVersionUID = -3125810981280395679L;
-    private String diagramStr;
+    private String            diagramStr;
+    private String            fileName;
 
     public ClarityView(OOPSourceCodeModel model, Component diagramComponent, int desiredSize, boolean callback)
             throws Exception {
 
+        this.setFileName(diagramComponent.sourceFile());
         // get the list of components in the code base
         final Map<String, Component> componentList = model.getComponents();
         // determine class relationships that exists within the code base
@@ -45,11 +47,19 @@ public class ClarityView implements Serializable {
         this.diagramStr = generator.generateDiagram(diagramComponent, binaryRelationships, componentList, desiredSize);
     }
 
-    public String diagramStr() {
+    public String getdiagramStr() {
         return diagramStr;
     }
 
     public void setDiagramStr(String diagramString) {
         diagramStr = diagramString;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }
