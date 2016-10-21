@@ -1,9 +1,9 @@
-package com.clarity.rest.extractor;
+package com.clarity.binary.extractor;
 
 import java.io.Serializable;
 
-import com.clarity.rest.core.component.diagram.DiagramConstants.BinaryClassAssociation;
-import com.clarity.rest.core.component.diagram.DiagramConstants.DefaultClassMultiplicities;
+import com.clarity.binary.core.component.diagram.DiagramConstants.BinaryClassAssociation;
+import com.clarity.binary.core.component.diagram.DiagramConstants.DefaultClassMultiplicities;
 import com.clarity.sourcemodel.Component;
 
 /**

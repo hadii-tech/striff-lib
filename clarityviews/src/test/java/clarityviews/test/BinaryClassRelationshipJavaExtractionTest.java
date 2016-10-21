@@ -7,14 +7,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.clarity.ClarpseUtil;
+import com.clarity.binary.core.component.diagram.DiagramConstants.BinaryClassAssociation;
+import com.clarity.binary.core.component.diagram.DiagramConstants.DefaultClassMultiplicities;
+import com.clarity.binary.extractor.BinaryClassRelationship;
+import com.clarity.binary.extractor.ClassRelationshipsExtractor;
+import com.clarity.binary.parse.ParsedProject;
 import com.clarity.parser.Lang;
 import com.clarity.parser.ParseRequestContent;
 import com.clarity.parser.RawFile;
-import com.clarity.rest.core.component.diagram.DiagramConstants.BinaryClassAssociation;
-import com.clarity.rest.core.component.diagram.DiagramConstants.DefaultClassMultiplicities;
-import com.clarity.rest.extractor.BinaryClassRelationship;
-import com.clarity.rest.extractor.ClassRelationshipsExtractor;
-import com.clarity.rest.parse.ParsedProject;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
 
 /**

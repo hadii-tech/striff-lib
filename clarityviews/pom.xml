@@ -28,18 +28,14 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.8.3</version>
 		</dependency>
-	<dependency>
-			<groupId>plantuml</groupId>
-			<artifactId>plantuml</artifactId>
-			<version>1.0</version>
-		</dependency>
+	
 		
 		<dependency>
 			<groupId>com.clarpse</groupId>
 			<artifactId>clarpse</artifactId>
 			<scope>system</scope>
-			<version>2.4</version>
-			<systemPath>${basedir}/src/main/resources/clarpse-2.4.jar</systemPath>
+			<version>2.5</version>
+			<systemPath>${basedir}/src/main/resources/clarpse-2.5.jar</systemPath>
 		</dependency>
 		
 		<dependency>

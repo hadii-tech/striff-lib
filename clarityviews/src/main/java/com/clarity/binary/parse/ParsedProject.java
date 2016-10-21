@@ -1,4 +1,4 @@
-package com.clarity.rest.parse;
+package com.clarity.binary.parse;
 
 import com.clarity.parser.ClarpseProject;
 import com.clarity.parser.ParseRequestContent;

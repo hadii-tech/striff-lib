@@ -1,4 +1,4 @@
-package com.clarity.rest;
+package com.clarity.binary;
 
 import java.util.Iterator;
 import java.util.Map;

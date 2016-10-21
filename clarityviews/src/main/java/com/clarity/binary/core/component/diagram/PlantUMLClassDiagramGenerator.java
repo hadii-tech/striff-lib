@@ -1,4 +1,4 @@
-package com.clarity.rest.core.component.diagram;
+package com.clarity.binary.core.component.diagram;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -6,9 +6,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
+import com.clarity.binary.DefaultText;
+import com.clarity.binary.HtmlTagsStrippedText;
+import com.clarity.binary.JavaDocSymbolStrippedText;
+import com.clarity.binary.LineBreakedText;
+import com.clarity.binary.core.component.diagram.DiagramConstants.BinaryClassAssociation;
+import com.clarity.binary.display.DiagramMethodDisplayName;
+import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.invocation.ComponentInvocation;
-import com.clarity.rest.core.component.diagram.DiagramConstants.BinaryClassAssociation;
-import com.clarity.rest.extractor.BinaryClassRelationship;
 import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceModelConstants;
 import com.clarity.sourcemodel.OOPSourceModelConstants.AccessModifiers;
@@ -27,7 +32,7 @@ import net.sourceforge.plantuml.SourceStringReader;
 public class PlantUMLClassDiagramGenerator implements DiagramGenerator {
 
     private static final String PLANT_UML_BEGIN_STRING = "@startuml\n";
-    private static final String PLANT_UML_END_STRING = "\n@enduml";
+    private static final String PLANT_UML_END_STRING   = "\n@enduml";
 
     /**
      * Creates a list of components who are directly related to the given
@@ -230,11 +235,24 @@ public class PlantUMLClassDiagramGenerator implements DiagramGenerator {
                 if (component.componentType() == ComponentType.INTERFACE_COMPONENT
                         || component.modifiers().contains("abstract")) {
                     if (component.comment() != null && !component.comment().isEmpty()) {
-                        if (component.comment().length() < 500) {
-                            tempStrBuilder.append(component.comment() + "\n");
+                        String str;
+                        if (component.comment().length() < 800) {
+                            str = new LineBreakedText(new JavaDocSymbolStrippedText(
+                                    new HtmlTagsStrippedText(new DefaultText(component.comment().trim() + "..."))))
+                                            .value()
+                                    + "\n";
+
                         } else {
-                            tempStrBuilder.append(component.comment().substring(0, 500) + "..." + "\n");
+                            str = new LineBreakedText(new JavaDocSymbolStrippedText(new HtmlTagsStrippedText(
+                                    new DefaultText(component.comment().substring(0, 800).trim() + "...")))).value()
+                                    + "\n";
                         }
+                        String[] lines = str.split("\n");
+                        for (int i = 0; i < lines.length; i++) {
+                            lines[i] = "$%" + lines[i].trim();
+                        }
+                        tempStrBuilder.append(org.apache.commons.lang.StringUtils.join(lines, "\n"));
+                        tempStrBuilder.append("\n");
                     }
                 }
                 for (final String classChildCmpName : component.children()) {
@@ -276,33 +294,8 @@ public class PlantUMLClassDiagramGenerator implements DiagramGenerator {
                                         OOPSourceModelConstants.getJavaAccessModifierMap().get(AccessModifiers.STATIC));
                                 tempStrBuilder.append("} ");
                             }
-                            // Add the component name
-                            tempStrBuilder.append(childCmp.name());
-                            // if the child component has child components
-                            // itself, add those in within brackets
-                            // eg) when child component is a method, and its
-                            // child components are method parameter
-                            // components..)
                             if (!childCmp.children().isEmpty() || childCmp.componentType().isMethodComponent()) {
-                                String methodStr = "";
-                                tempStrBuilder.append("(");
-                                for (final String methodChildCmpName : childCmp.children()) {
-                                    final Component methodChildCmp = componentList.get(methodChildCmpName);
-                                    if (methodChildCmp == null || methodChildCmp.declarationTypeSnippet() == null) {
-                                        continue;
-                                    } else if (methodChildCmp
-                                            .componentType() == ComponentType.METHOD_PARAMETER_COMPONENT
-                                            || methodChildCmp
-                                                    .componentType() == ComponentType.CONSTRUCTOR_PARAMETER_COMPONENT) {
-                                        methodStr += methodChildCmp.declarationTypeSnippet() + ", ";
-                                    }
-                                }
-                                // removes trailing comma
-                                methodStr = methodStr.trim();
-                                methodStr = methodStr.replaceAll(",$", "");
-                                tempStrBuilder.append(methodStr);
-                                // insert closing method bracket
-                                tempStrBuilder.append(")");
+                                tempStrBuilder.append(new DiagramMethodDisplayName(childCmp.uniqueName()).value());
                             }
 
                             if (childCmp.componentType() == ComponentType.ENUM_CONSTANT_COMPONENT) {

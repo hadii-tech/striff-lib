@@ -1,4 +1,4 @@
-package com.clarity.rest.parse;
+package com.clarity.binary.parse;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,12 @@
-package com.clarity.rest.core.component.diagram;
+package com.clarity.binary.core.component.diagram;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Map;
 
-import com.clarity.rest.extractor.BinaryClassRelationship;
-import com.clarity.rest.extractor.ClassRelationshipsExtractor;
+import com.clarity.binary.display.DiagramClassDisplayName;
+import com.clarity.binary.display.DiagramMethodDisplayName;
+import com.clarity.binary.extractor.BinaryClassRelationship;
+import com.clarity.binary.extractor.ClassRelationshipsExtractor;
 import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
 
@@ -34,15 +35,18 @@ public class ClarityView implements Serializable {
         // initialize diagram generator and feed all base (class, interface,
         // etc..) components
         final PlantUMLClassDiagramGenerator generator = new PlantUMLClassDiagramGenerator();
-        final ArrayList<String> baseComponentUniqueNames = new ArrayList<String>();
         for (final Map.Entry<String, Component> entry : componentList.entrySet()) {
-            if (entry.getValue().componentType().isBaseComponent()) {
-                baseComponentUniqueNames.add(entry.getValue().uniqueName());
+            Component cmp = entry.getValue();
+            if (cmp.componentType().isBaseComponent()) {
+                SvgGraphics.displayComponentsDisplayNames.add(new DiagramClassDisplayName(cmp.uniqueName()).value());
+                SvgGraphics.displayComponentsUniqueNames.add(cmp.uniqueName());
+            } else if (cmp.componentType().isMethodComponent()) {
+                SvgGraphics.displayComponentsDisplayNames.add(new DiagramMethodDisplayName(cmp.uniqueName()).value());
+                SvgGraphics.displayComponentsUniqueNames.add(cmp.uniqueName());
             }
         }
 
         SvgGraphics.keyClass = diagramComponent.uniqueName();
-        SvgGraphics.currentComponents = baseComponentUniqueNames;
         SvgGraphics.componentCallBack = callback;
         this.diagramStr = generator.generateDiagram(diagramComponent, binaryRelationships, componentList, desiredSize);
     }

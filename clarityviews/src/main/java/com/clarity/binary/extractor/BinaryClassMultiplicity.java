@@ -1,7 +1,7 @@
-package com.clarity.rest.extractor;
+package com.clarity.binary.extractor;
 
-import com.clarity.rest.core.component.diagram.DiagramConstants;
-import com.clarity.rest.core.component.diagram.DiagramConstants.DefaultClassMultiplicities;
+import com.clarity.binary.core.component.diagram.DiagramConstants;
+import com.clarity.binary.core.component.diagram.DiagramConstants.DefaultClassMultiplicities;
 
 /**
  * Represents the multiplicity that can exist between two classes, implied

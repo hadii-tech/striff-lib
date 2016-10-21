@@ -1,10 +1,10 @@
-package com.clarity.rest.extractor;
+package com.clarity.binary.extractor;
 
 import java.util.List;
 
-import com.clarity.rest.ClarityUtil;
-import com.clarity.rest.ClarityUtil.InvocationSiteProperty;
-import com.clarity.rest.core.component.diagram.DiagramConstants.BinaryClassAssociation;
+import com.clarity.binary.ClarityUtil;
+import com.clarity.binary.ClarityUtil.InvocationSiteProperty;
+import com.clarity.binary.core.component.diagram.DiagramConstants.BinaryClassAssociation;
 import com.clarity.sourcemodel.Component;
 
 /**

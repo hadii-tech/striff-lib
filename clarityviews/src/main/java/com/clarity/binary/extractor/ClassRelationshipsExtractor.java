@@ -2,7 +2,7 @@
  * Extracts and stores all the binary class relationships from a group of Component Objects.
  */
 
-package com.clarity.rest.extractor;
+package com.clarity.binary.extractor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.clarity.ClarpseUtil;
+import com.clarity.binary.core.component.diagram.DiagramConstants.BinaryClassAssociation;
+import com.clarity.binary.core.component.diagram.DiagramConstants.DefaultClassMultiplicities;
 import com.clarity.invocation.ComponentInvocation;
-import com.clarity.rest.core.component.diagram.DiagramConstants.BinaryClassAssociation;
-import com.clarity.rest.core.component.diagram.DiagramConstants.DefaultClassMultiplicities;
 import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
 import com.clarity.sourcemodel.OOPSourceModelConstants;
@@ -91,7 +91,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                                 bCA = BinaryClassAssociation.AGGREGATION;
                             }
                             externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
-                                    com.clarity.rest.ClarityUtil.InvocationSiteProperty.FIELD,
+                                    com.clarity.binary.ClarityUtil.InvocationSiteProperty.FIELD,
                                     currentComponent.modifiers(), bCA);
 
                             // --> IF INVOCATION SITE IS METHOD
@@ -110,7 +110,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                                 bCA = BinaryClassAssociation.WEAK_ASSOCIATION;
                             }
                             externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
-                                    com.clarity.rest.ClarityUtil.InvocationSiteProperty.METHOD_PARAMETER,
+                                    com.clarity.binary.ClarityUtil.InvocationSiteProperty.METHOD_PARAMETER,
                                     currentComponent.modifiers(), bCA);
 
                             // --> IF INVOCATION SITE IS CONSTRUCTOR
@@ -121,7 +121,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                             }
                             bCA = BinaryClassAssociation.ASSOCIATION;
                             externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
-                                    com.clarity.rest.ClarityUtil.InvocationSiteProperty.CONSTRUCTOR_PARAMETER,
+                                    com.clarity.binary.ClarityUtil.InvocationSiteProperty.CONSTRUCTOR_PARAMETER,
                                     currentComponent.modifiers(), bCA);
 
                             // --> IF INVOCATION SITE IS LOCAL VARIABLE
@@ -132,7 +132,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                             }
                             bCA = BinaryClassAssociation.WEAK_ASSOCIATION;
                             externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
-                                    com.clarity.rest.ClarityUtil.InvocationSiteProperty.CONSTRUCTOR_PARAMETER,
+                                    com.clarity.binary.ClarityUtil.InvocationSiteProperty.CONSTRUCTOR_PARAMETER,
                                     currentComponent.modifiers(), bCA);
                         } else {
                             continue;
@@ -189,7 +189,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                     final Component targetClass = classes.get(superClass.invokedComponent());
                     final ExternalClassLink generalizationExternalClassLink = new ExternalClassLink(sourceClass,
                             targetClass, new BinaryClassMultiplicity(DefaultClassMultiplicities.NONE),
-                            com.clarity.rest.ClarityUtil.InvocationSiteProperty.NONE, sourceClass.modifiers(),
+                            com.clarity.binary.ClarityUtil.InvocationSiteProperty.NONE, sourceClass.modifiers(),
                             BinaryClassAssociation.GENERALISATION);
 
                     generateBinaryClassRelationship(generalizationExternalClassLink, binaryRelationships);
@@ -229,7 +229,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                     final Component targetClass = classes.get(implementedClass.invokedComponent());
                     final ExternalClassLink realizationExternalClassLink = new ExternalClassLink(sourceClass,
                             targetClass, new BinaryClassMultiplicity(DefaultClassMultiplicities.NONE),
-                            com.clarity.rest.ClarityUtil.InvocationSiteProperty.NONE, sourceClass.modifiers(),
+                            com.clarity.binary.ClarityUtil.InvocationSiteProperty.NONE, sourceClass.modifiers(),
                             BinaryClassAssociation.REALIZATION);
                     generateBinaryClassRelationship(realizationExternalClassLink, binaryRelationships);
                 }

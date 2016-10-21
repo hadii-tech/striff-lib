@@ -1,8 +1,8 @@
-package com.clarity.rest.core.component.diagram;
+package com.clarity.binary.core.component.diagram;
 
 import java.util.Map;
 
-import com.clarity.rest.extractor.BinaryClassRelationship;
+import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.sourcemodel.Component;
 
 /**
