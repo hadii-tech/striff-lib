@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.clarity.binary.ClarityUtil;
 import com.clarity.binary.ClarityUtil.InvocationSiteProperty;
-import com.clarity.binary.core.component.diagram.DiagramConstants.BinaryClassAssociation;
+import com.clarity.binary.diagram.DiagramConstants.BinaryClassAssociation;
 import com.clarity.sourcemodel.Component;
 
 /**

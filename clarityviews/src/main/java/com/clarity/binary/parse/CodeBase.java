@@ -12,7 +12,7 @@ import com.clarity.parser.RawFile;
  */
 public class CodeBase {
 
-    private List<com.clarity.parser.RawFile> sourceFiles = new ArrayList<RawFile>();
+    private List<RawFile> sourceFiles = new ArrayList<RawFile>();
 
     public List<RawFile> getSourceFiles() {
         return sourceFiles;

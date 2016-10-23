@@ -5,13 +5,14 @@
 package com.clarity.binary.extractor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.clarity.ClarpseUtil;
-import com.clarity.binary.core.component.diagram.DiagramConstants.BinaryClassAssociation;
-import com.clarity.binary.core.component.diagram.DiagramConstants.DefaultClassMultiplicities;
+import com.clarity.binary.diagram.DiagramConstants.BinaryClassAssociation;
+import com.clarity.binary.diagram.DiagramConstants.DefaultClassMultiplicities;
 import com.clarity.invocation.ComponentInvocation;
 import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
@@ -52,12 +53,15 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
         if (!currentComponent.componentType().isBaseComponent()) {
             // get the class the current component we are analyzing represents
             final Component currentClass = ClarpseUtil.getParentBaseComponent(currentComponent, components);
-
+            if (currentClass.name().equals("ClarpseJavaParser")) {
+                System.out.println("");
+            }
             if (currentClass != null) {
                 // get a list of all the external class references this current
                 // component has..
                 final List<ComponentInvocation> externalClassTypeReferences = currentComponent.componentInvocations();
-
+                // remove redundant invocations..
+                removeRedundantInvocations(externalClassTypeReferences, currentClass, components);
                 for (final ComponentInvocation externalClassTypeRef : externalClassTypeReferences) {
                     final String externalClassType = externalClassTypeRef.invokedComponent();
                     if (components.containsKey(externalClassType)) {
@@ -70,7 +74,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                         for (final ComponentInvocation externalTypeRef : currentComponent
                                 .componentInvocations(ComponentInvocations.DECLARATION)) {
                             final String externalType = externalTypeRef.invokedComponent();
-                            if (OOPSourceModelConstants.getJavaCollections().containsKey(externalType)) {
+                            if (ZeroToManyTypes.isZeroToManyType(externalType)) {
                                 bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOMANY);
                             }
                         }
@@ -81,9 +85,8 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                             if (bCM == null) {
                                 bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
                             }
-                            if (currentComponent.modifiers()
-                                    .contains(OOPSourceModelConstants.getJavaAccessModifierMap()
-                                            .get(AccessModifiers.PRIVATE))
+                            if (currentComponent.modifiers().contains(
+                                    OOPSourceModelConstants.getJavaAccessModifierMap().get(AccessModifiers.PRIVATE))
                                     || currentComponent.modifiers().contains(OOPSourceModelConstants
                                             .getJavaAccessModifierMap().get(AccessModifiers.PROTECTED))) {
                                 bCA = BinaryClassAssociation.COMPOSITION;
@@ -100,9 +103,8 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                             if (bCM == null) {
                                 bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
                             }
-                            if (currentComponent.modifiers()
-                                    .contains(OOPSourceModelConstants.getJavaAccessModifierMap()
-                                            .get(AccessModifiers.PRIVATE))
+                            if (currentComponent.modifiers().contains(
+                                    OOPSourceModelConstants.getJavaAccessModifierMap().get(AccessModifiers.PRIVATE))
                                     || currentComponent.modifiers().contains(OOPSourceModelConstants
                                             .getJavaAccessModifierMap().get(AccessModifiers.PROTECTED))) {
                                 bCA = BinaryClassAssociation.ASSOCIATION;
@@ -140,6 +142,68 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
 
                         generateBinaryClassRelationship(externalClassLink, binaryRelationships);
                     }
+                }
+            }
+        }
+    }
+
+    private List<ComponentInvocation> removeRedundantInvocations(List<ComponentInvocation> externalClassTypeReferences,
+            Component currentClass, Map<String, Component> components) {
+        // remove from the list any references from this component's
+        // child methods that override another method. Why? because the
+        // classes it extends/implements
+        // already have this relationship, we do not need to include it
+        // again.
+        List<String> tmpList = new ArrayList<String>();
+        for (String possibleMethodCmpName : currentClass.children()) {
+            Component possibleMethodComponent = components.get(possibleMethodCmpName);
+            if (possibleMethodComponent.componentType().isMethodComponent()) {
+                for (ComponentInvocation possibleOverrideInvocation : possibleMethodComponent
+                        .componentInvocations(ComponentInvocations.ANNOTATION)) {
+                    if (possibleOverrideInvocation.invokedComponent().equals("Override")) {
+                        // remove invocations that equal the methods
+                        // return type
+                        // and parameters
+                        for (String possibleMethodCmpParamChildName : possibleMethodComponent.children()) {
+                            Component possibleMethodCmpParamChildCmp = components.get(possibleMethodCmpParamChildName);
+                            if (possibleMethodCmpParamChildCmp
+                                    .componentType() == ComponentType.METHOD_PARAMETER_COMPONENT
+                                    || possibleMethodCmpParamChildCmp
+                                            .componentType() == ComponentType.CONSTRUCTOR_PARAMETER_COMPONENT) {
+                                // remove invocations corresponding to
+                                // overridden method parameters
+                                List<ComponentInvocation> tmpInvocations = possibleMethodCmpParamChildCmp
+                                        .componentInvocations(ComponentInvocations.DECLARATION);
+                                if (!tmpInvocations.isEmpty()) {
+                                    for (ComponentInvocation invocation : tmpInvocations) {
+                                        tmpList.add(invocation.invokedComponent());
+                                    }
+                                }
+                                // remove invocations corresponding to
+                                // overridden method return value
+                                tmpList.add(possibleMethodComponent.value());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        removeMatchingInvocations(tmpList, externalClassTypeReferences);
+        return externalClassTypeReferences;
+    }
+
+    /**
+     * Removes all the to-be-removed-invocations from a given list of component
+     * invocations.
+     */
+    private void removeMatchingInvocations(List<String> invokedComponentsToBeRemoved,
+            List<ComponentInvocation> invocations) {
+
+        List<ComponentInvocation> invocationsCopy = new ArrayList<ComponentInvocation>(invocations);
+        for (ComponentInvocation tmpInvocation : invocationsCopy) {
+            for (String toBeRemovedInvocation : invokedComponentsToBeRemoved) {
+                if (tmpInvocation.invokedComponent().equals(toBeRemovedInvocation)) {
+                    invocations.remove(tmpInvocation);
                 }
             }
         }
