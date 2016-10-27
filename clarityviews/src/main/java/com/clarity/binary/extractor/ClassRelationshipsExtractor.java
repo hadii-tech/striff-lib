@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.clarity.ClarpseUtil;
@@ -53,13 +54,10 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
         if (!currentComponent.componentType().isBaseComponent()) {
             // get the class the current component we are analyzing represents
             final Component currentClass = ClarpseUtil.getParentBaseComponent(currentComponent, components);
-            if (currentClass.name().equals("ClarpseJavaParser")) {
-                System.out.println("");
-            }
             if (currentClass != null) {
                 // get a list of all the external class references this current
                 // component has..
-                final List<ComponentInvocation> externalClassTypeReferences = currentComponent.componentInvocations();
+                final Set<ComponentInvocation> externalClassTypeReferences = currentComponent.componentInvocations();
                 // remove redundant invocations..
                 removeRedundantInvocations(externalClassTypeReferences, currentClass, components);
                 for (final ComponentInvocation externalClassTypeRef : externalClassTypeReferences) {
@@ -81,7 +79,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                         // create external class link based on calling component
                         // type
                         // --> IF INVOCATION SITE IS CLASS FIELD:
-                        if (currentComponent.componentType() == ComponentType.FIELD_COMPONENT) {
+                        if (currentComponent.componentType() == ComponentType.FIELD) {
                             if (bCM == null) {
                                 bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
                             }
@@ -98,7 +96,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                                     currentComponent.modifiers(), bCA);
 
                             // --> IF INVOCATION SITE IS METHOD
-                        } else if ((currentComponent.componentType() == ComponentType.METHOD_COMPONENT)
+                        } else if ((currentComponent.componentType() == ComponentType.METHOD)
                                 && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
                             if (bCM == null) {
                                 bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
@@ -116,7 +114,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                                     currentComponent.modifiers(), bCA);
 
                             // --> IF INVOCATION SITE IS CONSTRUCTOR
-                        } else if ((currentComponent.componentType() == ComponentType.CONSTRUCTOR_COMPONENT)
+                        } else if ((currentComponent.componentType() == ComponentType.CONSTRUCTOR)
                                 && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
                             if (bCM == null) {
                                 bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
@@ -127,7 +125,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                                     currentComponent.modifiers(), bCA);
 
                             // --> IF INVOCATION SITE IS LOCAL VARIABLE
-                        } else if ((currentComponent.componentType() == ComponentType.LOCAL_VARIABLE_COMPONENT)
+                        } else if ((currentComponent.componentType() == ComponentType.LOCAL)
                                 && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
                             if (bCM == null) {
                                 bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
@@ -147,7 +145,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
         }
     }
 
-    private List<ComponentInvocation> removeRedundantInvocations(List<ComponentInvocation> externalClassTypeReferences,
+    private Set<ComponentInvocation> removeRedundantInvocations(Set<ComponentInvocation> externalClassTypeReferences,
             Component currentClass, Map<String, Component> components) {
         // remove from the list any references from this component's
         // child methods that override another method. Why? because the
@@ -157,37 +155,41 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
         List<String> tmpList = new ArrayList<String>();
         for (String possibleMethodCmpName : currentClass.children()) {
             Component possibleMethodComponent = components.get(possibleMethodCmpName);
-            if (possibleMethodComponent.componentType().isMethodComponent()) {
-                for (ComponentInvocation possibleOverrideInvocation : possibleMethodComponent
-                        .componentInvocations(ComponentInvocations.ANNOTATION)) {
-                    if (possibleOverrideInvocation.invokedComponent().equals("Override")) {
-                        // remove invocations that equal the methods
-                        // return type
-                        // and parameters
-                        for (String possibleMethodCmpParamChildName : possibleMethodComponent.children()) {
-                            Component possibleMethodCmpParamChildCmp = components.get(possibleMethodCmpParamChildName);
-                            if (possibleMethodCmpParamChildCmp
-                                    .componentType() == ComponentType.METHOD_PARAMETER_COMPONENT
-                                    || possibleMethodCmpParamChildCmp
-                                            .componentType() == ComponentType.CONSTRUCTOR_PARAMETER_COMPONENT) {
-                                // remove invocations corresponding to
-                                // overridden method parameters
-                                List<ComponentInvocation> tmpInvocations = possibleMethodCmpParamChildCmp
-                                        .componentInvocations(ComponentInvocations.DECLARATION);
-                                if (!tmpInvocations.isEmpty()) {
-                                    for (ComponentInvocation invocation : tmpInvocations) {
-                                        tmpList.add(invocation.invokedComponent());
+            if (possibleMethodCmpName != null) {
+                if (possibleMethodComponent.componentType().isMethodComponent()) {
+                    for (ComponentInvocation possibleOverrideInvocation : possibleMethodComponent
+                            .componentInvocations(ComponentInvocations.ANNOTATION)) {
+                        if (possibleOverrideInvocation.invokedComponent().equals("Override")) {
+                            // remove invocations that equal the methods
+                            // return type
+                            // and parameters
+                            for (String possibleMethodCmpParamChildName : possibleMethodComponent.children()) {
+                                Component possibleMethodCmpParamChildCmp = components
+                                        .get(possibleMethodCmpParamChildName);
+                                if (possibleMethodCmpParamChildCmp
+                                        .componentType() == ComponentType.METHOD_PARAMETER_COMPONENT
+                                        || possibleMethodCmpParamChildCmp
+                                                .componentType() == ComponentType.CONSTRUCTOR_PARAMETER_COMPONENT) {
+                                    // remove invocations corresponding to
+                                    // overridden method parameters
+                                    List<ComponentInvocation> tmpInvocations = possibleMethodCmpParamChildCmp
+                                            .componentInvocations(ComponentInvocations.DECLARATION);
+                                    if (!tmpInvocations.isEmpty()) {
+                                        for (ComponentInvocation invocation : tmpInvocations) {
+                                            tmpList.add(invocation.invokedComponent());
+                                        }
                                     }
+                                    // remove invocations corresponding to
+                                    // overridden method return value
+                                    tmpList.add(possibleMethodComponent.value());
                                 }
-                                // remove invocations corresponding to
-                                // overridden method return value
-                                tmpList.add(possibleMethodComponent.value());
                             }
                         }
                     }
                 }
             }
         }
+
         removeMatchingInvocations(tmpList, externalClassTypeReferences);
         return externalClassTypeReferences;
     }
@@ -197,13 +199,13 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
      * invocations.
      */
     private void removeMatchingInvocations(List<String> invokedComponentsToBeRemoved,
-            List<ComponentInvocation> invocations) {
+            Set<ComponentInvocation> externalClassTypeReferences) {
 
-        List<ComponentInvocation> invocationsCopy = new ArrayList<ComponentInvocation>(invocations);
+        List<ComponentInvocation> invocationsCopy = new ArrayList<ComponentInvocation>(externalClassTypeReferences);
         for (ComponentInvocation tmpInvocation : invocationsCopy) {
             for (String toBeRemovedInvocation : invokedComponentsToBeRemoved) {
                 if (tmpInvocation.invokedComponent().equals(toBeRemovedInvocation)) {
-                    invocations.remove(tmpInvocation);
+                    externalClassTypeReferences.remove(tmpInvocation);
                 }
             }
         }
@@ -320,7 +322,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
             // get the class
             if (entry.getValue().componentType().isMethodComponent()
                     || entry.getValue().componentType().isBaseComponent()
-                    || entry.getValue().componentType() == ComponentType.FIELD_COMPONENT) {
+                    || entry.getValue().componentType() == ComponentType.FIELD) {
                 final Component tempClass = entry.getValue();
                 // generate the binary class relationships..
                 genClassifierRelationships(tempClass, classes, binaryRelationships);
