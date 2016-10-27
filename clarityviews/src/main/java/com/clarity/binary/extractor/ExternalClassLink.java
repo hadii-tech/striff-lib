@@ -1,6 +1,6 @@
 package com.clarity.binary.extractor;
 
-import java.util.List;
+import java.util.Set;
 
 import com.clarity.binary.ClarityUtil;
 import com.clarity.binary.ClarityUtil.InvocationSiteProperty;
@@ -8,94 +8,91 @@ import com.clarity.binary.diagram.DiagramConstants.BinaryClassAssociation;
 import com.clarity.sourcemodel.Component;
 
 /**
- * Within a source class, there are many references or  'links' to external
- * classes (uni-directional)- either through class fields declarations or method invocations.
- * This class represents such a type of link.
+ * Within a source class, there are many references or 'links' to external
+ * classes (uni-directional)- either through class fields declarations or method
+ * invocations. This class represents such a type of link.
  *
  * @author Muntazir Fadhel
  *
  */
 public class ExternalClassLink {
 
-    private final Component orignalClass;
-    private final Component targetClass;
+    private final Component               orignalClass;
+    private final Component               targetClass;
     // linkTargetMultiplicity of the link..
     private final BinaryClassMultiplicity targetClassMultiplicity;
     // type of variable invocation
-    private final InvocationSiteProperty invocationType;
-    private final List<String> modifierContexts;
-    private final BinaryClassAssociation associationType;
+    private final InvocationSiteProperty  invocationType;
+    private final Set<String>             modifierContexts;
+    private final BinaryClassAssociation  associationType;
 
     /**
-     * @param originalClass original class
-     * @param linkTargetClass target class
-     * @param linkTargetClassMultiplicity multiplicity from origin to target
-     * @param linkInvocationType innovation type
+     * @param originalClass
+     *            original class
+     * @param linkTargetClass
+     *            target class
+     * @param linkTargetClassMultiplicity
+     *            multiplicity from origin to target
+     * @param linkInvocationType
+     *            innovation type
      * @param callingComponentType
-     * @param modifierContexts modifiers
-     * @param associationType association type
-     * @param modifierContexts
+     * @param set
+     *            modifiers
+     * @param associationType
+     *            association type
+     * @param set
      */
-    public ExternalClassLink(final Component originalClass,
-            final Component linkTargetClass,
-            final BinaryClassMultiplicity linkTargetClassMultiplicity,
-            final InvocationSiteProperty linkInvocationType,
-            final List<String> modifierContexts,
-            final BinaryClassAssociation associationType) {
+    public ExternalClassLink(final Component originalClass, final Component linkTargetClass,
+            final BinaryClassMultiplicity linkTargetClassMultiplicity, final InvocationSiteProperty linkInvocationType,
+            final Set<String> set, final BinaryClassAssociation associationType) {
 
         targetClassMultiplicity = (linkTargetClassMultiplicity);
         invocationType = (linkInvocationType);
         orignalClass = (originalClass);
         targetClass = (linkTargetClass);
-        this.modifierContexts = modifierContexts;
+        this.modifierContexts = set;
         this.associationType = (associationType);
     }
 
     /**
      * @return the modifierContexts
      */
-    public
- List<String> getModifierContexts() {
+    public Set<String> getModifierContexts() {
         return modifierContexts;
     }
 
     /**
      * @return the targetClassMultiplicity
      */
-    public
-    BinaryClassMultiplicity getTargetClassMultiplicity() {
+    public BinaryClassMultiplicity getTargetClassMultiplicity() {
         return targetClassMultiplicity;
     }
 
     /**
      * @return the invocationType
      */
-    public
-    ClarityUtil.InvocationSiteProperty getInvocationType() {
+    public ClarityUtil.InvocationSiteProperty getInvocationType() {
         return invocationType;
     }
 
     /**
      * @return the targetClass
      */
-    public
-    Component getTargetClass() {
+    public Component getTargetClass() {
         return targetClass;
     }
 
     /**
      * @return the orignalClass
      */
-    public
-    Component getOrignalClass() {
+    public Component getOrignalClass() {
         return orignalClass;
     }
 
     /**
      * @return the associationType
      */
-    public
-    BinaryClassAssociation getAssociationType() {
+    public BinaryClassAssociation getAssociationType() {
         return associationType;
     }
 }

@@ -27,10 +27,9 @@
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>1.8.3</version>
-		</dependency>
-	
+		</dependency>	
 		
-		<dependency>
+		 <dependency>
 			<groupId>com.clarityviews</groupId>
 			<artifactId>clarpse</artifactId>
 			<version>2.5</version>

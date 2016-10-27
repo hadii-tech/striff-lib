@@ -71,7 +71,7 @@ public class PlantUMLClassDiagramGenerator implements DiagramGenerator {
                 // open the brackets
                 tempStrBuilder.append(" {\n");
                 // if abstract class or interface, add java doc
-                if (component.componentType() == ComponentType.INTERFACE_COMPONENT
+                if (component.componentType() == ComponentType.INTERFACE
                         || component.modifiers().contains("abstract")) {
                     if (component.comment() != null && !component.comment().isEmpty()) {
                         String str;
@@ -99,9 +99,9 @@ public class PlantUMLClassDiagramGenerator implements DiagramGenerator {
                     // only care about children of interface or abstract
                     // classes, or special children
                     // of regular classes
-                    if ((component.componentType() == ComponentType.INTERFACE_COMPONENT
+                    if ((component.componentType() == ComponentType.INTERFACE
                             || component.modifiers().contains("abstract"))
-                            || (childCmp.componentType() == ComponentType.METHOD_COMPONENT
+                            || (childCmp.componentType() == ComponentType.METHOD
                                     && diagramaticallyRelevantMethod(childCmp))) {
                         // start entering the fields and methods...
                         if ((childCmp != null) && !childCmp.componentType().isBaseComponent()) {
@@ -137,11 +137,11 @@ public class PlantUMLClassDiagramGenerator implements DiagramGenerator {
                                 tempStrBuilder.append(new DiagramMethodDisplayName(childCmp.uniqueName()).value());
                             }
 
-                            if (childCmp.componentType() == ComponentType.ENUM_CONSTANT_COMPONENT) {
+                            if (childCmp.componentType() == ComponentType.ENUM) {
                                 break;
                             } else if (childCmp.declarationTypeSnippet() == null
-                                    && (childCmp.componentType() == ComponentType.METHOD_COMPONENT
-                                            || childCmp.componentType() == ComponentType.CONSTRUCTOR_COMPONENT)) {
+                                    && (childCmp.componentType() == ComponentType.METHOD
+                                            || childCmp.componentType() == ComponentType.CONSTRUCTOR)) {
                                 // add the return/ field type
                                 tempStrBuilder.append(" : ");
                                 tempStrBuilder.append("void" + "\n");
