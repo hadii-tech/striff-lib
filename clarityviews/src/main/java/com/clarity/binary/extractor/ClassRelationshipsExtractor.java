@@ -166,10 +166,10 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                             for (String possibleMethodCmpParamChildName : possibleMethodComponent.children()) {
                                 Component possibleMethodCmpParamChildCmp = components
                                         .get(possibleMethodCmpParamChildName);
-                                if (possibleMethodCmpParamChildCmp
+                                if (possibleMethodCmpParamChildCmp != null && (possibleMethodCmpParamChildCmp
                                         .componentType() == ComponentType.METHOD_PARAMETER_COMPONENT
                                         || possibleMethodCmpParamChildCmp
-                                                .componentType() == ComponentType.CONSTRUCTOR_PARAMETER_COMPONENT) {
+                                                .componentType() == ComponentType.CONSTRUCTOR_PARAMETER_COMPONENT)) {
                                     // remove invocations corresponding to
                                     // overridden method parameters
                                     List<ComponentInvocation> tmpInvocations = possibleMethodCmpParamChildCmp
