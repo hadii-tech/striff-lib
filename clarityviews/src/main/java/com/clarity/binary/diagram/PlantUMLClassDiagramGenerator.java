@@ -102,7 +102,8 @@ public class PlantUMLClassDiagramGenerator implements DiagramGenerator {
                     if ((component.componentType() == ComponentType.INTERFACE
                             || component.modifiers().contains("abstract"))
                             || (childCmp.componentType() == ComponentType.METHOD
-                                    && diagramaticallyRelevantMethod(childCmp))) {
+                                    && diagramaticallyRelevantMethod(childCmp))
+                            || childCmp.componentType().isVariableComponent()) {
                         // start entering the fields and methods...
                         if ((childCmp != null) && !childCmp.componentType().isBaseComponent()) {
                             if (childCmp.modifiers().contains(
@@ -133,8 +134,11 @@ public class PlantUMLClassDiagramGenerator implements DiagramGenerator {
                                         OOPSourceModelConstants.getJavaAccessModifierMap().get(AccessModifiers.STATIC));
                                 tempStrBuilder.append("} ");
                             }
-                            if (!childCmp.children().isEmpty() || childCmp.componentType().isMethodComponent()) {
+
+                            if (childCmp.componentType().isMethodComponent()) {
                                 tempStrBuilder.append(new DiagramMethodDisplayName(childCmp.uniqueName()).value());
+                            } else {
+                                tempStrBuilder.append(childCmp.name());
                             }
 
                             if (childCmp.componentType() == ComponentType.ENUM) {
@@ -165,6 +169,7 @@ public class PlantUMLClassDiagramGenerator implements DiagramGenerator {
 
         }
         return tempStrBuilder.toString();
+
     }
 
     /**
