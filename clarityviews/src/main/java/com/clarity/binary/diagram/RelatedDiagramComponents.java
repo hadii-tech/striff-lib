@@ -38,13 +38,15 @@ public class RelatedDiagramComponents {
     }
 
     /**
-     * Creates a list of components who are closely related to the given component.
+     * Creates a list of components who are closely related to the given
+     * component.
      */
     public ArrayList<Component> components() {
         final ArrayList<Component> diagramGroup = new ArrayList<Component>();
         diagramGroup.add(diagramComponent);
         int i = 0;
-        // Filter stage 1: get all the components the key component extends/implements...
+        // Filter stage 1: get all the components the key component
+        // extends/implements...
         while (i < diagramGroup.size()) {
             for (final ComponentInvocation extension : diagramGroup.get(i)
                     .componentInvocations(ComponentInvocations.EXTENSION)) {
@@ -60,7 +62,8 @@ public class RelatedDiagramComponents {
             }
             i++;
         }
-        // Filter stage 2: Get all the components that compose the key component...
+        // Filter stage 2: Get all the components that compose the key
+        // component...
         for (int j = diagramGroup.size() - 1; j > 0; j--) {
             for (final Map.Entry<String, BinaryClassRelationship> entry : diagramRelationships.entrySet()) {
                 final BinaryClassRelationship bCR = entry.getValue();
@@ -69,6 +72,9 @@ public class RelatedDiagramComponents {
                                 || bCR.getbSideAssociation() == BinaryClassAssociation.COMPOSITION)) {
                     if (!diagramGroup.contains(bCR.getClassB())) {
                         diagramGroup.add(0, bCR.getClassB());
+                        if (diagramGroup.size() > resultSetSize) {
+                            break;
+                        }
                     }
                 }
                 if (bCR.getClassB().uniqueName().equals(diagramGroup.get(j).uniqueName())
@@ -76,12 +82,15 @@ public class RelatedDiagramComponents {
                                 || bCR.getbSideAssociation() == BinaryClassAssociation.COMPOSITION)) {
                     if (!diagramGroup.contains(bCR.getClassA())) {
                         diagramGroup.add(0, bCR.getClassA());
+                        if (diagramGroup.size() > resultSetSize) {
+                            break;
+                        }
                     }
                 }
             }
         }
         // Filter stage 3: get extends/implemented components of the newly added
-        // components  from stage 2.
+        // components from stage 2.
         i = 0;
         while (i < diagramGroup.size() && diagramGroup.size() <= resultSetSize) {
 
@@ -101,7 +110,8 @@ public class RelatedDiagramComponents {
             }
             i++;
         }
-        // Filter stage 4: if there is space left, get plain aggregation relationships
+        // Filter stage 4: if there is space left, get plain aggregation
+        // relationships
         for (int j = diagramGroup.size() - 1; j > 0; j--) {
             for (final Map.Entry<String, BinaryClassRelationship> entry : diagramRelationships.entrySet()) {
                 if (diagramGroup.size() >= resultSetSize) {
@@ -124,7 +134,8 @@ public class RelatedDiagramComponents {
                 }
             }
         }
-        // Filter stage 5: if there is space left, get any remaining even weaker relationships!
+        // Filter stage 5: if there is space left, get any remaining even weaker
+        // relationships!
         for (int j = diagramGroup.size() - 1; j > 0; j--) {
             for (final Map.Entry<String, BinaryClassRelationship> entry : diagramRelationships.entrySet()) {
                 if (diagramGroup.size() >= resultSetSize) {

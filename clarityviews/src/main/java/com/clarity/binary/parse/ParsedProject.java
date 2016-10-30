@@ -5,8 +5,6 @@ import java.io.IOException;
 import com.clarity.parser.ClarpseProject;
 import com.clarity.parser.ParseRequestContent;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 public class ParsedProject {
 
@@ -19,7 +17,7 @@ public class ParsedProject {
     public static final String    PRETTY_PRINT_PARAM            = "pretty";
     private ParseRequestContent   codebase;
 
-    public ParsedProject(ParseRequestContent codebase) throws JsonParseException, JsonMappingException, IOException {
+    public ParsedProject(ParseRequestContent codebase) throws IOException {
         this.codebase = codebase;
     }
 
