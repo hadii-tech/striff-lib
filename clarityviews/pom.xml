@@ -9,6 +9,13 @@
 	<properties>
 		<java-version>1.8</java-version>
 	</properties>
+	<repositories>
+		<repository>
+			<id>central</id>
+			<name>ip-172-31-28-11-releases</name>
+			<url>http://ec2-35-163-144-148.us-west-2.compute.amazonaws.com/artifactory/libs-release-local</url>
+		</repository>
+	</repositories>
 <distributionManagement>
     <repository>
         <id>central</id>
