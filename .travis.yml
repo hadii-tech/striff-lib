@@ -2,7 +2,7 @@ language: java
 jdk:
   - oraclejdk8
 script: 
-         - cd clarpse
+         - cd clarityviews
          - mvn clean package assembly:single
 after_success:
          - mvn deploy --settings ../settings.xml
