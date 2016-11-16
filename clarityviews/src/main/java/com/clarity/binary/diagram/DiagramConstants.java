@@ -113,7 +113,7 @@ public final class DiagramConstants {
             + "skinparam classFontColor #22df80\n" + "skinparam classFontSize 16\n" + "skinparam classFontName Roboto\n"
             + "skinparam classStereotypeFontColor White\n" + "skinparam classAttributeFontColor #c5c8c6\n"
             + "skinparam classAttributeFontSize 14\n" + "skinparam classFontName Consolas\n"
-            + "skinparam classAttributeFontName Consolas\n" + "skinparam titleFontColor White\n"   + "skinparam packageBackgroundColor #1a1b1d\n" 
+            + "skinparam classAttributeFontName Consolas\n" + "skinparam titleFontColor White\n"   + "skinparam packageBackgroundColor #1a1b1d\n"
             + "skinparam titleFontName Copperplate Gothic Light\n" + "skinparam packageBorderColor #7e7e7e\n"
             + "skinparam packageFontColor  #7e7e7e\n" + "skinparam packageFontName Consolas\n"
             + "skinparam packageFontStyle plain\n" + "skinparam packageFontSize 16\n"
