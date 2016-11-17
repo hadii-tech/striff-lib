@@ -25,10 +25,10 @@
 </distributionManagement>
 	<dependencies>	
 		<dependency>
- -		<groupId>net.sourceforge.plantuml</groupId>
- -		<artifactId>plantuml</artifactId>
- -		<version>8026</version>
- -	</dependency>
+ 		<groupId>net.sourceforge.plantuml</groupId>
+ 		<artifactId>plantuml</artifactId>
+ 		<version>8026</version>
+ 	</dependency>
 		<dependency>
 			<!-- APACHE COMMONS -->
 			<groupId>org.apache.commons</groupId>
