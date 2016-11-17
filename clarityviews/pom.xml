@@ -47,12 +47,8 @@
 		<artifactId>clarpse</artifactId>
 		<version>2.5.1</version>
 	</dependency>
-	<dependency>
-		<groupId>net.sourceforge.plantuml</groupId>
-		<artifactId>plantuml</artifactId>
-		<version>802</version>
-	</dependency>
-		
+	
+	
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
