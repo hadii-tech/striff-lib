@@ -23,7 +23,12 @@
         <url>http://ec2-35-163-144-148.us-west-2.compute.amazonaws.com/artifactory/libs-release-local</url>
     </repository>
 </distributionManagement>
-	<dependencies>		
+	<dependencies>	
+		<dependency>
+ -		<groupId>net.sourceforge.plantuml</groupId>
+ -		<artifactId>plantuml</artifactId>
+ -		<version>8026</version>
+ -	</dependency>
 		<dependency>
 			<!-- APACHE COMMONS -->
 			<groupId>org.apache.commons</groupId>
