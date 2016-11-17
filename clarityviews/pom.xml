@@ -5,7 +5,7 @@
 	<artifactId>clarityviews</artifactId>
 	<name>clarityviews</name>
 	<packaging>jar</packaging>
-	<version>1.0</version>
+	<version>1.0.1</version>
 	<properties>
 		<java-version>1.8</java-version>
 	</properties>
@@ -47,12 +47,8 @@
 		<artifactId>clarpse</artifactId>
 		<version>2.5.1</version>
 	</dependency>
-	<dependency>
-		<groupId>net.sourceforge.plantuml</groupId>
-		<artifactId>plantuml</artifactId>
-		<version>802</version>
-	</dependency>
-		
+	
+	
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
