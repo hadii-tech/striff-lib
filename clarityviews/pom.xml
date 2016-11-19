@@ -27,7 +27,7 @@
 		<dependency>
  		<groupId>net.sourceforge.plantuml</groupId>
  		<artifactId>plantuml</artifactId>
- 		<version>8026</version>
+ 		<version>8027</version>
  	</dependency>
 		<dependency>
 			<!-- APACHE COMMONS -->
