@@ -6,8 +6,8 @@ public class DiagramMethodDisplayName implements DiagramDisplayName {
 
     private String displayName;
 
-    public DiagramMethodDisplayName(String methodComponentUniqueName) {
 
+    public DiagramMethodDisplayName(String methodComponentUniqueName) {
         String longMethodName = methodComponentUniqueName.substring(0, methodComponentUniqueName.indexOf("("));
         String shortMethodName;
         if (longMethodName.contains(".")) {

@@ -1,0 +1,5 @@
+package codebaseA;
+
+public abstract class NewTextClass implements Text {
+
+}

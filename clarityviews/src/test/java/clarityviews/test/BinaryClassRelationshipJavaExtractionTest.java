@@ -21,8 +21,6 @@ import com.clarity.sourcemodel.OOPSourceCodeModel;
 
 /**
  * Tests to ensure binary class relationships are being extracted properly.
- *
- * @author Muntazir Fadhel
  */
 public class BinaryClassRelationshipJavaExtractionTest {
 

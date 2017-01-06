@@ -1,0 +1,13 @@
+package codebaseA;
+
+/**
+ * A comment for ze diagram.
+ * @author zir0-93
+ *
+ */
+public interface Text {
+
+    String value();
+
+	String color();
+}

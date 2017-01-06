@@ -105,18 +105,4 @@ public final class DiagramConstants {
     private DiagramConstants() {
 
     }
-
-    public static final String PLANT_UML_DARK_THEME_STRING = "skinparam defaultFontName Consolas\n"
-            + "skinparam backgroundColor #1d1f21\n" + "skinparam classArrowFontName  Consolas\n"
-            + "skinparam classArrowColor #c5c8c6\n" + "skinparam classBackgroundColor #1d1f21\n"
-            + "skinparam classArrowFontColor #c5c8c6\n" + "skinparam classArrowFontSize 16\n"
-            + "skinparam classFontColor #22df80\n" + "skinparam classFontSize 16\n" + "skinparam classFontName Roboto\n"
-            + "skinparam classStereotypeFontColor White\n" + "skinparam classAttributeFontColor #c5c8c6\n"
-            + "skinparam classAttributeFontSize 14\n" + "skinparam classFontName Consolas\n"
-            + "skinparam classAttributeFontName Consolas\n" + "skinparam titleFontColor White\n"   + "skinparam packageBackgroundColor #161719\n"
-            + "skinparam titleFontName Copperplate Gothic Light\n" + "skinparam packageBorderColor #7e7e7e\n"
-            + "skinparam packageFontColor  #7e7e7e\n" + "skinparam packageFontName Consolas\n"
-            + "skinparam packageFontStyle plain\n" + "skinparam packageFontSize 16\n"
-            + "skinparam classBorderColor #bbbbbb\n";
-
 }
