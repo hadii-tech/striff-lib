@@ -5,4 +5,4 @@ script:
          - cd clarityviews
          - mvn clean package assembly:single -Dmaven.test.skip=true
 after_success:
-         - mvn deploy --settings settings.xml
+         - mvn deploy --settings settings.xml -Dmaven.test.skip=true
