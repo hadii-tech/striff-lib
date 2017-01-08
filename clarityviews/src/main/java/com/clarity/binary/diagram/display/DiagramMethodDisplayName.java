@@ -1,4 +1,4 @@
-package com.clarity.binary.display;
+package com.clarity.binary.diagram.display;
 
 import org.apache.commons.lang.StringUtils;
 

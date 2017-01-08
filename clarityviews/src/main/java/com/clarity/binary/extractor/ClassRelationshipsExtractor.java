@@ -71,9 +71,6 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                         // some sort of array
                         for (final ComponentInvocation externalTypeRef : currentComponent
                                 .componentInvocations(ComponentInvocations.DECLARATION)) {
-                            if (externalTypeRef.invokedComponent().equals("codebaseA.JavaDocSymbolStrippedText")) {
-                                System.out.println();
-                            }
                             final String externalType = externalTypeRef.invokedComponent();
                             if (ZeroToManyTypes.isZeroToManyType(externalType)) {
                                 bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOMANY);

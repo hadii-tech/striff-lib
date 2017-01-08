@@ -5,5 +5,5 @@ package com.clarity.binary.diagram;
  */
 public interface ClarityView {
 
-    String view();
+    ClassDiagram view();
 }
