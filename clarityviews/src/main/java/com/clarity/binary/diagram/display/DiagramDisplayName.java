@@ -1,4 +1,4 @@
-package com.clarity.binary.display;
+package com.clarity.binary.diagram.display;
 
 /**
  * Represents the name intended to be displayed on a diagram.

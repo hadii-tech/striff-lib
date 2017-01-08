@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.Set;
 
 import com.clarity.binary.ComponentSet;
-import com.clarity.binary.display.DiagramClassDisplayName;
-import com.clarity.binary.display.DiagramMethodDisplayName;
+import com.clarity.binary.diagram.display.DiagramClassDisplayName;
+import com.clarity.binary.diagram.display.DiagramMethodDisplayName;
 import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
@@ -24,7 +24,7 @@ import net.sourceforge.plantuml.svg.SvgGraphics;
 public class DiffClarityView implements ClarityView, Serializable {
 
     private static final long serialVersionUID = -3125810981280395679L;
-    private String diagramStr;
+    private ClassDiagram diagram;
 
     public DiffClarityView(ClassDiagramColorScheme colorScheme,
             Map<String, BinaryClassRelationship> oldBinaryRelationships,
@@ -144,7 +144,7 @@ public class DiffClarityView implements ClarityView, Serializable {
                 allRelationships, deletedRelationships, addedRelationships, deletedComponents, addedComponents,
                 mergedCodeBase.getComponents());
         SvgGraphics.componentCallBack = callback;
-        this.diagramStr = new PlantUMLClassDiagram(diffClarityView, colorScheme).svgText();
+        this.diagram = new PlantUMLClassDiagram(diffClarityView, colorScheme);
     }
 
     public DiffClarityView(Map<String, BinaryClassRelationship> oldbinaryRelationships,
@@ -156,7 +156,7 @@ public class DiffClarityView implements ClarityView, Serializable {
     }
 
     @Override
-    public String view() {
-        return this.diagramStr;
+    public ClassDiagram view() {
+        return this.diagram;
     }
 }

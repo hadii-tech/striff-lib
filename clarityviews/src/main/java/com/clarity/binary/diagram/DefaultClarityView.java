@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.clarity.binary.display.DiagramClassDisplayName;
-import com.clarity.binary.display.DiagramMethodDisplayName;
+import com.clarity.binary.diagram.display.DiagramClassDisplayName;
+import com.clarity.binary.diagram.display.DiagramMethodDisplayName;
 import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
@@ -17,7 +17,7 @@ import net.sourceforge.plantuml.svg.SvgGraphics;
 public class DefaultClarityView implements ClarityView, Serializable {
 
     private static final long serialVersionUID = -3125810981280395679L;
-    private String diagramStr;
+    private ClassDiagram diagram;
 
     /**
      * @param colorScheme
@@ -56,7 +56,7 @@ public class DefaultClarityView implements ClarityView, Serializable {
             }
         }
         SvgGraphics.componentCallBack = callback;
-        this.diagramStr = new PlantUMLClassDiagram(plantUMLClassDescription, colorScheme).svgText();
+        this.diagram = new PlantUMLClassDiagram(plantUMLClassDescription, colorScheme);
     }
 
     public DefaultClarityView(Map<String, BinaryClassRelationship> binaryRelationships, OOPSourceCodeModel model,
@@ -65,7 +65,7 @@ public class DefaultClarityView implements ClarityView, Serializable {
     }
 
     @Override
-    public String view() {
-        return this.diagramStr;
+    public ClassDiagram view() {
+        return this.diagram;
     }
 }
