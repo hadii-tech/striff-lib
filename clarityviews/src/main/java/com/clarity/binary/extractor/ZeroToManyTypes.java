@@ -11,6 +11,7 @@ public class ZeroToManyTypes {
         types.add("java.util.ArrayList");
         types.add("java.util.Set");
         types.add("java.util.Map");
+        types.add("java.util.List");
         types.add("java.util.SortedSet");
         types.add("java.util.Collection");
         types.add("java.util.AbstractCollection");

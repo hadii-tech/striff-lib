@@ -1,124 +1,124 @@
 package com.clarity.binary.diagram;
 
-public class ClarityDarkClassDiagramColorScheme implements ClassDiagramColorScheme{
+public class ClarityDarkClassDiagramColorScheme implements ClassDiagramColorScheme {
 
-	@Override
-	public String defaultFontName() {
-		return "Consolas";
-	}
+    @Override
+    public String defaultFontName() {
+        return "Consolas";
+    }
 
-	@Override
-	public String backgroundColor() {
-		return "#1d1f21";
-	}
+    @Override
+    public String backgroundColor() {
+        return "#1d1f21";
+    }
 
-	@Override
-	public String classArrowFontName() {
-		return "Consolas";
-	}
+    @Override
+    public String classArrowFontName() {
+        return "Consolas";
+    }
 
-	@Override
-	public String classArrowColor() {
-		return "#c5c8c6";
-	}
+    @Override
+    public String classArrowColor() {
+        return "#c5c8c6";
+    }
 
-	@Override
-	public String classBackgroundColor() {
-		return "#1d1f21";
-	}
+    @Override
+    public String classBackgroundColor() {
+        return "#1d1f21";
+    }
 
-	@Override
-	public String classArrowFontColor() {
-		return "#c5c8c6";
-	}
+    @Override
+    public String classArrowFontColor() {
+        return "#c5c8c6";
+    }
 
-	@Override
-	public String classArrowFontSize() {
-		return "16";
-	}
+    @Override
+    public String classArrowFontSize() {
+        return "16";
+    }
 
-	@Override
-	public String classFontColor() {
-		return "#22df80";
-	}
+    @Override
+    public String classFontColor() {
+        return "#22df80";
+    }
 
-	@Override
-	public String classFontSize() {
-		return "16";
-	}
+    @Override
+    public String classFontSize() {
+        return "16";
+    }
 
-	@Override
-	public String classFontName() {
-		return "Consolas";
-	}
+    @Override
+    public String classFontName() {
+        return "Consolas";
+    }
 
-	@Override
-	public String classStereoTypeAttributeFontSize() {
-		return "White";
-	}
+    @Override
+    public String classStereoTypeAttributeFontSize() {
+        return "White";
+    }
 
-	@Override
-	public String classAttributeFontColor() {
-		return "#c5c8c6";
-	}
+    @Override
+    public String classAttributeFontColor() {
+        return "#c5c8c6";
+    }
 
-	@Override
-	public String classAttributeFontSize() {
-		return "14";
-	}
+    @Override
+    public String classAttributeFontSize() {
+        return "14";
+    }
 
-	@Override
-	public String classAttributeFontName() {
-		return "Consolas";
-	}
+    @Override
+    public String classAttributeFontName() {
+        return "Consolas";
+    }
 
-	@Override
-	public String titleFontColor() {
-		return "White";
-	}
+    @Override
+    public String titleFontColor() {
+        return "White";
+    }
 
-	@Override
-	public String packageBackgroundColor() {
-		return "#161719";
-	}
+    @Override
+    public String packageBackgroundColor() {
+        return "#161719";
+    }
 
-	@Override
-	public String titleFontName() {
-		return "Copperplate Gothic Light";
-	}
+    @Override
+    public String titleFontName() {
+        return "Copperplate Gothic Light";
+    }
 
-	@Override
-	public String packageBorderColor() {
-		return "#7e7e7e";
-	}
+    @Override
+    public String packageBorderColor() {
+        return "#7e7e7e";
+    }
 
-	@Override
-	public String packageFontColor() {
-		return "#7e7e7e";
-	}
+    @Override
+    public String packageFontColor() {
+        return "#7e7e7e";
+    }
 
-	@Override
-	public String packageFontName() {
-		return "Consolas";
-	}
+    @Override
+    public String packageFontName() {
+        return "Consolas";
+    }
 
-	@Override
-	public String packageFontStyle() {
-		return "plain";
-	}
+    @Override
+    public String packageFontStyle() {
+        return "plain";
+    }
 
-	@Override
-	public String packageFontSize() {
-		return "16";
-	}
+    @Override
+    public String packageFontSize() {
+        return "16";
+    }
 
-	@Override
-	public String classBorderColor() {
-		return "#bbbbbb";
-	}
+    @Override
+    public String classBorderColor() {
+        return "#bbbbbb";
+    }
 
-	@Override
-	public String classStereotypeFontColor() {
-		return "white";
-	}
+    @Override
+    public String classStereotypeFontColor() {
+        return "white";
+    }
 }

@@ -10,16 +10,6 @@ import com.clarity.binary.parse.ParsedProject;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
 
 public class ClarityViewTest {
-
-	@Test
-	public void ClarityViewDiagramDimensionsTest() throws Exception {
-		OOPSourceCodeModel model = new ParsedProject(ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
-		String view = new DefaultClarityView(
-				new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
-				model.getComponent("codebaseA.Text"), true).view();
-		System.out.println(view);
-		assertTrue(view.contains("<svg height=\"367px\" style=\"width:129"));
-	}
 	
 	@Test
 	public void ClarityViewDiagramClassLabelsAreGreenTest() throws Exception {

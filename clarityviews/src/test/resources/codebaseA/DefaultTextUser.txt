@@ -1,0 +1,10 @@
+package codebaseA;
+
+/**
+* An abstract class comment
+*/
+public interface DefaultTextUser extends Text {
+
+    private String strawberry();
+
+}

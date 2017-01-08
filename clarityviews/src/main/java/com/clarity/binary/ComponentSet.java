@@ -6,30 +6,39 @@ import java.util.Set;
 import com.clarity.sourcemodel.Component;
 
 /**
- * Represents a Set of Components, ensures no duplicates.
+ * A set of components.
  */
 public class ComponentSet {
 
-	private Set<Component> componentSet = new HashSet<Component>();
+    private Set<Component> componentSet = new HashSet<Component>();
 
-	public ComponentSet(Set<Component>... componentSets) {
-		// inefficient way to merge the given sets of components..
-		for (Set<Component> set : componentSets) {
-			for (Component cmp : set) {
-				boolean alreadyExists = false;
-				for (Component tmpCmp : componentSet) {
-					if (tmpCmp.uniqueName().equals(cmp.uniqueName())) {
-						alreadyExists = true;
-					}
-				}
-				if (!alreadyExists) {
-					componentSet.add(cmp);
-				}
-			}
-		}
-	}
+    /**
+     * Merges two sets of components, gives preference to the newer set of
+     * Components.
+     */
+    public ComponentSet(Set<Component> olderSet, Set<Component> newerSet) {
+        // inefficient way to merge the given sets of components..
+        for (Component oldCmp : olderSet) {
+            boolean existsInNewerSet = false;
+            for (Component newCmp : newerSet) {
+                if (oldCmp.uniqueName().equals(newCmp.uniqueName())) {
+                    existsInNewerSet = true;
+                    // merge the old components children into the newer set
+                    for (String olderCmpChild : oldCmp.children()) {
+                        if (!newCmp.children().contains(olderCmpChild)) {
+                            newCmp.children().add(olderCmpChild);
+                        }
+                    }
+                }
+            }
+            if (!existsInNewerSet) {
+                newerSet.add(oldCmp);
+            }
+        }
+        this.componentSet = newerSet;
+    }
 
-	public Set<Component> set() {
-		return this.componentSet;
-	}
+    public Set<Component> set() {
+        return this.componentSet;
+    }
 }

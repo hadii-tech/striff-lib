@@ -1,12 +1,12 @@
 package com.clarity.binary.diagram;
 
 /**
- * For generating diagrams.
+ * A Class Diagram.
  */
 public interface ClassDiagram {
 
     /**
-     * Draws a PlantUML SVG class diagram.
+     * Returns a string representing the svg makeup of a class diagram.
      */
     String svgText() throws Exception;
 }

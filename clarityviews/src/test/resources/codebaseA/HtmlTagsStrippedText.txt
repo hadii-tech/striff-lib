@@ -1,11 +1,12 @@
 package codebaseA;
 
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document.OutputSettings;
 
 public class HtmlTagsStrippedText implements Text {
 
+	public JavaDocSymbolStrippedText var;
+	
     private Text   text;
     OutputSettings settings = new OutputSettings();
 

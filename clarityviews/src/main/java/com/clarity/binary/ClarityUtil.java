@@ -5,8 +5,6 @@ import java.util.Map;
 
 /**
  * General utility related to the Clarity Web Service.
- *
- * @author Muntazir Fadhel
  */
 public final class ClarityUtil {
 

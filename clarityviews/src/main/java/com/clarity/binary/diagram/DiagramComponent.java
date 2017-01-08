@@ -9,30 +9,31 @@ import com.clarity.sourcemodel.OOPSourceModelConstants.ComponentInvocations;
  */
 public class DiagramComponent {
 
-	private Component component;
+    private Component component;
 
-	public DiagramComponent(Component originalComponent) {
-		this.component = originalComponent;
-	}
+    public DiagramComponent(Component originalComponent) {
+        this.component = originalComponent;
+    }
 
-	/**
-	 * Returns true if the containing component should be included in a diagram or not.
-	 */
-	public boolean diagramaticallyRelevantComponent() {
+    /**
+     * Returns true if the containing component should be included in a diagram
+     * or not.
+     */
+    public boolean diagramaticallyRelevantComponent() {
 
-		if (this.component.componentType().isMethodComponent()) {
-			// no getters or setters
-			if (component.name().startsWith("get") || component.name().startsWith("set")) {
-				return false;
-			}
-			// no overridden methods
-			for (final ComponentInvocation invocation : component
-					.componentInvocations(ComponentInvocations.ANNOTATION)) {
-				if (invocation.invokedComponent().equals("Override")) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+        if (this.component.componentType().isMethodComponent()) {
+            // no getters or setters
+            if (component.name().startsWith("get") || component.name().startsWith("set")) {
+                return false;
+            }
+            // no overridden methods
+            for (final ComponentInvocation invocation : component
+                    .componentInvocations(ComponentInvocations.ANNOTATION)) {
+                if (invocation.invokedComponent().equals("Override")) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

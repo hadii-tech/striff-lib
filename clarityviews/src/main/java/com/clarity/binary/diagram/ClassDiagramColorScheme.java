@@ -2,28 +2,51 @@ package com.clarity.binary.diagram;
 
 public interface ClassDiagramColorScheme {
 
-	String defaultFontName();
-	String backgroundColor();
-	String classArrowFontName();
-	String classArrowColor();
-	String classBackgroundColor();
-	String classArrowFontColor();
-	String classArrowFontSize();
-	String classFontColor();
-	String classFontSize();
-	String classFontName();
-	String classStereoTypeAttributeFontSize();
-	String classStereotypeFontColor();
-	String classAttributeFontColor();
-	String classAttributeFontSize();
-	String classAttributeFontName();
-	String titleFontColor();
-	String packageBackgroundColor();
-	String titleFontName();
-	String packageBorderColor();
-	String packageFontColor();
-	String packageFontName();
-	String packageFontStyle();
-	String packageFontSize();
-	String classBorderColor();
+    String defaultFontName();
+
+    String backgroundColor();
+
+    String classArrowFontName();
+
+    String classArrowColor();
+
+    String classBackgroundColor();
+
+    String classArrowFontColor();
+
+    String classArrowFontSize();
+
+    String classFontColor();
+
+    String classFontSize();
+
+    String classFontName();
+
+    String classStereoTypeAttributeFontSize();
+
+    String classStereotypeFontColor();
+
+    String classAttributeFontColor();
+
+    String classAttributeFontSize();
+
+    String classAttributeFontName();
+
+    String titleFontColor();
+
+    String packageBackgroundColor();
+
+    String titleFontName();
+
+    String packageBorderColor();
+
+    String packageFontColor();
+
+    String packageFontName();
+
+    String packageFontStyle();
+
+    String packageFontSize();
+
+    String classBorderColor();
 }
