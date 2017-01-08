@@ -21,8 +21,6 @@ import com.clarity.sourcemodel.OOPSourceCodeModel;
 
 /**
  * Tests to ensure binary class relationships are being extracted properly.
- *
- * @author Muntazir Fadhel
  */
 public class BinaryClassRelationshipJavaExtractionTest {
 
@@ -244,7 +242,7 @@ public class BinaryClassRelationshipJavaExtractionTest {
     public void testNoRelationsGeneratedFromOverridenMethods() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package test; public interface ClassA { ClassD aMethod();}");
         final RawFile file2 = new RawFile("ClassE.java",
-                "package test; public class ClassE implements ClassA { public ClassD aMethod {} }");
+                "package test; public class ClassE implements ClassA { public ClassD aMethod () {} }");
         final RawFile file3 = new RawFile("ClassD.java", "package test; public class ClassD { }");
         final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
         final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();

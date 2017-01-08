@@ -1,0 +1,20 @@
+package codebaseA;
+
+import com.Textz;
+
+public class JavaDocSymbolStrippedText extends NewTextClass implements Text {
+
+    public JavaDocSymbolStrippedText(Text text) {
+    }
+
+    @Override
+    public String value() {
+        return this.text.value().replace("/*", "").replace("*/", "").replace("*", "");
+    }
+
+	@Override
+	public String color() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}
