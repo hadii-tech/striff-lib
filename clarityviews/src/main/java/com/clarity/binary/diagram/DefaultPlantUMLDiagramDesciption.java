@@ -9,6 +9,7 @@ import com.clarity.binary.JavaDocSymbolStrippedText;
 import com.clarity.binary.LineBreakedText;
 import com.clarity.binary.diagram.DiagramConstants.BinaryClassAssociation;
 import com.clarity.binary.diagram.DiagramConstants.DefaultClassMultiplicities;
+import com.clarity.binary.diagram.display.DiagramMethodDisplayName;
 import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceModelConstants;
@@ -124,7 +125,20 @@ public class DefaultPlantUMLDiagramDesciption implements PlantUMLClassDiagramDes
                                 tempStrBuilder.append("} ");
                             }
 
-                            tempStrBuilder.append(childCmp.uniqueName());
+                            if (childCmp.componentType().isVariableComponent()) {
+                                tempStrBuilder.append(childCmp.uniqueName());
+                            } else {
+                                int desiredLength = new DiagramMethodDisplayName(childCmp.uniqueName()).value()
+                                        .length();
+                                String hashCode = String.valueOf(childCmp.uniqueName().hashCode()) + "$()";
+                                // we want PlantUML to make enough space for the
+                                // full method name when we draw it into the
+                                // diagram later..
+                                while (String.valueOf(hashCode).length() < desiredLength) {
+                                    hashCode += "_";
+                                }
+                                tempStrBuilder.append(hashCode);
+                            }
 
                             if (childCmp.componentType() == ComponentType.ENUM) {
                                 break;
@@ -136,13 +150,16 @@ public class DefaultPlantUMLDiagramDesciption implements PlantUMLClassDiagramDes
                                 tempStrBuilder.append("void" + "\n");
                             } else {
                                 // add the return/ field type
-                                tempStrBuilder.append(" : ");
-                                if (!childCmp.value().contains(".")) {
-                                    tempStrBuilder.append(childCmp.value() + "\n");
-                                } else {
-                                    tempStrBuilder.append(
-                                            childCmp.value().substring(childCmp.value().lastIndexOf(".") + 1) + "\n");
+                                if (childCmp.value() != null) {
+                                    tempStrBuilder.append(" : ");
+                                    if (!childCmp.value().contains(".")) {
+                                        tempStrBuilder.append(childCmp.value());
+                                    } else {
+                                        tempStrBuilder.append(
+                                                childCmp.value().substring(childCmp.value().lastIndexOf(".") + 1));
+                                    }
                                 }
+                                tempStrBuilder.append("\n");
                             }
                         }
                     }
