@@ -11,6 +11,7 @@ import com.clarity.binary.ComponentSet;
 import com.clarity.binary.diagram.display.DiagramClassDisplayName;
 import com.clarity.binary.diagram.display.DiagramMethodDisplayName;
 import com.clarity.binary.extractor.BinaryClassRelationship;
+import com.clarity.binary.extractor.ClassRelationshipsExtractor;
 import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
 
@@ -26,10 +27,13 @@ public class DiffClarityView implements ClarityView, Serializable {
     private static final long serialVersionUID = -3125810981280395679L;
     private ClassDiagram diagram;
 
-    public DiffClarityView(ClassDiagramColorScheme colorScheme,
-            Map<String, BinaryClassRelationship> oldBinaryRelationships,
-            Map<String, BinaryClassRelationship> newBinaryRelationships, OOPSourceCodeModel olderModel,
+    public DiffClarityView(ClassDiagramColorScheme colorScheme, OOPSourceCodeModel olderModel,
             OOPSourceCodeModel newerModel, boolean callback) throws Exception {
+
+        Map<String, BinaryClassRelationship> oldBinaryRelationships = new ClassRelationshipsExtractor<Object>()
+                .generateBinaryClassRelationships(olderModel);
+        Map<String, BinaryClassRelationship> newBinaryRelationships = new ClassRelationshipsExtractor<Object>()
+                .generateBinaryClassRelationships(newerModel);
 
         // form a list of all components that exist in the newer code base but
         // not in the older code base.
@@ -67,6 +71,11 @@ public class DiffClarityView implements ClarityView, Serializable {
             }
         }
 
+        if (addedComponents.isEmpty() && addedRelationships.isEmpty() && deletedComponents.isEmpty()
+                && deletedRelationships.isEmpty()) {
+            return;
+        }
+
         // generate a list of components that are needed to draw a class diagram
         // for the added components
         Set<Component> keyAddedComponents = new RelatedComponentsGroup(newerModel.getComponents(),
@@ -90,51 +99,51 @@ public class DiffClarityView implements ClarityView, Serializable {
         // base
         OOPSourceCodeModel mergedCodeBase = olderModel;
         mergedCodeBase.merge(newerModel);
-
+        List<ComponentDisplayInfo> displayComponents = new ArrayList<ComponentDisplayInfo>();
         for (final Map.Entry<String, Component> entry : mergedCodeBase.getComponents().entrySet()) {
             if (addedComponents.contains(entry.getValue().uniqueName())) {
                 // mark all the newly added components green
                 if (entry.getValue().componentType().isBaseComponent()) {
-                    SvgGraphics.displayComponents.add(new ComponentDisplayInfo(
+                    displayComponents.add(new ComponentDisplayInfo(
                             new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
                             entry.getValue().uniqueName(), "#22df80", entry.getValue().componentType().getValue()));
 
                 } else if (entry.getValue().componentType().isMethodComponent()) {
-                    SvgGraphics.displayComponents.add(new ComponentDisplayInfo(
+                    displayComponents.add(new ComponentDisplayInfo(
                             new DiagramMethodDisplayName(entry.getValue().uniqueName()).value(),
                             entry.getValue().uniqueName(), "#22df80", entry.getValue().componentType().getValue()));
                 } else {
-                    SvgGraphics.displayComponents.add(new ComponentDisplayInfo(entry.getValue().name(),
+                    displayComponents.add(new ComponentDisplayInfo(entry.getValue().name(),
                             entry.getValue().uniqueName(), "#22df80", entry.getValue().componentType().getValue()));
                 }
             } else if (deletedComponents.contains(entry.getValue().uniqueName())) {
                 // mark all the deleted components red
                 if (entry.getValue().componentType().isBaseComponent()) {
-                    SvgGraphics.displayComponents.add(new ComponentDisplayInfo(
+                    displayComponents.add(new ComponentDisplayInfo(
                             new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
                             entry.getValue().uniqueName(), "#F97D7D", entry.getValue().componentType().getValue()));
 
                 } else if (entry.getValue().componentType().isMethodComponent()) {
-                    SvgGraphics.displayComponents.add(new ComponentDisplayInfo(
+                    displayComponents.add(new ComponentDisplayInfo(
                             new DiagramMethodDisplayName(entry.getValue().uniqueName()).value(),
                             entry.getValue().uniqueName(), "#F97D7D", entry.getValue().componentType().getValue()));
                 } else {
-                    SvgGraphics.displayComponents.add(new ComponentDisplayInfo(entry.getValue().name(),
+                    displayComponents.add(new ComponentDisplayInfo(entry.getValue().name(),
                             entry.getValue().uniqueName(), "#F97D7D", entry.getValue().componentType().getValue()));
                 }
             } else {
                 // mark all the unchanged components gray
                 if (entry.getValue().componentType().isBaseComponent()) {
-                    SvgGraphics.displayComponents.add(new ComponentDisplayInfo(
+                    displayComponents.add(new ComponentDisplayInfo(
                             new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
                             entry.getValue().uniqueName(), "#C5C8C6", entry.getValue().componentType().getValue()));
 
                 } else if (entry.getValue().componentType().isMethodComponent()) {
-                    SvgGraphics.displayComponents.add(new ComponentDisplayInfo(
+                    displayComponents.add(new ComponentDisplayInfo(
                             new DiagramMethodDisplayName(entry.getValue().uniqueName()).value(),
                             entry.getValue().uniqueName(), "#C5C8C6", entry.getValue().componentType().getValue()));
                 } else {
-                    SvgGraphics.displayComponents.add(new ComponentDisplayInfo(entry.getValue().name(),
+                    displayComponents.add(new ComponentDisplayInfo(entry.getValue().name(),
                             entry.getValue().uniqueName(), "#C5C8C6", entry.getValue().componentType().getValue()));
                 }
 
@@ -144,15 +153,13 @@ public class DiffClarityView implements ClarityView, Serializable {
                 allRelationships, deletedRelationships, addedRelationships, deletedComponents, addedComponents,
                 mergedCodeBase.getComponents());
         SvgGraphics.componentCallBack = callback;
-        this.diagram = new PlantUMLClassDiagram(diffClarityView, colorScheme);
+        this.diagram = new PlantUMLClassDiagram(diffClarityView, colorScheme, displayComponents);
     }
 
-    public DiffClarityView(Map<String, BinaryClassRelationship> oldbinaryRelationships,
-            Map<String, BinaryClassRelationship> newbinaryRelationships, OOPSourceCodeModel olderModel,
-            OOPSourceCodeModel newerModel, boolean callback) throws Exception {
+    public DiffClarityView(OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel, boolean callback)
+            throws Exception {
 
-        this(new ClarityDarkClassDiagramColorScheme(), oldbinaryRelationships, newbinaryRelationships, olderModel,
-                newerModel, callback);
+        this(new ClarityDarkClassDiagramColorScheme(), olderModel, newerModel, callback);
     }
 
     @Override
