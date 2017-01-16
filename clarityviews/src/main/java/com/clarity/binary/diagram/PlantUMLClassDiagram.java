@@ -3,10 +3,12 @@ package com.clarity.binary.diagram;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
+import net.sourceforge.plantuml.svg.ComponentDisplayInfo;
 
 public class PlantUMLClassDiagram implements ClassDiagram {
 
@@ -14,11 +16,13 @@ public class PlantUMLClassDiagram implements ClassDiagram {
     private static final String PLANT_UML_END_STRING = "\n@enduml";
     private PlantUMLClassDiagramDesciption plantUMLClassDiagramDescription;
     private ClassDiagramColorScheme colorScheme;
+    private List<ComponentDisplayInfo> displayComponents;
 
     public PlantUMLClassDiagram(final PlantUMLClassDiagramDesciption plantUMLClassDescription,
-            ClassDiagramColorScheme colorScheme) {
+            ClassDiagramColorScheme colorScheme, List<ComponentDisplayInfo> displayComponents) {
         this.plantUMLClassDiagramDescription = plantUMLClassDescription;
         this.colorScheme = colorScheme;
+        this.displayComponents = displayComponents;
     }
 
     @Override
@@ -77,7 +81,7 @@ public class PlantUMLClassDiagram implements ClassDiagram {
         final SourceStringReader reader = new SourceStringReader(source);
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
-            reader.generateImage(os, new FileFormatOption(FileFormat.SVG));
+            reader.generateImage(displayComponents, os, new FileFormatOption(FileFormat.SVG));
         } catch (final IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -88,6 +92,7 @@ public class PlantUMLClassDiagram implements ClassDiagram {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        // SvgGraphics.displayComponents.clear();
         return os.toByteArray();
     }
 }
