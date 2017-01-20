@@ -12,7 +12,7 @@ import net.sourceforge.plantuml.svg.ComponentDisplayInfo;
 
 public class PlantUMLClassDiagram implements ClassDiagram {
 
-    private static final String PLANT_UML_BEGIN_STRING = "@startuml\n";
+    private static final String PLANT_UML_BEGIN_STRING = "@startuml\nskinparam linetype ortho\n";
     private static final String PLANT_UML_END_STRING = "\n@enduml";
     private PlantUMLClassDiagramDesciption plantUMLClassDiagramDescription;
     private ClassDiagramColorScheme colorScheme;
