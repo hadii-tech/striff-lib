@@ -34,7 +34,7 @@ public class ClarityDarkClassDiagramColorScheme implements ClassDiagramColorSche
 
     @Override
     public String classArrowFontSize() {
-        return "16";
+        return "18";
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ClarityDarkClassDiagramColorScheme implements ClassDiagramColorSche
 
     @Override
     public String classFontSize() {
-        return "16";
+        return "20";
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ClarityDarkClassDiagramColorScheme implements ClassDiagramColorSche
 
     @Override
     public String classAttributeFontSize() {
-        return "14";
+        return "18";
     }
 
     @Override
@@ -109,7 +109,7 @@ public class ClarityDarkClassDiagramColorScheme implements ClassDiagramColorSche
 
     @Override
     public String packageFontSize() {
-        return "16";
+        return "18";
     }
 
     @Override
