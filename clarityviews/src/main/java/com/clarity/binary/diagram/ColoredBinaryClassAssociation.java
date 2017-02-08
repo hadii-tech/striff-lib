@@ -24,21 +24,21 @@ public class ColoredBinaryClassAssociation {
         if (this.hexColor != null && !this.hexColor.isEmpty()) {
             switch (association) {
             case AGGREGATION:
-                return "-[#" + hexColor + "]-";
+                return "--[#" + hexColor + "]--";
             case COMPOSITION:
-                return "-[#" + hexColor + "]-";
+                return "--[#" + hexColor + "]--";
             case GENERALISATION:
-                return "-[#" + hexColor + "]-";
+                return "--[#" + hexColor + "]--";
             case DEPENDANCY:
-                return "-.[#" + hexColor + "]-";
+                return "--.[#" + hexColor + "]--";
             case NONE:
-                return "-[#" + hexColor + "]";
+                return "--[#" + hexColor + "]--";
             case REALIZATION:
-                return "-.[#" + hexColor + "]-";
+                return "--.[#" + hexColor + "]--";
             case WEAK_ASSOCIATION:
-                return "-[#" + hexColor + "]";
+                return "--[#" + hexColor + "]";
             case ASSOCIATION:
-                return "-[#" + hexColor + "]";
+                return "--[#" + hexColor + "]";
             default:
                 return association.getyumlLinkType();
             }

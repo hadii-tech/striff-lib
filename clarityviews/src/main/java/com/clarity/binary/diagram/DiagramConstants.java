@@ -28,11 +28,11 @@ public final class DiagramConstants {
         /**
          * Dependency association.
          */
-        NONE(0, "", "-", "", ""), REALIZATION(6, "Implements", "-.-", "|>", "<|"),
+        NONE(0, "", "-", "", ""), REALIZATION(6, "Implements", "--.--", "|>", "<|"),
         /**
         *
         */
-        WEAK_ASSOCIATION(4, "Uses", "-", ">", "<"), ASSOCIATION(2, "Uses", "-", ">", "<");
+        WEAK_ASSOCIATION(4, "Uses", "--", ">", "<"), ASSOCIATION(2, "Uses", "--", ">", "<");
 
         /**
          * label that appears at the top of class box in the class diagram.
@@ -44,7 +44,7 @@ public final class DiagramConstants {
          * type of link (dotted line, solid, etc....).
          */
         private final String yumlLinkType;
-        private final int    strength;
+        private final int strength;
 
         BinaryClassAssociation(final int strength, final String label, final String linkType,
                 final String forwardLinkEndingType, String backwardLinkEndingType) {
