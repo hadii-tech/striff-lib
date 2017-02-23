@@ -8,7 +8,6 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.clarity.ClarpseUtil;
 import com.clarity.binary.diagram.DiagramConstants.BinaryClassAssociation;
 import com.clarity.binary.diagram.DiagramConstants.DefaultClassMultiplicities;
 import com.clarity.binary.extractor.BinaryClassRelationship;
@@ -36,7 +35,6 @@ public class BinaryClassRelationshipJavaExtractionTest {
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
         final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
-        System.out.println(ClarpseUtil.fromJavaToJson(codeModel));
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         final BinaryClassRelationship A_B = binaryRelationships.get("ClassA<<-->>ClassB");
