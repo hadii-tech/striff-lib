@@ -103,7 +103,7 @@ public class RelatedComponentsGroup {
                             && (bCR.getaSideAssociation() == BinaryClassAssociation.COMPOSITION
                                     || bCR.getbSideAssociation() == BinaryClassAssociation.COMPOSITION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassB())) {
-                            componentRelatedGroup.add(0, bCR.getClassB());
+                            componentRelatedGroup.add(bCR.getClassB());
                             if (componentRelatedGroup.size() > desiredResultSetSize) {
                                 break;
                             }
@@ -113,7 +113,7 @@ public class RelatedComponentsGroup {
                             && (bCR.getaSideAssociation() == BinaryClassAssociation.COMPOSITION
                                     || bCR.getbSideAssociation() == BinaryClassAssociation.COMPOSITION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassA())) {
-                            componentRelatedGroup.add(0, bCR.getClassA());
+                            componentRelatedGroup.add(bCR.getClassA());
                             if (componentRelatedGroup.size() > desiredResultSetSize) {
                                 break;
                             }
@@ -133,7 +133,7 @@ public class RelatedComponentsGroup {
                                     || bCR.getbSideAssociation() == BinaryClassAssociation.GENERALISATION
                                     || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassB())) {
-                            componentRelatedGroup.add(0, bCR.getClassB());
+                            componentRelatedGroup.add(bCR.getClassB());
                         }
                     }
                     if (bCR.getClassB().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
@@ -142,7 +142,7 @@ public class RelatedComponentsGroup {
                                     || bCR.getaSideAssociation() == BinaryClassAssociation.GENERALISATION
                                     || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassA())) {
-                            componentRelatedGroup.add(0, bCR.getClassA());
+                            componentRelatedGroup.add(bCR.getClassA());
                         }
                     }
                 }
