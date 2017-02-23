@@ -33,7 +33,7 @@ public class RelatedComponentGroupTest {
      * relationship to be present in the component grouping result.
      */
     @Test
-    public void testPrioritizeComponentsInCompositionRelationships() throws Exception {
+    public void testA() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + "import java.util.ArrayList;"
                 + "public class ClassA {  private ArrayList<ClassB> b;}");
         final RawFile file2 = new RawFile("ClassB.java",
@@ -62,7 +62,7 @@ public class RelatedComponentGroupTest {
      * overall size 3 components.
      */
     @Test
-    public void testPrioritizeComponentsInCompositionRelationshipss() throws Exception {
+    public void testB() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + "import java.util.ArrayList;"
                 + "public class ClassA {  private ArrayList<ClassB> b;}");
         final RawFile file2 = new RawFile("ClassB.java",
@@ -92,7 +92,7 @@ public class RelatedComponentGroupTest {
      * overall size 3 components.
      */
     @Test
-    public void testPrioritizeComponentsInCompositionRelationshipasss() throws Exception {
+    public void testC() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + "import java.util.ArrayList;"
                 + "public class ClassA {  private ArrayList<ClassB> b;}");
         final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB extends ClassD {}");
@@ -121,7 +121,7 @@ public class RelatedComponentGroupTest {
      * overall size 2 components.
      */
     @Test
-    public void testPrioritizeComponentsInCompositionRelationshipass() throws Exception {
+    public void testD() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + " import java.util.ArrayList;"
                 + "public class ClassA implements ClassD {  private ArrayList<ClassB> b;}");
         final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB {}");
@@ -150,7 +150,7 @@ public class RelatedComponentGroupTest {
      * the diagrams will extend in both directions.
      */
     @Test
-    public void testPrioritizeComponentsInCompositionRelationshipsss() throws Exception {
+    public void testE() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + "import java.util.ArrayList;"
                 + "public class ClassA {  private ArrayList<ClassB> b;}");
         final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB {}");
@@ -180,7 +180,7 @@ public class RelatedComponentGroupTest {
      * will extend in both directions.
      */
     @Test
-    public void testPrioritizeComponentsInCompositionRelationshipsswrs() throws Exception {
+    public void testF() throws Exception {
         final RawFile file = new RawFile("ClassA.java",
                 "package com.sample;" + "public class ClassA implements ClassD { }");
         final RawFile file2 = new RawFile("ClassB.java",
@@ -210,7 +210,7 @@ public class RelatedComponentGroupTest {
      * ensures the diagrams will extend in both directions.
      */
     @Test
-    public void testPrioritizeComponentsInCompositionRelationshipsswwrs() throws Exception {
+    public void testG() throws Exception {
         final RawFile file = new RawFile("ClassA.java",
                 "package com.sample;" + "public class ClassA implements ClassD { }");
         final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB extends ClassA {}");
@@ -237,7 +237,7 @@ public class RelatedComponentGroupTest {
      * relationships. We expect only the main Component to be returned.
      */
     @Test
-    public void testPrioritizeComponentsInCompositionRelationshipssss() throws Exception {
+    public void testH() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + " public class ClassA { }");
         final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB {}");
         final RawFile file3 = new RawFile("ClassD.java", "package com.sample; public class ClassD  {}");

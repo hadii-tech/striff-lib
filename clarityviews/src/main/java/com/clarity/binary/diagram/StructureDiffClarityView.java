@@ -22,12 +22,12 @@ import net.sourceforge.plantuml.svg.SvgGraphics;
  * Generates a Clarity View demonstrating the differences between the two given
  * code bases.
  */
-public class DiffClarityView implements ClarityView, Serializable {
+public class StructureDiffClarityView implements ClarityView, Serializable {
 
     private static final long serialVersionUID = -3125810981280395679L;
     private ClassDiagram diagram;
 
-    public DiffClarityView(ClassDiagramColorScheme colorScheme, OOPSourceCodeModel olderModel,
+    public StructureDiffClarityView(ClassDiagramColorScheme colorScheme, OOPSourceCodeModel olderModel,
             OOPSourceCodeModel newerModel, boolean callback) throws Exception {
 
         Map<String, BinaryClassRelationship> oldBinaryRelationships = new ClassRelationshipsExtractor<Object>()
@@ -149,14 +149,14 @@ public class DiffClarityView implements ClarityView, Serializable {
 
             }
         }
-        PlantUMLClassDiagramDesciption diffClarityView = new DiffPlantUMLDiagramDesciption(diagramComponents,
+        PlantUMLClassDiagramDesciption diffClarityView = new StructureDiffPlantUMLDiagramDesciption(diagramComponents,
                 allRelationships, deletedRelationships, addedRelationships, deletedComponents, addedComponents,
                 mergedCodeBase.getComponents());
         SvgGraphics.componentCallBack = callback;
         this.diagram = new PlantUMLClassDiagram(diffClarityView, colorScheme, displayComponents);
     }
 
-    public DiffClarityView(OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel, boolean callback)
+    public StructureDiffClarityView(OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel, boolean callback)
             throws Exception {
 
         this(new ClarityDarkClassDiagramColorScheme(), olderModel, newerModel, callback);

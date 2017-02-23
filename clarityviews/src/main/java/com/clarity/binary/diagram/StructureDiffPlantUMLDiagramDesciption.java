@@ -16,7 +16,7 @@ import com.clarity.sourcemodel.OOPSourceModelConstants;
 import com.clarity.sourcemodel.OOPSourceModelConstants.AccessModifiers;
 import com.clarity.sourcemodel.OOPSourceModelConstants.ComponentType;
 
-public class DiffPlantUMLDiagramDesciption implements PlantUMLClassDiagramDesciption {
+public class StructureDiffPlantUMLDiagramDesciption implements PlantUMLClassDiagramDesciption {
 
     private Set<Component> diagramComponents;
     private Map<String, Component> allComponents;
@@ -26,7 +26,7 @@ public class DiffPlantUMLDiagramDesciption implements PlantUMLClassDiagramDescip
     private List<BinaryClassRelationship> deletedRelationships;
     private List<BinaryClassRelationship> addedRelationships;
 
-    public DiffPlantUMLDiagramDesciption(Set<Component> diagramComponents,
+    public StructureDiffPlantUMLDiagramDesciption(Set<Component> diagramComponents,
             Set<BinaryClassRelationship> allRelationships, List<BinaryClassRelationship> deletedRelationships,
             List<BinaryClassRelationship> addedRelationships, List<String> deletedComponents,
             List<String> addedComponents, Map<String, Component> allComponents) {
