@@ -53,7 +53,7 @@ public class StructureDiffPlantUMLDiagramDesciption implements PlantUMLClassDiag
                 }
                 // add component type name (eg: class, interface, etc...)
                 tempStrBuilder
-                        .append(OOPSourceModelConstants.getJavaComponentTypes().get(component.componentType()) + " ");
+                .append(OOPSourceModelConstants.getJavaComponentTypes().get(component.componentType()) + " ");
                 // add the actual component short name
                 tempStrBuilder.append(component.uniqueName());
                 // add class generics if exist
@@ -70,7 +70,7 @@ public class StructureDiffPlantUMLDiagramDesciption implements PlantUMLClassDiag
                         if (component.comment().length() < 800) {
                             str = new LineBreakedText(new JavaDocSymbolStrippedText(
                                     new HtmlTagsStrippedText(new DefaultText(component.comment().trim() + "..."))))
-                                            .value()
+                                    .value()
                                     + "\n";
 
                         } else {
@@ -129,7 +129,7 @@ public class StructureDiffPlantUMLDiagramDesciption implements PlantUMLClassDiag
                                 break;
                             } else if (childCmp.declarationTypeSnippet() == null
                                     && (childCmp.componentType() == ComponentType.METHOD
-                                            || childCmp.componentType() == ComponentType.CONSTRUCTOR)) {
+                                    || childCmp.componentType() == ComponentType.CONSTRUCTOR)) {
                                 // add the return/ field type
                                 tempStrBuilder.append(" : ");
                                 tempStrBuilder.append("void" + "\n");
@@ -161,9 +161,6 @@ public class StructureDiffPlantUMLDiagramDesciption implements PlantUMLClassDiag
             String classAName = relationship.getClassA().name();
             String classBName = relationship.getClassB().name();
 
-            if (classAName.startsWith("HtmlTagsSt") && classBName.startsWith("JavaDoc")) {
-                System.out.println();
-            }
             if ((classAName != null) && ((classBName != null) && diagramComponents.contains(relationship.getClassA())
                     && diagramComponents.contains(relationship.getClassB())
                     && relationship.getClassA().componentType().isBaseComponent()
@@ -185,11 +182,11 @@ public class StructureDiffPlantUMLDiagramDesciption implements PlantUMLClassDiag
                 if (classAAssociation.getStrength() > classBAssociation.getStrength()) {
                     tempStrBuilder.append(new ColoredBinaryClassAssociation(classAAssociation,
                             diffRelationsColor(relationship, addedRelationships, deletedRelationships))
-                                    .getyumlLinkType());
+                            .getyumlLinkType());
                 } else {
                     tempStrBuilder.append(new ColoredBinaryClassAssociation(classBAssociation,
                             diffRelationsColor(relationship, addedRelationships, deletedRelationships))
-                                    .getyumlLinkType());
+                            .getyumlLinkType());
                 }
                 // insert class A association type
                 tempStrBuilder.append(classAAssociation.getForwardLinkEndingType());

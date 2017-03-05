@@ -17,12 +17,22 @@ public class PlantUMLClassDiagram implements ClassDiagram {
     private PlantUMLClassDiagramDesciption plantUMLClassDiagramDescription;
     private ClassDiagramColorScheme colorScheme;
     private List<ComponentDisplayInfo> displayComponents;
+    private String keyClassName;
 
     public PlantUMLClassDiagram(final PlantUMLClassDiagramDesciption plantUMLClassDescription,
             ClassDiagramColorScheme colorScheme, List<ComponentDisplayInfo> displayComponents) {
         this.plantUMLClassDiagramDescription = plantUMLClassDescription;
         this.colorScheme = colorScheme;
         this.displayComponents = displayComponents;
+    }
+
+    public PlantUMLClassDiagram(final PlantUMLClassDiagramDesciption plantUMLClassDescription,
+            ClassDiagramColorScheme colorScheme, List<ComponentDisplayInfo> displayComponents,
+            String keyClassName) {
+        this.plantUMLClassDiagramDescription = plantUMLClassDescription;
+        this.colorScheme = colorScheme;
+        this.displayComponents = displayComponents;
+        this.keyClassName = keyClassName;
     }
 
     @Override
@@ -81,7 +91,11 @@ public class PlantUMLClassDiagram implements ClassDiagram {
         final SourceStringReader reader = new SourceStringReader(source);
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
-            reader.generateImage(displayComponents, os, new FileFormatOption(FileFormat.SVG));
+            if (keyClassName != null) {
+                reader.generateImage(keyClassName, displayComponents, os, new FileFormatOption(FileFormat.SVG));
+            } else {
+                reader.generateImage(displayComponents, os, new FileFormatOption(FileFormat.SVG));
+            }
         } catch (final IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();

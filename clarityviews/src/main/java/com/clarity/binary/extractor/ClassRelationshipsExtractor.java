@@ -61,84 +61,88 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                 // remove redundant invocations..
                 removeRedundantInvocations(externalClassTypeReferences, currentClass, components);
                 for (final ComponentInvocation externalClassTypeRef : externalClassTypeReferences) {
-                    final String externalClassType = externalClassTypeRef.invokedComponent();
-                    if (components.containsKey(externalClassType)) {
-                        final Component targetClass = components.get(externalClassType);
-                        BinaryClassMultiplicity bCM = null;
-                        BinaryClassAssociation bCA = null;
-                        ExternalClassLink externalClassLink;
-                        // check the component external types to see if we have
-                        // some sort of array
-                        for (final ComponentInvocation externalTypeRef : currentComponent
-                                .componentInvocations(ComponentInvocations.DECLARATION)) {
-                            final String externalType = externalTypeRef.invokedComponent();
-                            if (ZeroToManyTypes.isZeroToManyType(externalType)) {
-                                bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOMANY);
+                    if (!externalClassTypeRef.empty()) {
+                        final String externalClassType = externalClassTypeRef.invokedComponent();
+                        if (components.containsKey(externalClassType)) {
+                            final Component targetClass = components.get(externalClassType);
+                            BinaryClassMultiplicity bCM = null;
+                            BinaryClassAssociation bCA = null;
+                            ExternalClassLink externalClassLink;
+                            // check the component external types to see if we
+                            // have
+                            // some sort of array
+                            for (final ComponentInvocation externalTypeRef : currentComponent
+                                    .componentInvocations(ComponentInvocations.DECLARATION)) {
+                                final String externalType = externalTypeRef.invokedComponent();
+                                if (ZeroToManyTypes.isZeroToManyType(externalType)) {
+                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOMANY);
+                                }
                             }
-                        }
-                        // create external class link based on calling component
-                        // type
-                        // --> IF INVOCATION SITE IS CLASS FIELD:
-                        if (currentComponent.componentType() == ComponentType.FIELD) {
-                            if (bCM == null) {
-                                bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
-                            }
-                            if (currentComponent.modifiers().contains(
-                                    OOPSourceModelConstants.getJavaAccessModifierMap().get(AccessModifiers.PRIVATE))
-                                    || currentComponent.modifiers().contains(OOPSourceModelConstants
-                                            .getJavaAccessModifierMap().get(AccessModifiers.PROTECTED))) {
-                                bCA = BinaryClassAssociation.COMPOSITION;
-                            } else {
-                                bCA = BinaryClassAssociation.AGGREGATION;
-                            }
-                            externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
-                                    com.clarity.binary.ClarityUtil.InvocationSiteProperty.FIELD,
-                                    currentComponent.modifiers(), bCA);
+                            // create external class link based on calling
+                            // component
+                            // type
+                            // --> IF INVOCATION SITE IS CLASS FIELD:
+                            if (currentComponent.componentType() == ComponentType.FIELD) {
+                                if (bCM == null) {
+                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
+                                }
+                                if (currentComponent.modifiers().contains(
+                                        OOPSourceModelConstants.getJavaAccessModifierMap().get(AccessModifiers.PRIVATE))
+                                        || currentComponent.modifiers().contains(OOPSourceModelConstants
+                                                .getJavaAccessModifierMap().get(AccessModifiers.PROTECTED))) {
+                                    bCA = BinaryClassAssociation.COMPOSITION;
+                                } else {
+                                    bCA = BinaryClassAssociation.AGGREGATION;
+                                }
+                                externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
+                                        com.clarity.binary.ClarityUtil.InvocationSiteProperty.FIELD,
+                                        currentComponent.modifiers(), bCA);
 
-                            // --> IF INVOCATION SITE IS METHOD
-                        } else if ((currentComponent.componentType() == ComponentType.METHOD)
-                                && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
-                            if (bCM == null) {
-                                bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
-                            }
-                            if (currentComponent.modifiers().contains(
-                                    OOPSourceModelConstants.getJavaAccessModifierMap().get(AccessModifiers.PRIVATE))
-                                    || currentComponent.modifiers().contains(OOPSourceModelConstants
-                                            .getJavaAccessModifierMap().get(AccessModifiers.PROTECTED))) {
+                                // --> IF INVOCATION SITE IS METHOD
+                            } else if ((currentComponent.componentType() == ComponentType.METHOD)
+                                    && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
+                                if (bCM == null) {
+                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
+                                }
+                                if (currentComponent.modifiers().contains(
+                                        OOPSourceModelConstants.getJavaAccessModifierMap().get(AccessModifiers.PRIVATE))
+                                        || currentComponent.modifiers().contains(OOPSourceModelConstants
+                                                .getJavaAccessModifierMap().get(AccessModifiers.PROTECTED))) {
+                                    bCA = BinaryClassAssociation.ASSOCIATION;
+                                } else {
+                                    bCA = BinaryClassAssociation.WEAK_ASSOCIATION;
+                                }
+                                externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
+                                        com.clarity.binary.ClarityUtil.InvocationSiteProperty.METHOD_PARAMETER,
+                                        currentComponent.modifiers(), bCA);
+
+                                // --> IF INVOCATION SITE IS CONSTRUCTOR
+                            } else if ((currentComponent.componentType() == ComponentType.CONSTRUCTOR)
+                                    && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
+                                if (bCM == null) {
+                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
+                                }
                                 bCA = BinaryClassAssociation.ASSOCIATION;
-                            } else {
+                                externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
+                                        com.clarity.binary.ClarityUtil.InvocationSiteProperty.CONSTRUCTOR_PARAMETER,
+                                        currentComponent.modifiers(), bCA);
+
+                                // --> IF INVOCATION SITE IS LOCAL VARIABLE
+                            } else if ((currentComponent.componentType() == ComponentType.LOCAL)
+                                    && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
+                                if (bCM == null) {
+                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
+                                }
                                 bCA = BinaryClassAssociation.WEAK_ASSOCIATION;
+                                externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
+                                        com.clarity.binary.ClarityUtil.InvocationSiteProperty.CONSTRUCTOR_PARAMETER,
+                                        currentComponent.modifiers(), bCA);
+                            } else {
+                                continue;
                             }
-                            externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
-                                    com.clarity.binary.ClarityUtil.InvocationSiteProperty.METHOD_PARAMETER,
-                                    currentComponent.modifiers(), bCA);
 
-                            // --> IF INVOCATION SITE IS CONSTRUCTOR
-                        } else if ((currentComponent.componentType() == ComponentType.CONSTRUCTOR)
-                                && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
-                            if (bCM == null) {
-                                bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
-                            }
-                            bCA = BinaryClassAssociation.ASSOCIATION;
-                            externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
-                                    com.clarity.binary.ClarityUtil.InvocationSiteProperty.CONSTRUCTOR_PARAMETER,
-                                    currentComponent.modifiers(), bCA);
-
-                            // --> IF INVOCATION SITE IS LOCAL VARIABLE
-                        } else if ((currentComponent.componentType() == ComponentType.LOCAL)
-                                && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
-                            if (bCM == null) {
-                                bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
-                            }
-                            bCA = BinaryClassAssociation.WEAK_ASSOCIATION;
-                            externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
-                                    com.clarity.binary.ClarityUtil.InvocationSiteProperty.CONSTRUCTOR_PARAMETER,
-                                    currentComponent.modifiers(), bCA);
-                        } else {
-                            continue;
+                            generateBinaryClassRelationship(externalClassLink, binaryRelationships);
                         }
-
-                        generateBinaryClassRelationship(externalClassLink, binaryRelationships);
                     }
                 }
             }

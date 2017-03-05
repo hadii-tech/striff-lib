@@ -9,7 +9,7 @@ import com.clarity.binary.diagram.StructureDiffClarityView;
 import com.clarity.binary.parse.ParsedProject;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
 
-public class DiffClarityViewTest {
+public class StructureDiffTest {
 
     @Test
     public void ClarityViewDiagramClassLabelsAreGreenTest() throws Exception {
@@ -50,8 +50,8 @@ public class DiffClarityViewTest {
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
-        assertTrue(view.svgText().contains("text-rendering=\"geometricPrecision\""));
         System.out.println(view.svgText());
+        assertTrue(view.svgText().contains("text-rendering=\"geometricPrecision\""));
     }
 
     @Test
@@ -61,8 +61,8 @@ public class DiffClarityViewTest {
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
-        assertTrue(view.svgText().contains("style=\"stroke: #C5C8C6; stroke-width: 2.0;\""));
         System.out.println(view.svgText());
+        assertTrue(view.svgText().contains("style=\"stroke: #C5C8C6; stroke-width: 3.0;\""));
     }
 
     @Test
@@ -72,6 +72,7 @@ public class DiffClarityViewTest {
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        System.out.println(view.svgText());
         assertTrue(view.svgText().contains("id=\"codebaseA.HtmlTagsStrippedText\""));
     }
 
@@ -82,6 +83,7 @@ public class DiffClarityViewTest {
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        System.out.println(view.svgText());
         assertTrue(view.svgText().contains("id=\"codebaseA.JavaDocSymbolStrippedText\""));
     }
 

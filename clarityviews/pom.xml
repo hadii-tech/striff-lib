@@ -5,7 +5,7 @@
 	<artifactId>clarityviews</artifactId>
 	<name>clarityviews</name>
 	<packaging>jar</packaging>
-	<version>1.0.14</version>
+	<version>1.0.15</version>
 	<properties>
 		<java-version>1.8</java-version>
 	</properties>
@@ -51,7 +51,7 @@
 		<dependency>
 			<groupId>net.sourceforge.plantuml</groupId>
 			<artifactId>plantuml</artifactId>
-			<version>8032</version>
+			<version>8033</version>
 		</dependency>
 		<dependency>
 			<groupId>com.clarityviews</groupId>

@@ -12,7 +12,6 @@ import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
 
 import net.sourceforge.plantuml.svg.ComponentDisplayInfo;
-import net.sourceforge.plantuml.svg.SvgGraphics;
 
 public class DefaultClarityView implements ClarityView, Serializable {
 
@@ -30,10 +29,12 @@ public class DefaultClarityView implements ClarityView, Serializable {
      *            The component for which the Clarity View is being generated.
      * @param callback
      *            Whether or not the diagram should be interactive.
+     * @param desiredSize
+     *            Desired size of the diagram.
      */
     public DefaultClarityView(ClassDiagramColorScheme colorScheme,
             Map<String, BinaryClassRelationship> binaryRelationships, OOPSourceCodeModel model,
-            Component diagramComponent, boolean callback) throws Exception {
+            Component diagramComponent, int desiredSize) throws Exception {
 
         List<String> components = new ArrayList<String>();
         components.add(diagramComponent.uniqueName());
@@ -54,13 +55,18 @@ public class DefaultClarityView implements ClarityView, Serializable {
                         cmp.componentType().getValue()));
             }
         }
-        SvgGraphics.componentCallBack = callback;
-        this.diagram = new PlantUMLClassDiagram(plantUMLClassDescription, colorScheme, displayComponents);
+        this.diagram = new PlantUMLClassDiagram(plantUMLClassDescription, colorScheme, displayComponents, diagramComponent.name());
     }
 
     public DefaultClarityView(Map<String, BinaryClassRelationship> binaryRelationships, OOPSourceCodeModel model,
-            Component diagramComponent, boolean callback) throws Exception {
-        this(new ClarityDarkClassDiagramColorScheme(), binaryRelationships, model, diagramComponent, callback);
+            Component diagramComponent) throws Exception {
+        this(new ClarityDarkClassDiagramColorScheme(), binaryRelationships, model, diagramComponent);
+    }
+
+    public DefaultClarityView(ClassDiagramColorScheme colorScheme,
+            Map<String, BinaryClassRelationship> binaryRelationships, OOPSourceCodeModel model,
+            Component diagramComponent) throws Exception {
+        this(colorScheme, binaryRelationships, model, diagramComponent, 4);
     }
 
     @Override
