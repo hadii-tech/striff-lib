@@ -9,9 +9,9 @@ import com.clarity.binary.diagram.Diagram;
 import com.clarity.binary.diagram.RelatedComponentsGroup;
 import com.clarity.binary.diagram.display.DiagramClassDisplayName;
 import com.clarity.binary.diagram.display.DiagramMethodDisplayName;
-import com.clarity.binary.diagram.plantuml.PlantUMLClassDiagramDesciption;
-import com.clarity.binary.diagram.plantuml.PlantUMLDiagram;
-import com.clarity.binary.diagram.plantuml.PlantUMLDiagramDesciption;
+import com.clarity.binary.diagram.plantuml.PUMLClassDiagramDesciption;
+import com.clarity.binary.diagram.plantuml.PUMLDiagram;
+import com.clarity.binary.diagram.plantuml.PUMLDiagramDesciption;
 import com.clarity.binary.diagram.scheme.DarkDiagramColorScheme;
 import com.clarity.binary.diagram.scheme.DiagramColorScheme;
 import com.clarity.binary.extractor.BinaryClassRelationship;
@@ -45,7 +45,7 @@ public class DefaultClarityView implements ClarityView, Serializable {
 
         List<String> components = new ArrayList<String>();
         components.add(diagramComponent.uniqueName());
-        PlantUMLDiagramDesciption plantUMLClassDescription = new PlantUMLClassDiagramDesciption(
+        PUMLDiagramDesciption plantUMLClassDescription = new PUMLClassDiagramDesciption(
                 new RelatedComponentsGroup(model.getComponents(), binaryRelationships, components).components(),
                 model.getComponents(), binaryRelationships);
         List<ComponentDisplayInfo> displayComponents = new ArrayList<ComponentDisplayInfo>();
@@ -62,7 +62,7 @@ public class DefaultClarityView implements ClarityView, Serializable {
                         cmp.componentType().getValue()));
             }
         }
-        this.diagram = new PlantUMLDiagram(plantUMLClassDescription, colorScheme, displayComponents, diagramComponent.name());
+        this.diagram = new PUMLDiagram(plantUMLClassDescription, colorScheme, displayComponents, diagramComponent.name());
     }
 
     public DefaultClarityView(Map<String, BinaryClassRelationship> binaryRelationships, OOPSourceCodeModel model,

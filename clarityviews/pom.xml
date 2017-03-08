@@ -5,7 +5,7 @@
 	<artifactId>clarityviews</artifactId>
 	<name>clarityviews</name>
 	<packaging>jar</packaging>
-	<version>1.0.16</version>
+	<version>1.0.17</version>
 	<properties>
 		<java-version>1.8</java-version>
 	</properties>

@@ -12,9 +12,9 @@ import com.clarity.binary.diagram.Diagram;
 import com.clarity.binary.diagram.RelatedComponentsGroup;
 import com.clarity.binary.diagram.display.DiagramClassDisplayName;
 import com.clarity.binary.diagram.display.DiagramMethodDisplayName;
-import com.clarity.binary.diagram.plantuml.PlantUMLDiagram;
-import com.clarity.binary.diagram.plantuml.PlantUMLDiagramDesciption;
-import com.clarity.binary.diagram.plantuml.StructureDiffPlantUMLDiagramDesciption;
+import com.clarity.binary.diagram.plantuml.PUMLDiagram;
+import com.clarity.binary.diagram.plantuml.PUMLDiagramDesciption;
+import com.clarity.binary.diagram.plantuml.StructureDiffPUMLDiagramDesciption;
 import com.clarity.binary.diagram.scheme.DarkDiagramColorScheme;
 import com.clarity.binary.diagram.scheme.DiagramColorScheme;
 import com.clarity.binary.extractor.BinaryClassRelationship;
@@ -26,15 +26,15 @@ import net.sourceforge.plantuml.svg.ComponentDisplayInfo;
 import net.sourceforge.plantuml.svg.SvgGraphics;
 
 /**
- * Generates a Clarity View demonstrating the differences between the two given
- * code bases.
+ * Generates a Structure Diff demonstrating the differences between the two
+ * given code bases.
  */
-public class StructureDiffView implements ClarityView, Serializable {
+public class SDView implements ClarityView, Serializable {
 
     private static final long serialVersionUID = -3125810981280395679L;
     private Diagram diagram;
 
-    public StructureDiffView(DiagramColorScheme colorScheme, OOPSourceCodeModel olderModel,
+    public SDView(DiagramColorScheme colorScheme, OOPSourceCodeModel olderModel,
             OOPSourceCodeModel newerModel, boolean callback) throws Exception {
 
         Map<String, BinaryClassRelationship> oldBinaryRelationships = new ClassRelationshipsExtractor<Object>()
@@ -156,14 +156,14 @@ public class StructureDiffView implements ClarityView, Serializable {
 
             }
         }
-        PlantUMLDiagramDesciption diffClarityView = new StructureDiffPlantUMLDiagramDesciption(diagramComponents,
+        PUMLDiagramDesciption diffClarityView = new StructureDiffPUMLDiagramDesciption(diagramComponents,
                 allRelationships, deletedRelationships, addedRelationships, deletedComponents, addedComponents,
                 mergedCodeBase.getComponents());
         SvgGraphics.componentCallBack = callback;
-        this.diagram = new PlantUMLDiagram(diffClarityView, colorScheme, displayComponents);
+        this.diagram = new PUMLDiagram(diffClarityView, colorScheme, displayComponents);
     }
 
-    public StructureDiffView(OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel, boolean callback)
+    public SDView(OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel, boolean callback)
             throws Exception {
 
         this(new DarkDiagramColorScheme(), olderModel, newerModel, callback);

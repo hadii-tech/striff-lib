@@ -13,23 +13,23 @@ import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
 import net.sourceforge.plantuml.svg.ComponentDisplayInfo;
 
-public class PlantUMLDiagram implements Diagram {
+public class PUMLDiagram implements Diagram {
 
     private static final String PLANT_UML_BEGIN_STRING = "@startuml\nskinparam linetype ortho\n";
     private static final String PLANT_UML_END_STRING = "\n@enduml";
-    private PlantUMLDiagramDesciption plantUMLClassDiagramDescription;
+    private PUMLDiagramDesciption plantUMLClassDiagramDescription;
     private DiagramColorScheme colorScheme;
     private List<ComponentDisplayInfo> displayComponents;
     private String keyClassName;
 
-    public PlantUMLDiagram(final PlantUMLDiagramDesciption plantUMLClassDescription,
+    public PUMLDiagram(final PUMLDiagramDesciption plantUMLClassDescription,
             DiagramColorScheme colorScheme, List<ComponentDisplayInfo> displayComponents) {
         this.plantUMLClassDiagramDescription = plantUMLClassDescription;
         this.colorScheme = colorScheme;
         this.displayComponents = displayComponents;
     }
 
-    public PlantUMLDiagram(final PlantUMLDiagramDesciption plantUMLClassDescription,
+    public PUMLDiagram(final PUMLDiagramDesciption plantUMLClassDescription,
             DiagramColorScheme colorScheme, List<ComponentDisplayInfo> displayComponents,
             String keyClassName) {
         this.plantUMLClassDiagramDescription = plantUMLClassDescription;
