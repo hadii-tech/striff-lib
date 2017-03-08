@@ -1,6 +1,6 @@
-package com.clarity.binary.diagram;
+package com.clarity.binary.diagram.scheme;
 
-public class ClarityDarkClassDiagramColorScheme implements ClassDiagramColorScheme {
+public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String defaultFontName() {

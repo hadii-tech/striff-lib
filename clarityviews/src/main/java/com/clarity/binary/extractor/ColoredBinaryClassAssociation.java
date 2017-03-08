@@ -1,4 +1,4 @@
-package com.clarity.binary.diagram;
+package com.clarity.binary.extractor;
 
 import com.clarity.binary.diagram.DiagramConstants.BinaryClassAssociation;
 

@@ -1,33 +1,36 @@
-package com.clarity.binary.diagram;
+package com.clarity.binary.diagram.plantuml;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import com.clarity.binary.diagram.Diagram;
+import com.clarity.binary.diagram.scheme.DiagramColorScheme;
+
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
 import net.sourceforge.plantuml.svg.ComponentDisplayInfo;
 
-public class PlantUMLClassDiagram implements ClassDiagram {
+public class PlantUMLDiagram implements Diagram {
 
     private static final String PLANT_UML_BEGIN_STRING = "@startuml\nskinparam linetype ortho\n";
     private static final String PLANT_UML_END_STRING = "\n@enduml";
-    private PlantUMLClassDiagramDesciption plantUMLClassDiagramDescription;
-    private ClassDiagramColorScheme colorScheme;
+    private PlantUMLDiagramDesciption plantUMLClassDiagramDescription;
+    private DiagramColorScheme colorScheme;
     private List<ComponentDisplayInfo> displayComponents;
     private String keyClassName;
 
-    public PlantUMLClassDiagram(final PlantUMLClassDiagramDesciption plantUMLClassDescription,
-            ClassDiagramColorScheme colorScheme, List<ComponentDisplayInfo> displayComponents) {
+    public PlantUMLDiagram(final PlantUMLDiagramDesciption plantUMLClassDescription,
+            DiagramColorScheme colorScheme, List<ComponentDisplayInfo> displayComponents) {
         this.plantUMLClassDiagramDescription = plantUMLClassDescription;
         this.colorScheme = colorScheme;
         this.displayComponents = displayComponents;
     }
 
-    public PlantUMLClassDiagram(final PlantUMLClassDiagramDesciption plantUMLClassDescription,
-            ClassDiagramColorScheme colorScheme, List<ComponentDisplayInfo> displayComponents,
+    public PlantUMLDiagram(final PlantUMLDiagramDesciption plantUMLClassDescription,
+            DiagramColorScheme colorScheme, List<ComponentDisplayInfo> displayComponents,
             String keyClassName) {
         this.plantUMLClassDiagramDescription = plantUMLClassDescription;
         this.colorScheme = colorScheme;
@@ -55,12 +58,11 @@ public class PlantUMLClassDiagram implements ClassDiagram {
         final String diagramSkin = formPlantUMLSkinString(colorScheme);
 
         final String source = PLANT_UML_BEGIN_STRING + diagramSkin
-                + plantUMLClassDiagramDescription.classDesciptionString()
-                + plantUMLClassDiagramDescription.relationsDesciptionString() + PLANT_UML_END_STRING;
+                + plantUMLClassDiagramDescription.description() + PLANT_UML_END_STRING;
         return source;
     }
 
-    private String formPlantUMLSkinString(ClassDiagramColorScheme colorScheme) {
+    private String formPlantUMLSkinString(DiagramColorScheme colorScheme) {
         return "skinparam defaultFontName " + colorScheme.defaultFontName() + "\n" + "skinparam backgroundColor  "
                 + colorScheme.backgroundColor() + "\n" + "skinparam classArrowFontName "
                 + colorScheme.classArrowFontName() + "\n" + "skinparam classArrowColor " + colorScheme.classArrowColor()

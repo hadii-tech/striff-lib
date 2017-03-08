@@ -1,12 +1,19 @@
-package com.clarity.binary.diagram;
+package com.clarity.binary.diagram.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.clarity.binary.diagram.Diagram;
+import com.clarity.binary.diagram.RelatedComponentsGroup;
 import com.clarity.binary.diagram.display.DiagramClassDisplayName;
 import com.clarity.binary.diagram.display.DiagramMethodDisplayName;
+import com.clarity.binary.diagram.plantuml.PlantUMLClassDiagramDesciption;
+import com.clarity.binary.diagram.plantuml.PlantUMLDiagram;
+import com.clarity.binary.diagram.plantuml.PlantUMLDiagramDesciption;
+import com.clarity.binary.diagram.scheme.DarkDiagramColorScheme;
+import com.clarity.binary.diagram.scheme.DiagramColorScheme;
 import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
@@ -16,7 +23,7 @@ import net.sourceforge.plantuml.svg.ComponentDisplayInfo;
 public class DefaultClarityView implements ClarityView, Serializable {
 
     private static final long serialVersionUID = -3125810981280395679L;
-    private ClassDiagram diagram;
+    private Diagram diagram;
 
     /**
      * @param colorScheme
@@ -32,13 +39,13 @@ public class DefaultClarityView implements ClarityView, Serializable {
      * @param desiredSize
      *            Desired size of the diagram.
      */
-    public DefaultClarityView(ClassDiagramColorScheme colorScheme,
+    public DefaultClarityView(DiagramColorScheme colorScheme,
             Map<String, BinaryClassRelationship> binaryRelationships, OOPSourceCodeModel model,
             Component diagramComponent, int desiredSize) throws Exception {
 
         List<String> components = new ArrayList<String>();
         components.add(diagramComponent.uniqueName());
-        PlantUMLClassDiagramDesciption plantUMLClassDescription = new DefaultPlantUMLDiagramDesciption(
+        PlantUMLDiagramDesciption plantUMLClassDescription = new PlantUMLClassDiagramDesciption(
                 new RelatedComponentsGroup(model.getComponents(), binaryRelationships, components).components(),
                 model.getComponents(), binaryRelationships);
         List<ComponentDisplayInfo> displayComponents = new ArrayList<ComponentDisplayInfo>();
@@ -55,22 +62,22 @@ public class DefaultClarityView implements ClarityView, Serializable {
                         cmp.componentType().getValue()));
             }
         }
-        this.diagram = new PlantUMLClassDiagram(plantUMLClassDescription, colorScheme, displayComponents, diagramComponent.name());
+        this.diagram = new PlantUMLDiagram(plantUMLClassDescription, colorScheme, displayComponents, diagramComponent.name());
     }
 
     public DefaultClarityView(Map<String, BinaryClassRelationship> binaryRelationships, OOPSourceCodeModel model,
             Component diagramComponent) throws Exception {
-        this(new ClarityDarkClassDiagramColorScheme(), binaryRelationships, model, diagramComponent);
+        this(new DarkDiagramColorScheme(), binaryRelationships, model, diagramComponent);
     }
 
-    public DefaultClarityView(ClassDiagramColorScheme colorScheme,
+    public DefaultClarityView(DiagramColorScheme colorScheme,
             Map<String, BinaryClassRelationship> binaryRelationships, OOPSourceCodeModel model,
             Component diagramComponent) throws Exception {
         this(colorScheme, binaryRelationships, model, diagramComponent, 4);
     }
 
     @Override
-    public ClassDiagram view() {
+    public Diagram view() {
         return this.diagram;
     }
 }

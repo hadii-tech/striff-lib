@@ -4,8 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.clarity.binary.diagram.ClassDiagram;
-import com.clarity.binary.diagram.DefaultClarityView;
+import com.clarity.binary.diagram.Diagram;
+import com.clarity.binary.diagram.view.DefaultClarityView;
 import com.clarity.binary.extractor.ClassRelationshipsExtractor;
 import com.clarity.binary.parse.ParsedProject;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
@@ -16,7 +16,7 @@ public class ClarityViewTest {
     public void ClarityViewDiagramClassLabelsAreGreenTest() throws Exception {
         OOPSourceCodeModel model = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
-        ClassDiagram view = new DefaultClarityView(
+        Diagram view = new DefaultClarityView(
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText().contains("<text class=\"interactiveComponent\" fill=\"#22df80\""));
@@ -26,7 +26,7 @@ public class ClarityViewTest {
     public void ClarityViewDiagramClassLabelsUseConsolasTest() throws Exception {
         OOPSourceCodeModel model = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
-        ClassDiagram view = new DefaultClarityView(
+        Diagram view = new DefaultClarityView(
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText()
@@ -37,7 +37,7 @@ public class ClarityViewTest {
     public void ClarityViewDiagramClassLabelsUse16FontSizeTest() throws Exception {
         OOPSourceCodeModel model = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
-        ClassDiagram view = new DefaultClarityView(
+        Diagram view = new DefaultClarityView(
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText().contains(
@@ -48,7 +48,7 @@ public class ClarityViewTest {
     public void ClarityViewDiagramUseGeometricPrecisionRendering() throws Exception {
         OOPSourceCodeModel model = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
-        ClassDiagram view = new DefaultClarityView(
+        Diagram view = new DefaultClarityView(
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText().contains("text-rendering=\"geometricPrecision\""));
@@ -59,7 +59,7 @@ public class ClarityViewTest {
     public void ClarityViewDiagramUseGrayArrows() throws Exception {
         OOPSourceCodeModel model = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
-        ClassDiagram view = new DefaultClarityView(
+        Diagram view = new DefaultClarityView(
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText().contains("style=\"stroke: #C5C8C6; stroke-width: 3.0;\""));
@@ -70,7 +70,7 @@ public class ClarityViewTest {
     public void ClarityViewDiagramContainsHTMLTagsStrippedTextElement() throws Exception {
         OOPSourceCodeModel model = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
-        ClassDiagram view = new DefaultClarityView(
+        Diagram view = new DefaultClarityView(
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.HtmlTagsStrippedText\""));
@@ -80,7 +80,7 @@ public class ClarityViewTest {
     public void ClarityViewDiagramContainsJavaDocSymbolStrippedTextElement() throws Exception {
         OOPSourceCodeModel model = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
-        ClassDiagram view = new DefaultClarityView(
+        Diagram view = new DefaultClarityView(
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.JavaDocSymbolStrippedText\""));
@@ -90,7 +90,7 @@ public class ClarityViewTest {
     public void ClarityViewDiagramContainsDefaultTextElement() throws Exception {
         OOPSourceCodeModel model = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
-        ClassDiagram view = new DefaultClarityView(
+        Diagram view = new DefaultClarityView(
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.DefaultText\""));
@@ -100,7 +100,7 @@ public class ClarityViewTest {
     public void ClarityViewDiagramContainsDefaultTextUserElement() throws Exception {
         OOPSourceCodeModel model = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
-        ClassDiagram view = new DefaultClarityView(
+        Diagram view = new DefaultClarityView(
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.DefaultTextUser\""));
@@ -110,7 +110,7 @@ public class ClarityViewTest {
     public void ClarityViewDiagramContainsTextElement() throws Exception {
         OOPSourceCodeModel model = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
-        ClassDiagram view = new DefaultClarityView(
+        Diagram view = new DefaultClarityView(
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.Text\""));
@@ -120,7 +120,7 @@ public class ClarityViewTest {
     public void keyClassIsInBlueColor() throws Exception {
     	OOPSourceCodeModel model = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
-        ClassDiagram view = new DefaultClarityView(
+        Diagram view = new DefaultClarityView(
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText().contains("fill=\"#59cde2\" font-family=\"Consolas\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.Text\""));

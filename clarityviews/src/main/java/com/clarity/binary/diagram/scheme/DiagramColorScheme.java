@@ -1,6 +1,6 @@
-package com.clarity.binary.diagram;
+package com.clarity.binary.diagram.scheme;
 
-public interface ClassDiagramColorScheme {
+public interface DiagramColorScheme {
 
     String defaultFontName();
 

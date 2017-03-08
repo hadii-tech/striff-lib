@@ -3,7 +3,7 @@ package com.clarity.binary.diagram;
 /**
  * A Class Diagram.
  */
-public interface ClassDiagram {
+public interface Diagram {
 
     /**
      * Returns a string representing the svg makeup of a class diagram.

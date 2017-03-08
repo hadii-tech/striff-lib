@@ -4,8 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.clarity.binary.diagram.ClassDiagram;
-import com.clarity.binary.diagram.StructureDiffClarityView;
+import com.clarity.binary.diagram.Diagram;
+import com.clarity.binary.diagram.view.StructureDiffView;
 import com.clarity.binary.parse.ParsedProject;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
 
@@ -17,7 +17,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains("<text class=\"interactiveComponent\" fill=\"#22df80\""));
     }
 
@@ -27,7 +27,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText()
                 .contains("<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas\""));
     }
@@ -38,7 +38,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas\" font-size=\"18\""));
     }
@@ -49,7 +49,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         System.out.println(view.svgText());
         assertTrue(view.svgText().contains("text-rendering=\"geometricPrecision\""));
     }
@@ -60,7 +60,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         System.out.println(view.svgText());
         assertTrue(view.svgText().contains("style=\"stroke: #C5C8C6; stroke-width: 3.0;\""));
     }
@@ -71,7 +71,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         System.out.println(view.svgText());
         assertTrue(view.svgText().contains("id=\"codebaseA.HtmlTagsStrippedText\""));
     }
@@ -82,7 +82,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         System.out.println(view.svgText());
         assertTrue(view.svgText().contains("id=\"codebaseA.JavaDocSymbolStrippedText\""));
     }
@@ -93,7 +93,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.DefaultText\""));
     }
 
@@ -103,7 +103,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.DefaultTextUser\""));
     }
 
@@ -113,7 +113,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.Text\""));
     }
 
@@ -123,7 +123,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.NewTextClass\""));
     }
 
@@ -135,7 +135,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#C5C8C6\" font-family=\"Consolas\" font-size=\"18\" id=\"codebaseA.HtmlTagsStrippedText\""));
     }
@@ -146,7 +146,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#C5C8C6\" font-family=\"Consolas\" font-size=\"18\" id=\"codebaseA.JavaDocSymbolStrippedText\""));
     }
@@ -157,7 +157,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText()
                 .contains("fill=\"#C5C8C6\" font-family=\"Consolas\" font-size=\"18\" id=\"codebaseA.DefaultText\""));
     }
@@ -168,7 +168,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#F97D7D\" font-family=\"Consolas\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.DefaultTextUser\""));
     }
@@ -179,7 +179,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#C5C8C6\" font-family=\"Consolas\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.Text\""));
     }
@@ -190,7 +190,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#22df80\" font-family=\"Consolas\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.NewTextClass\""));
     }
@@ -201,7 +201,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#22df80\" font-family=\"Consolas\" font-size=\"16\" id=\"codebaseA.HtmlTagsStrippedText.newMethod()\""));
     }
@@ -212,7 +212,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        ClassDiagram view = new StructureDiffClarityView(modelA, modelB, true).view();
+        Diagram view = new StructureDiffView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#F97D7D\" font-family=\"Consolas\" font-size=\"16\" id=\"codebaseA.JavaDocSymbolStrippedText.text\""));
     }

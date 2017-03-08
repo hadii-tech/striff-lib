@@ -1,4 +1,4 @@
-package com.clarity.binary.diagram;
+package com.clarity.binary.diagram.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,8 +8,15 @@ import java.util.Map;
 import java.util.Set;
 
 import com.clarity.binary.ComponentSet;
+import com.clarity.binary.diagram.Diagram;
+import com.clarity.binary.diagram.RelatedComponentsGroup;
 import com.clarity.binary.diagram.display.DiagramClassDisplayName;
 import com.clarity.binary.diagram.display.DiagramMethodDisplayName;
+import com.clarity.binary.diagram.plantuml.PlantUMLDiagram;
+import com.clarity.binary.diagram.plantuml.PlantUMLDiagramDesciption;
+import com.clarity.binary.diagram.plantuml.StructureDiffPlantUMLDiagramDesciption;
+import com.clarity.binary.diagram.scheme.DarkDiagramColorScheme;
+import com.clarity.binary.diagram.scheme.DiagramColorScheme;
 import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.binary.extractor.ClassRelationshipsExtractor;
 import com.clarity.sourcemodel.Component;
@@ -22,12 +29,12 @@ import net.sourceforge.plantuml.svg.SvgGraphics;
  * Generates a Clarity View demonstrating the differences between the two given
  * code bases.
  */
-public class StructureDiffClarityView implements ClarityView, Serializable {
+public class StructureDiffView implements ClarityView, Serializable {
 
     private static final long serialVersionUID = -3125810981280395679L;
-    private ClassDiagram diagram;
+    private Diagram diagram;
 
-    public StructureDiffClarityView(ClassDiagramColorScheme colorScheme, OOPSourceCodeModel olderModel,
+    public StructureDiffView(DiagramColorScheme colorScheme, OOPSourceCodeModel olderModel,
             OOPSourceCodeModel newerModel, boolean callback) throws Exception {
 
         Map<String, BinaryClassRelationship> oldBinaryRelationships = new ClassRelationshipsExtractor<Object>()
@@ -149,21 +156,21 @@ public class StructureDiffClarityView implements ClarityView, Serializable {
 
             }
         }
-        PlantUMLClassDiagramDesciption diffClarityView = new StructureDiffPlantUMLDiagramDesciption(diagramComponents,
+        PlantUMLDiagramDesciption diffClarityView = new StructureDiffPlantUMLDiagramDesciption(diagramComponents,
                 allRelationships, deletedRelationships, addedRelationships, deletedComponents, addedComponents,
                 mergedCodeBase.getComponents());
         SvgGraphics.componentCallBack = callback;
-        this.diagram = new PlantUMLClassDiagram(diffClarityView, colorScheme, displayComponents);
+        this.diagram = new PlantUMLDiagram(diffClarityView, colorScheme, displayComponents);
     }
 
-    public StructureDiffClarityView(OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel, boolean callback)
+    public StructureDiffView(OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel, boolean callback)
             throws Exception {
 
-        this(new ClarityDarkClassDiagramColorScheme(), olderModel, newerModel, callback);
+        this(new DarkDiagramColorScheme(), olderModel, newerModel, callback);
     }
 
     @Override
-    public ClassDiagram view() {
+    public Diagram view() {
         return this.diagram;
     }
 }
