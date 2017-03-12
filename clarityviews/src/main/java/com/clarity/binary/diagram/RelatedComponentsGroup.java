@@ -20,6 +20,8 @@ import net.sf.oval.constraint.Size;
  */
 public class RelatedComponentsGroup {
 
+    private static final int maxMatchesPerComponent = 3;
+
     @NotNull
     private Map<String, Component> allComponents;
 
@@ -71,7 +73,7 @@ public class RelatedComponentsGroup {
         this.allComponents = allComponents;
         this.allRelationships = allRelationships;
         this.mainComponents = mainComponents;
-        this.desiredResultSetSize = 6;
+        this.desiredResultSetSize = 5;
     }
 
     /**
@@ -125,7 +127,11 @@ public class RelatedComponentsGroup {
             // Filter stage 2: get all the components that are involved in a
             // extends/implements with the key component
             for (int j = 0; j < componentRelatedGroup.size(); j++) {
+                int matches = 0;
                 for (final Map.Entry<String, BinaryClassRelationship> entry : allRelationships.entrySet()) {
+                    if (matches >= maxMatchesPerComponent) {
+                        break;
+                    }
                     final BinaryClassRelationship bCR = entry.getValue();
                     if (bCR.getClassA().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
                             && (bCR.getaSideAssociation() == BinaryClassAssociation.GENERALISATION
@@ -134,6 +140,7 @@ public class RelatedComponentsGroup {
                                     || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassB())) {
                             componentRelatedGroup.add(bCR.getClassB());
+                            matches++;
                         }
                     }
                     if (bCR.getClassB().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
@@ -143,6 +150,7 @@ public class RelatedComponentsGroup {
                                     || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassA())) {
                             componentRelatedGroup.add(bCR.getClassA());
+                            matches++;
                         }
                     }
                 }
