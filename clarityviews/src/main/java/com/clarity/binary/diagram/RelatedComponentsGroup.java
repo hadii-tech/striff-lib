@@ -20,7 +20,7 @@ import net.sf.oval.constraint.Size;
  */
 public class RelatedComponentsGroup {
 
-    private static final int maxMatchesPerComponent = 3;
+    private static final int MAX_MATCHES_PER_COMPONENT = 3;
 
     @NotNull
     private Map<String, Component> allComponents;
@@ -103,7 +103,7 @@ public class RelatedComponentsGroup {
                     final BinaryClassRelationship bCR = entry.getValue();
                     if (bCR.getClassA().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
                             && (bCR.getaSideAssociation() == BinaryClassAssociation.COMPOSITION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.COMPOSITION)) {
+                            || bCR.getbSideAssociation() == BinaryClassAssociation.COMPOSITION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassB())) {
                             componentRelatedGroup.add(bCR.getClassB());
                             if (componentRelatedGroup.size() > desiredResultSetSize) {
@@ -113,7 +113,7 @@ public class RelatedComponentsGroup {
                     }
                     if (bCR.getClassB().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
                             && (bCR.getaSideAssociation() == BinaryClassAssociation.COMPOSITION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.COMPOSITION)) {
+                            || bCR.getbSideAssociation() == BinaryClassAssociation.COMPOSITION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassA())) {
                             componentRelatedGroup.add(bCR.getClassA());
                             if (componentRelatedGroup.size() > desiredResultSetSize) {
@@ -129,15 +129,15 @@ public class RelatedComponentsGroup {
             for (int j = 0; j < componentRelatedGroup.size(); j++) {
                 int matches = 0;
                 for (final Map.Entry<String, BinaryClassRelationship> entry : allRelationships.entrySet()) {
-                    if (matches >= maxMatchesPerComponent) {
+                    if (matches >= MAX_MATCHES_PER_COMPONENT) {
                         break;
                     }
                     final BinaryClassRelationship bCR = entry.getValue();
                     if (bCR.getClassA().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
                             && (bCR.getaSideAssociation() == BinaryClassAssociation.GENERALISATION
-                                    || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.GENERALISATION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION)) {
+                            || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION
+                            || bCR.getbSideAssociation() == BinaryClassAssociation.GENERALISATION
+                            || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassB())) {
                             componentRelatedGroup.add(bCR.getClassB());
                             matches++;
@@ -145,9 +145,9 @@ public class RelatedComponentsGroup {
                     }
                     if (bCR.getClassB().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
                             && (bCR.getbSideAssociation() == BinaryClassAssociation.GENERALISATION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION
-                                    || bCR.getaSideAssociation() == BinaryClassAssociation.GENERALISATION
-                                    || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION)) {
+                            || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION
+                            || bCR.getaSideAssociation() == BinaryClassAssociation.GENERALISATION
+                            || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassA())) {
                             componentRelatedGroup.add(bCR.getClassA());
                             matches++;
@@ -165,18 +165,18 @@ public class RelatedComponentsGroup {
                     final BinaryClassRelationship bCR = entry.getValue();
                     if (bCR.getClassA().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
                             && (bCR.getaSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.AGGREGATION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
-                                    || bCR.getaSideAssociation() == BinaryClassAssociation.AGGREGATION)) {
+                            || bCR.getbSideAssociation() == BinaryClassAssociation.AGGREGATION
+                            || bCR.getbSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
+                            || bCR.getaSideAssociation() == BinaryClassAssociation.AGGREGATION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassB())) {
                             componentRelatedGroup.add(bCR.getClassB());
                         }
                     }
                     if (bCR.getClassB().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
                             && (bCR.getaSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.AGGREGATION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
-                                    || bCR.getaSideAssociation() == BinaryClassAssociation.AGGREGATION)) {
+                            || bCR.getbSideAssociation() == BinaryClassAssociation.AGGREGATION
+                            || bCR.getbSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
+                            || bCR.getaSideAssociation() == BinaryClassAssociation.AGGREGATION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassA())) {
                             componentRelatedGroup.add(bCR.getClassA());
                         }
