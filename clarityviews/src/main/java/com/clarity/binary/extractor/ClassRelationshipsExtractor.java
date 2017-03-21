@@ -25,9 +25,6 @@ import com.clarity.sourcemodel.OOPSourceModelConstants.ComponentType;
 /**
  * Returns a list of binary class relationships from a given source code model.
  *
- * @author Muntazir Fadhel
- * @param <T>
- *
  */
 public class ClassRelationshipsExtractor<T> implements Serializable {
 
