@@ -6,6 +6,6 @@
 <dependency>
     <groupId>com.clarity</groupId>
     <artifactId>clarityviews</artifactId>
-    <version>1.1.18</version>
+    <version>1.1.2</version>
 </dependency>
 ```

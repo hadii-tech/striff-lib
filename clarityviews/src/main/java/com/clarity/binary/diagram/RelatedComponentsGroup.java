@@ -96,12 +96,58 @@ public class RelatedComponentsGroup {
             componentRelatedGroup.add(cmp);
 
             /**
-             * Filter stage 1: get all the components that are involved in a
-             * extends/implements with the key component. All super classes will
-             * be place at the beginning of the list and all implementing/sub
-             * classes will be placed at the end of the resulting list.
+             * Filter stage 1: form a super class hierarchy chain of the key
+             * component.
              */
-            for (int j = 0; j < componentRelatedGroup.size(); j++) {
+            final List<Component> tmpSuperComponentRelatedGroup = new ArrayList<Component>();
+            tmpSuperComponentRelatedGroup.add(cmp);
+
+            for (int j = 0; j < tmpSuperComponentRelatedGroup.size(); j++) {
+                int matches = 0;
+                for (final Map.Entry<String, BinaryClassRelationship> entry : allRelationships.entrySet()) {
+                    /**
+                     * for the component represented by position j, only collect
+                     * a maximum of MAX_MATCHES_PER_COMPONENT components related
+                     * to j (see below). This is because we want to keep diagram
+                     * sizes to minimum.
+                     */
+                    if (matches >= MAX_MATCHES_PER_COMPONENT) {
+                        break;
+                    }
+
+                    final BinaryClassRelationship bCR = entry.getValue();
+
+                    if (bCR.getClassA().uniqueName().equals(tmpSuperComponentRelatedGroup.get(j).uniqueName())
+                            && (bCR.getaSideAssociation() == BinaryClassAssociation.GENERALISATION
+                                    || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION)) {
+                        if (!tmpSuperComponentRelatedGroup.contains(bCR.getClassB())) {
+                            // super class, place at beginning of list.
+                            tmpSuperComponentRelatedGroup.add(bCR.getClassB());
+                            matches++;
+                        }
+                    }
+
+                    if (bCR.getClassB().uniqueName().equals(tmpSuperComponentRelatedGroup.get(j).uniqueName())
+                            && (bCR.getbSideAssociation() == BinaryClassAssociation.GENERALISATION
+                                    || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION)) {
+                        if (!tmpSuperComponentRelatedGroup.contains(bCR.getClassA())) {
+                            // super class, place at beginning of list.
+                            tmpSuperComponentRelatedGroup.add(bCR.getClassA());
+                            matches++;
+                        }
+                    }
+
+                }
+            }
+
+            /**
+             * Filter stage 2: form a sub class hierarchy chain of the key
+             * component.
+             */
+            final List<Component> tmpSubComponentRelatedGroup = new ArrayList<Component>();
+            tmpSubComponentRelatedGroup.add(cmp);
+
+            for (int j = 0; j < tmpSubComponentRelatedGroup.size(); j++) {
                 int matches = 0;
                 for (final Map.Entry<String, BinaryClassRelationship> entry : allRelationships.entrySet()) {
                     if (matches >= MAX_MATCHES_PER_COMPONENT) {
@@ -109,44 +155,21 @@ public class RelatedComponentsGroup {
                     }
 
                     final BinaryClassRelationship bCR = entry.getValue();
-                    if (bCR.getClassA().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
-                            && (bCR.getaSideAssociation() == BinaryClassAssociation.GENERALISATION
-                                    || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION)) {
-                        if (!componentRelatedGroup.contains(bCR.getClassB())) {
-                            // super class, place at beginning of list.
-                            componentRelatedGroup.add(0, bCR.getClassB());
-                            matches++;
-                        }
-                    }
 
-                    if (bCR.getClassA().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
+                    if (bCR.getClassA().uniqueName().equals(tmpSubComponentRelatedGroup.get(j).uniqueName())
                             && (bCR.getbSideAssociation() == BinaryClassAssociation.GENERALISATION
                                     || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION)) {
-                        if (!componentRelatedGroup.contains(bCR.getClassB())) {
-                            // implementing/sub class, place at beginning of
-                            // list.
-                            componentRelatedGroup.add(bCR.getClassB());
+                        if (!tmpSubComponentRelatedGroup.contains(bCR.getClassB())) {
+                            tmpSubComponentRelatedGroup.add(bCR.getClassB());
                             matches++;
                         }
                     }
 
-                    if (bCR.getClassB().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
-                            && (bCR.getbSideAssociation() == BinaryClassAssociation.GENERALISATION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION)) {
-                        if (!componentRelatedGroup.contains(bCR.getClassA())) {
-                            // super class, place at beginning of list.
-                            componentRelatedGroup.add(0, bCR.getClassA());
-                            matches++;
-                        }
-                    }
-
-                    if (bCR.getClassB().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
+                    if (bCR.getClassB().uniqueName().equals(tmpSubComponentRelatedGroup.get(j).uniqueName())
                             && (bCR.getaSideAssociation() == BinaryClassAssociation.GENERALISATION
                                     || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION)) {
-                        if (!componentRelatedGroup.contains(bCR.getClassA())) {
-                            // implementing/sub class, place at beginning of
-                            // list.
-                            componentRelatedGroup.add(bCR.getClassA());
+                        if (!tmpSubComponentRelatedGroup.contains(bCR.getClassA())) {
+                            tmpSubComponentRelatedGroup.add(bCR.getClassA());
                             matches++;
                         }
                     }
@@ -154,7 +177,17 @@ public class RelatedComponentsGroup {
             }
 
             /**
-             * Filter stage 2: Start with the beginning of the current result
+             * combine the super and sub component lists so that the super
+             * components are at the beginning and the sub components are at the
+             * end. Note the first component of the temporary lists are the main
+             * component.
+             */
+            componentRelatedGroup.addAll(0,
+                    tmpSuperComponentRelatedGroup.subList(1, tmpSuperComponentRelatedGroup.size()));
+            componentRelatedGroup.addAll(tmpSubComponentRelatedGroup.subList(1, tmpSubComponentRelatedGroup.size()));
+
+            /**
+             * Filter stage 3: Start with the beginning of the current result
              * list and look for composition/aggregation relationships.
              */
             int count = componentRelatedGroup.size();
@@ -185,48 +218,31 @@ public class RelatedComponentsGroup {
             }
 
             /**
-             * Filter stage 3: If there is space, Repeat filter stage 1 on the
-             * newly added components representing composition/aggregation
-             * relationships.
+             * Filter stage 4: get any remaining components that are involved in
+             * a extension/realization relationship with the list of components
+             * collected so far.
              */
-            for (int j = count; j < componentRelatedGroup.size()
-                    && componentRelatedGroup.size() <= desiredResultSetSize; j++) {
+            for (int j = 0; j < componentRelatedGroup.size(); j++) {
                 int matches = 0;
                 for (final Map.Entry<String, BinaryClassRelationship> entry : allRelationships.entrySet()) {
                     if (matches >= MAX_MATCHES_PER_COMPONENT) {
                         break;
                     }
-
                     final BinaryClassRelationship bCR = entry.getValue();
                     if (bCR.getClassA().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
                             && (bCR.getaSideAssociation() == BinaryClassAssociation.GENERALISATION
-                                    || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION)) {
-                        if (!componentRelatedGroup.contains(bCR.getClassB())) {
-                            componentRelatedGroup.add(count, bCR.getClassB());
-                            matches++;
-                        }
-                    }
-
-                    if (bCR.getClassA().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
-                            && (bCR.getbSideAssociation() == BinaryClassAssociation.GENERALISATION
+                                    || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION
+                                    || bCR.getbSideAssociation() == BinaryClassAssociation.GENERALISATION
                                     || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassB())) {
                             componentRelatedGroup.add(bCR.getClassB());
                             matches++;
                         }
                     }
-
                     if (bCR.getClassB().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
                             && (bCR.getbSideAssociation() == BinaryClassAssociation.GENERALISATION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION)) {
-                        if (!componentRelatedGroup.contains(bCR.getClassA())) {
-                            componentRelatedGroup.add(count, bCR.getClassA());
-                            matches++;
-                        }
-                    }
-
-                    if (bCR.getClassB().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
-                            && (bCR.getaSideAssociation() == BinaryClassAssociation.GENERALISATION
+                                    || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION
+                                    || bCR.getaSideAssociation() == BinaryClassAssociation.GENERALISATION
                                     || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassA())) {
                             componentRelatedGroup.add(bCR.getClassA());
