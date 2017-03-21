@@ -57,7 +57,7 @@ public class RelatedComponentGroupTest {
     /**
      * A sample code base of three components where there exists an inheritance
      * relationship and a composition relationship. As the desired Result Size
-     * is set to 2, we expect the component involved in the inheritance
+     * is set to 3, we expect the component involved in the inheritance
      * relationship to be present in the component grouping result making the
      * overall size 3 components.
      */
@@ -79,7 +79,7 @@ public class RelatedComponentGroupTest {
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedComponentsGroup(codeModel.getComponents(), binaryRelationships,
-                codeModel.getComponent("com.sample.ClassA"), 2).components();
+                codeModel.getComponent("com.sample.ClassA"), 3).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.size() == 3);
     }
@@ -87,7 +87,7 @@ public class RelatedComponentGroupTest {
     /**
      * A sample code base of three components where there exists an extensions
      * relationship and a composition relationship. As the desired Result Size
-     * is set to 2, we expect the component involved in the extension
+     * is set to 3, we expect the component involved in the extension
      * relationship to be present in the component grouping result making the
      * overall size 3 components.
      */
@@ -108,7 +108,7 @@ public class RelatedComponentGroupTest {
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedComponentsGroup(codeModel.getComponents(), binaryRelationships,
-                codeModel.getComponent("com.sample.ClassA"), 2).components();
+                codeModel.getComponent("com.sample.ClassA"), 3).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.size() == 3);
     }
