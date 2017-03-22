@@ -29,7 +29,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         Diagram view = new SDView(modelA, modelB, true).view();
         assertTrue(view.svgText()
-                .contains("<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas\""));
+                .contains("<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas,Arial\""));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         Diagram view = new SDView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
-                "<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas\" font-size=\"18\""));
+                "<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas,Arial\" font-size=\"18\""));
     }
 
     @Test
@@ -137,7 +137,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         Diagram view = new SDView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
-                "fill=\"#C5C8C6\" font-family=\"Consolas\" font-size=\"18\" id=\"codebaseA.HtmlTagsStrippedText\""));
+                "fill=\"#C5C8C6\" font-family=\"Consolas,Arial\" font-size=\"18\" id=\"codebaseA.HtmlTagsStrippedText\""));
     }
 
     @Test
@@ -148,7 +148,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         Diagram view = new SDView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
-                "fill=\"#C5C8C6\" font-family=\"Consolas\" font-size=\"18\" id=\"codebaseA.JavaDocSymbolStrippedText\""));
+                "fill=\"#C5C8C6\" font-family=\"Consolas,Arial\" font-size=\"18\" id=\"codebaseA.JavaDocSymbolStrippedText\""));
     }
 
     @Test
@@ -158,8 +158,8 @@ public class StructureDiffTest {
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         Diagram view = new SDView(modelA, modelB, true).view();
-        assertTrue(view.svgText()
-                .contains("fill=\"#C5C8C6\" font-family=\"Consolas\" font-size=\"18\" id=\"codebaseA.DefaultText\""));
+        assertTrue(view.svgText().contains(
+                "fill=\"#C5C8C6\" font-family=\"Consolas,Arial\" font-size=\"18\" id=\"codebaseA.DefaultText\""));
     }
 
     @Test
@@ -170,7 +170,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         Diagram view = new SDView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
-                "fill=\"#F97D7D\" font-family=\"Consolas\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.DefaultTextUser\""));
+                "fill=\"#F97D7D\" font-family=\"Consolas,Arial\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.DefaultTextUser\""));
     }
 
     @Test
@@ -181,7 +181,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         Diagram view = new SDView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
-                "fill=\"#C5C8C6\" font-family=\"Consolas\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.Text\""));
+                "fill=\"#C5C8C6\" font-family=\"Consolas,Arial\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.Text\""));
     }
 
     @Test
@@ -192,7 +192,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         Diagram view = new SDView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
-                "fill=\"#22df80\" font-family=\"Consolas\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.NewTextClass\""));
+                "fill=\"#22df80\" font-family=\"Consolas,Arial\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.NewTextClass\""));
     }
 
     @Test
@@ -203,7 +203,7 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         Diagram view = new SDView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
-                "fill=\"#22df80\" font-family=\"Consolas\" font-size=\"16\" id=\"codebaseA.HtmlTagsStrippedText.newMethod()\""));
+                "fill=\"#22df80\" font-family=\"Consolas,Arial\" font-size=\"16\" id=\"codebaseA.HtmlTagsStrippedText.newMethod()\""));
     }
 
     @Test
@@ -214,6 +214,6 @@ public class StructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
         Diagram view = new SDView(modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
-                "fill=\"#F97D7D\" font-family=\"Consolas\" font-size=\"16\" id=\"codebaseA.JavaDocSymbolStrippedText.text\""));
+                "fill=\"#F97D7D\" font-family=\"Consolas,Arial\" font-size=\"16\" id=\"codebaseA.JavaDocSymbolStrippedText.text\""));
     }
 }

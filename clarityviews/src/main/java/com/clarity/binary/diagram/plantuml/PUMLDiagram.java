@@ -22,16 +22,15 @@ public class PUMLDiagram implements Diagram {
     private List<ComponentDisplayInfo> displayComponents;
     private String keyClassName;
 
-    public PUMLDiagram(final PUMLDiagramDesciption plantUMLClassDescription,
-            DiagramColorScheme colorScheme, List<ComponentDisplayInfo> displayComponents) {
+    public PUMLDiagram(final PUMLDiagramDesciption plantUMLClassDescription, DiagramColorScheme colorScheme,
+            List<ComponentDisplayInfo> displayComponents) {
         this.plantUMLClassDiagramDescription = plantUMLClassDescription;
         this.colorScheme = colorScheme;
         this.displayComponents = displayComponents;
     }
 
-    public PUMLDiagram(final PUMLDiagramDesciption plantUMLClassDescription,
-            DiagramColorScheme colorScheme, List<ComponentDisplayInfo> displayComponents,
-            String keyClassName) {
+    public PUMLDiagram(final PUMLDiagramDesciption plantUMLClassDescription, DiagramColorScheme colorScheme,
+            List<ComponentDisplayInfo> displayComponents, String keyClassName) {
         this.plantUMLClassDiagramDescription = plantUMLClassDescription;
         this.colorScheme = colorScheme;
         this.displayComponents = displayComponents;
@@ -57,8 +56,8 @@ public class PUMLDiagram implements Diagram {
 
         final String diagramSkin = formPlantUMLSkinString(colorScheme);
 
-        final String source = PLANT_UML_BEGIN_STRING + diagramSkin
-                + plantUMLClassDiagramDescription.description() + PLANT_UML_END_STRING;
+        final String source = PLANT_UML_BEGIN_STRING + diagramSkin + plantUMLClassDiagramDescription.description()
+                + PLANT_UML_END_STRING;
         return source;
     }
 
@@ -89,7 +88,7 @@ public class PUMLDiagram implements Diagram {
      * Invokes PlantUML to draw the class diagram based on the source string
      * representing a PlantUML compliant class diagram description.
      */
-    public byte[] generateDiagram(String source) {
+    private byte[] generateDiagram(String source) {
         final SourceStringReader reader = new SourceStringReader(source);
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {

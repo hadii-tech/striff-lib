@@ -40,7 +40,9 @@ public class PUMLClassDiagramDesciption implements PUMLDiagramDesciption {
 
     @Override
     public String description() {
-        return classDesciptionString() + relationsDesciptionString();
+        String diagramDesc = classDesciptionString() + relationsDesciptionString();
+        System.out.println(diagramDesc);
+        return diagramDesc;
     }
 
     public String classDesciptionString() {
@@ -56,7 +58,7 @@ public class PUMLClassDiagramDesciption implements PUMLDiagramDesciption {
                 }
                 // add component type name (eg: class, interface, etc...)
                 tempStrBuilder
-                .append(OOPSourceModelConstants.getJavaComponentTypes().get(component.componentType()) + " ");
+                        .append(OOPSourceModelConstants.getJavaComponentTypes().get(component.componentType()) + " ");
                 // add the actual component short name
                 tempStrBuilder.append(component.uniqueName());
                 // add class generics if exist
@@ -73,7 +75,7 @@ public class PUMLClassDiagramDesciption implements PUMLDiagramDesciption {
                         if (component.comment().length() < 800) {
                             str = new LineBreakedText(new JavaDocSymbolStrippedText(
                                     new HtmlTagsStrippedText(new DefaultText(component.comment().trim() + "..."))))
-                                    .value()
+                                            .value()
                                     + "\n";
 
                         } else {
@@ -97,7 +99,7 @@ public class PUMLClassDiagramDesciption implements PUMLDiagramDesciption {
                     if ((component.componentType() == ComponentType.INTERFACE
                             || component.modifiers().contains("abstract"))
                             || (childCmp.componentType() == ComponentType.METHOD
-                            && new DiagramComponent(childCmp).diagramaticallyRelevantComponent())
+                                    && new DiagramComponent(childCmp).diagramaticallyRelevantComponent())
                             || childCmp.componentType().isVariableComponent()) {
                         // start entering the fields and methods...
                         if ((childCmp != null) && !childCmp.componentType().isBaseComponent()) {
@@ -149,7 +151,7 @@ public class PUMLClassDiagramDesciption implements PUMLDiagramDesciption {
                                 break;
                             } else if (childCmp.declarationTypeSnippet() == null
                                     && (childCmp.componentType() == ComponentType.METHOD
-                                    || childCmp.componentType() == ComponentType.CONSTRUCTOR)) {
+                                            || childCmp.componentType() == ComponentType.CONSTRUCTOR)) {
                                 // add the return/ field type
                                 tempStrBuilder.append(" : ");
                                 tempStrBuilder.append("void" + "\n");

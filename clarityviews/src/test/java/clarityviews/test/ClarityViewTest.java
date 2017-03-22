@@ -30,7 +30,7 @@ public class ClarityViewTest {
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText()
-                .contains("<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas\""));
+                .contains("<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas,Arial\""));
     }
 
     @Test
@@ -41,7 +41,7 @@ public class ClarityViewTest {
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText().contains(
-                "<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas\" font-size=\"18\""));
+                "<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas,Arial\" font-size=\"18\""));
     }
 
     @Test
@@ -115,15 +115,16 @@ public class ClarityViewTest {
                 model.getComponent("codebaseA.Text")).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.Text\""));
     }
-    
+
     @Test
     public void keyClassIsInBlueColor() throws Exception {
-    	OOPSourceCodeModel model = new ParsedProject(
+        OOPSourceCodeModel model = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         Diagram view = new DefaultClarityView(
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
-        assertTrue(view.svgText().contains("fill=\"#59cde2\" font-family=\"Consolas\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.Text\""));
-    	
+        assertTrue(view.svgText().contains(
+                "fill=\"#59cde2\" font-family=\"Consolas,Arial\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.Text\""));
+
     }
 }

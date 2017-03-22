@@ -4,7 +4,7 @@ public class DarkDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String defaultFontName() {
-        return "Consolas";
+        return "Consolas,Arial";
     }
 
     @Override
@@ -14,7 +14,7 @@ public class DarkDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classArrowFontName() {
-        return "Consolas";
+        return "Consolas,Arial";
     }
 
     @Override
@@ -49,7 +49,7 @@ public class DarkDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classFontName() {
-        return "Consolas";
+        return "Consolas,Arial";
     }
 
     @Override
@@ -69,7 +69,7 @@ public class DarkDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classAttributeFontName() {
-        return "Consolas";
+        return "Consolas,Arial";
     }
 
     @Override
@@ -99,7 +99,7 @@ public class DarkDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String packageFontName() {
-        return "Consolas";
+        return "Consolas,Arial";
     }
 
     @Override

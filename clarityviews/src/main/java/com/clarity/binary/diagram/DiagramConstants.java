@@ -1,17 +1,7 @@
 package com.clarity.binary.diagram;
 
-/**
- *
- * @author Muntazir Fadhel
- *
- */
 public final class DiagramConstants {
 
-    /**
-     *
-     * @author Muntazir Fadhel
-     *
-     */
     public enum BinaryClassAssociation {
         /**
          * Composition Association.
