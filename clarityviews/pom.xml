@@ -110,15 +110,12 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.6</version>
 				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>com.clarity.parser.ParseService</mainClass>
-						</manifest>
-					</archive>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
+					<appendAssemblyId>false</appendAssemblyId>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -154,7 +151,7 @@
 				<configuration>
 					<!-- Enables analysis which takes more memory but finds more bugs. If 
 						you run out of memory, changes the value of the effort element to 'Low'. -->
-					<effort>Low</effort>
+					<effort>Default</effort>
 					<!-- Reports all bugs (other values are medium and max) -->
 					<threshold>low</threshold>
 					<includeFilterFile>${project.basedir}/src/main/resources/findbugsexcludefilter.xml</includeFilterFile>
