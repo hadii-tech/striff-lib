@@ -3,4 +3,4 @@ jdk:
   - oraclejdk8
 script: 
          - cd clarityviews
-         - mvn clean package assembly:single deploy --settings settings.xml -Dmaven.test.skip=true
+         - mvn clean package assembly:single deploy --settings settings.xml -Dmaven.test.skip=true 
