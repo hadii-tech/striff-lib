@@ -154,7 +154,7 @@
 				<configuration>
 					<!-- Enables analysis which takes more memory but finds more bugs. If 
 						you run out of memory, changes the value of the effort element to 'Low'. -->
-					<effort>default</effort>
+					<effort>Low</effort>
 					<!-- Reports all bugs (other values are medium and max) -->
 					<threshold>low</threshold>
 					<includeFilterFile>${project.basedir}/src/main/resources/findbugsexcludefilter.xml</includeFilterFile>
