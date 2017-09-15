@@ -9,7 +9,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String backgroundColor() {
-        return "#1d1f21";
+        return "transparent";
     }
 
     @Override
@@ -19,17 +19,17 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classArrowColor() {
-        return "#c5c8c6";
+        return "#656565";
     }
 
     @Override
     public String classBackgroundColor() {
-        return "#1d1f21";
+        return "transparent";
     }
 
     @Override
     public String classArrowFontColor() {
-        return "#c5c8c6";
+        return "#000";
     }
 
     @Override
@@ -39,7 +39,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classFontColor() {
-        return "#22df80";
+        return "#000";
     }
 
     @Override
@@ -54,12 +54,12 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classStereoTypeAttributeFontSize() {
-        return "White";
+        return "Black";
     }
 
     @Override
     public String classAttributeFontColor() {
-        return "#c5c8c6";
+        return "#000";
     }
 
     @Override
@@ -74,12 +74,12 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String titleFontColor() {
-        return "White";
+        return "Black";
     }
 
     @Override
     public String packageBackgroundColor() {
-        return "#161719";
+        return "transparent";
     }
 
     @Override
@@ -89,12 +89,12 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String packageBorderColor() {
-        return "#7e7e7e";
+        return "#000";
     }
 
     @Override
     public String packageFontColor() {
-        return "#7e7e7e";
+        return "#000";
     }
 
     @Override
@@ -114,11 +114,26 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classBorderColor() {
-        return "#bbbbbb";
+        return "#212121";
     }
 
     @Override
     public String classStereotypeFontColor() {
-        return "white";
+        return "black";
+    }
+
+    @Override
+    public String addedComponentColor() {
+        return "#009700";
+    }
+
+    @Override
+    public String deletedComponentColor() {
+        return "#970000";
+    }
+
+    @Override
+    public String linesWidth() {
+        return "1.0";
     }
 }

@@ -62,7 +62,7 @@ public class ClarityViewTest {
         Diagram view = new DefaultClarityView(
                 new ClassRelationshipsExtractor<Object>().generateBinaryClassRelationships(model), model,
                 model.getComponent("codebaseA.Text")).view();
-        assertTrue(view.svgText().contains("style=\"stroke: #C5C8C6; stroke-width: 3.0;\""));
+        assertTrue(view.svgText().contains("style=\"stroke: #C5C8C6; stroke-width: 2.0;\""));
         System.out.println(view.svgText());
     }
 

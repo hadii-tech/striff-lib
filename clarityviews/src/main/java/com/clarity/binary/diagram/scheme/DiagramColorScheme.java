@@ -2,6 +2,8 @@ package com.clarity.binary.diagram.scheme;
 
 public interface DiagramColorScheme {
 
+    String linesWidth();
+
     String defaultFontName();
 
     String backgroundColor();
@@ -49,4 +51,8 @@ public interface DiagramColorScheme {
     String packageFontSize();
 
     String classBorderColor();
+
+    String addedComponentColor();
+
+    String deletedComponentColor();
 }

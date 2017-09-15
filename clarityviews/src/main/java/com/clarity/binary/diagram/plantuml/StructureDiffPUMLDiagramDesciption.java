@@ -10,6 +10,7 @@ import com.clarity.binary.JavaDocSymbolStrippedText;
 import com.clarity.binary.LineBreakedText;
 import com.clarity.binary.diagram.DiagramConstants.BinaryClassAssociation;
 import com.clarity.binary.diagram.DiagramConstants.DefaultClassMultiplicities;
+import com.clarity.binary.diagram.scheme.DiagramColorScheme;
 import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.binary.extractor.ColoredBinaryClassAssociation;
 import com.clarity.sourcemodel.Component;
@@ -26,11 +27,12 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
     private List<String> addedComponents;
     private List<BinaryClassRelationship> deletedRelationships;
     private List<BinaryClassRelationship> addedRelationships;
+    private DiagramColorScheme colorScheme;
 
     public StructureDiffPUMLDiagramDesciption(Set<Component> diagramComponents,
             Set<BinaryClassRelationship> allRelationships, List<BinaryClassRelationship> deletedRelationships,
             List<BinaryClassRelationship> addedRelationships, List<String> deletedComponents,
-            List<String> addedComponents, Map<String, Component> allComponents) {
+            List<String> addedComponents, Map<String, Component> allComponents, DiagramColorScheme colorScheme) {
         this.diagramComponents = diagramComponents;
         this.allComponents = allComponents;
         this.addedComponents = addedComponents;
@@ -38,6 +40,7 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
         this.binaryRelationships = allRelationships;
         this.addedRelationships = addedRelationships;
         this.deletedRelationships = deletedRelationships;
+        this.colorScheme = colorScheme;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
                 }
                 // add component type name (eg: class, interface, etc...)
                 tempStrBuilder
-                .append(OOPSourceModelConstants.getJavaComponentTypes().get(component.componentType()) + " ");
+                        .append(OOPSourceModelConstants.getJavaComponentTypes().get(component.componentType()) + " ");
                 // add the actual component short name
                 tempStrBuilder.append(component.uniqueName());
                 // add class generics if exist
@@ -75,7 +78,7 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
                         if (component.comment().length() < 800) {
                             str = new LineBreakedText(new JavaDocSymbolStrippedText(
                                     new HtmlTagsStrippedText(new DefaultText(component.comment().trim() + "..."))))
-                                    .value()
+                                            .value()
                                     + "\n";
 
                         } else {
@@ -85,8 +88,7 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
                         }
                         String[] lines = str.split("\n");
                         for (int i = 0; i < lines.length; i++) {
-                            lines[i] = diffComponentColor(component, addedComponents, deletedComponents)
-                                    + lines[i].trim();
+                            lines[i] = colorComment(component, addedComponents, deletedComponents) + lines[i].trim();
                         }
                         tempStrBuilder.append(org.apache.commons.lang.StringUtils.join(lines, "\n"));
                         tempStrBuilder.append("\n");
@@ -134,7 +136,7 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
                                 break;
                             } else if (childCmp.declarationTypeSnippet() == null
                                     && (childCmp.componentType() == ComponentType.METHOD
-                                    || childCmp.componentType() == ComponentType.CONSTRUCTOR)) {
+                                            || childCmp.componentType() == ComponentType.CONSTRUCTOR)) {
                                 // add the return/ field type
                                 tempStrBuilder.append(" : ");
                                 tempStrBuilder.append("void" + "\n");
@@ -186,11 +188,11 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
                 if (classAAssociation.getStrength() > classBAssociation.getStrength()) {
                     tempStrBuilder.append(new ColoredBinaryClassAssociation(classAAssociation,
                             diffRelationsColor(relationship, addedRelationships, deletedRelationships))
-                            .getyumlLinkType());
+                                    .getyumlLinkType());
                 } else {
                     tempStrBuilder.append(new ColoredBinaryClassAssociation(classBAssociation,
                             diffRelationsColor(relationship, addedRelationships, deletedRelationships))
-                            .getyumlLinkType());
+                                    .getyumlLinkType());
                 }
                 // insert class A association type
                 tempStrBuilder.append(classAAssociation.getForwardLinkEndingType());
@@ -208,7 +210,7 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
         return tempStrBuilder.toString();
     }
 
-    private String diffComponentColor(Component cmp, List<String> addedComponents2, List<String> deletedComponents2) {
+    private String colorComment(Component cmp, List<String> addedComponents2, List<String> deletedComponents2) {
         if (addedComponents2.contains(cmp.uniqueName())) {
             return "greenify";
         } else if (deletedComponents2.contains(cmp.uniqueName())) {
@@ -222,12 +224,12 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
             List<BinaryClassRelationship> addedRelationships, List<BinaryClassRelationship> deletedRelationships) {
         for (BinaryClassRelationship bCR : addedRelationships) {
             if (bCR.equals(relation)) {
-                return "22DF80";
+                return colorScheme.addedComponentColor();
             }
         }
         for (BinaryClassRelationship bCR : deletedRelationships) {
             if (bCR.equals(relation)) {
-                return "F97D7D";
+                return colorScheme.deletedComponentColor();
             }
         }
         return "";

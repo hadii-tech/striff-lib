@@ -113,52 +113,52 @@ public class SDView implements ClarityView, Serializable {
                 if (entry.getValue().componentType().isBaseComponent()) {
                     displayComponents.add(new ComponentDisplayInfo(
                             new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
-                            entry.getValue().uniqueName(), "#22df80", entry.getValue().componentType().getValue()));
+                            entry.getValue().uniqueName(), colorScheme.addedComponentColor(), entry.getValue().componentType().getValue()));
 
                 } else if (entry.getValue().componentType().isMethodComponent()) {
                     displayComponents.add(new ComponentDisplayInfo(
                             new DiagramMethodDisplayName(entry.getValue().uniqueName()).value(),
-                            entry.getValue().uniqueName(), "#22df80", entry.getValue().componentType().getValue()));
+                            entry.getValue().uniqueName(), colorScheme.addedComponentColor(), entry.getValue().componentType().getValue()));
                 } else {
                     displayComponents.add(new ComponentDisplayInfo(entry.getValue().name(),
-                            entry.getValue().uniqueName(), "#22df80", entry.getValue().componentType().getValue()));
+                            entry.getValue().uniqueName(), colorScheme.addedComponentColor(), entry.getValue().componentType().getValue()));
                 }
             } else if (deletedComponents.contains(entry.getValue().uniqueName())) {
                 // mark all the deleted components red
                 if (entry.getValue().componentType().isBaseComponent()) {
                     displayComponents.add(new ComponentDisplayInfo(
                             new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
-                            entry.getValue().uniqueName(), "#F97D7D", entry.getValue().componentType().getValue()));
+                            entry.getValue().uniqueName(), colorScheme.deletedComponentColor(), entry.getValue().componentType().getValue()));
 
                 } else if (entry.getValue().componentType().isMethodComponent()) {
                     displayComponents.add(new ComponentDisplayInfo(
                             new DiagramMethodDisplayName(entry.getValue().uniqueName()).value(),
-                            entry.getValue().uniqueName(), "#F97D7D", entry.getValue().componentType().getValue()));
+                            entry.getValue().uniqueName(), colorScheme.deletedComponentColor(), entry.getValue().componentType().getValue()));
                 } else {
                     displayComponents.add(new ComponentDisplayInfo(entry.getValue().name(),
-                            entry.getValue().uniqueName(), "#F97D7D", entry.getValue().componentType().getValue()));
+                            entry.getValue().uniqueName(), colorScheme.deletedComponentColor(), entry.getValue().componentType().getValue()));
                 }
             } else {
                 // mark all the unchanged components gray
                 if (entry.getValue().componentType().isBaseComponent()) {
                     displayComponents.add(new ComponentDisplayInfo(
                             new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
-                            entry.getValue().uniqueName(), "#C5C8C6", entry.getValue().componentType().getValue()));
+                            entry.getValue().uniqueName(), colorScheme.classArrowFontColor(), entry.getValue().componentType().getValue()));
 
                 } else if (entry.getValue().componentType().isMethodComponent()) {
                     displayComponents.add(new ComponentDisplayInfo(
                             new DiagramMethodDisplayName(entry.getValue().uniqueName()).value(),
-                            entry.getValue().uniqueName(), "#C5C8C6", entry.getValue().componentType().getValue()));
+                            entry.getValue().uniqueName(), colorScheme.classArrowFontColor(), entry.getValue().componentType().getValue()));
                 } else {
                     displayComponents.add(new ComponentDisplayInfo(entry.getValue().name(),
-                            entry.getValue().uniqueName(), "#C5C8C6", entry.getValue().componentType().getValue()));
+                            entry.getValue().uniqueName(), colorScheme.classArrowFontColor(), entry.getValue().componentType().getValue()));
                 }
 
             }
         }
         PUMLDiagramDesciption diffClarityView = new StructureDiffPUMLDiagramDesciption(diagramComponents,
                 allRelationships, deletedRelationships, addedRelationships, deletedComponents, addedComponents,
-                mergedCodeBase.getComponents());
+                mergedCodeBase.getComponents(), colorScheme);
         SvgGraphics.componentCallBack = callback;
         this.diagram = new PUMLDiagram(diffClarityView, colorScheme, displayComponents);
     }

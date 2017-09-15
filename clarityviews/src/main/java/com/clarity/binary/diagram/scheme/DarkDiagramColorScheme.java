@@ -19,7 +19,7 @@ public class DarkDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classArrowColor() {
-        return "#c5c8c6";
+        return "#C5C8C6";
     }
 
     @Override
@@ -29,7 +29,7 @@ public class DarkDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classArrowFontColor() {
-        return "#c5c8c6";
+        return "#C5C8C6";
     }
 
     @Override
@@ -59,7 +59,7 @@ public class DarkDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classAttributeFontColor() {
-        return "#c5c8c6";
+        return "#C5C8C6";
     }
 
     @Override
@@ -120,5 +120,20 @@ public class DarkDiagramColorScheme implements DiagramColorScheme {
     @Override
     public String classStereotypeFontColor() {
         return "white";
+    }
+
+    @Override
+    public String addedComponentColor() {
+        return "#22df80";
+    }
+
+    @Override
+    public String deletedComponentColor() {
+        return "#F97D7D";
+    }
+
+    @Override
+    public String linesWidth() {
+        return "2.0";
     }
 }

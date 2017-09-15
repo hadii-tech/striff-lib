@@ -5,7 +5,7 @@
 	<artifactId>clarityviews</artifactId>
 	<name>clarityviews</name>
 	<packaging>jar</packaging>
-	<version>1.3.3</version>
+	<version>1.4.0</version>
 	<properties>
 		<java-version>1.8</java-version>
 	</properties>
@@ -48,10 +48,11 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.10.2</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>net.sourceforge.plantuml</groupId>
 			<artifactId>plantuml</artifactId>
-			<version>8033</version>
+			<version>8035</version>
 		</dependency>
 		<dependency>
 			<groupId>com.clarityviews</groupId>

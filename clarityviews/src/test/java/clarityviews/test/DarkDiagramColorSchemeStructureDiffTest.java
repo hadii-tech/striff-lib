@@ -5,214 +5,215 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.clarity.binary.diagram.Diagram;
+import com.clarity.binary.diagram.scheme.DarkDiagramColorScheme;
 import com.clarity.binary.diagram.view.SDView;
 import com.clarity.binary.parse.ParsedProject;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
 
-public class StructureDiffTest {
+public class DarkDiagramColorSchemeStructureDiffTest {
 
     @Test
-    public void ClarityViewDiagramClassLabelsAreGreenTest() throws Exception {
+    public void DarkThemedSDClassLabelsAreGreenTest() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains("<text class=\"interactiveComponent\" fill=\"#22df80\""));
     }
 
     @Test
-    public void ClarityViewDiagramClassLabelsUseConsolasTest() throws Exception {
+    public void DarkThemedSDClassLabelsUseConsolasTest() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText()
                 .contains("<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas,Arial\""));
     }
 
     @Test
-    public void ClarityViewDiagramClassLabelsUse16FontSizeTest() throws Exception {
+    public void DarkThemedSDClassLabelsUse16FontSizeTest() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas,Arial\" font-size=\"18\""));
     }
 
     @Test
-    public void ClarityViewDiagramUseGeometricPrecisionRendering() throws Exception {
+    public void DarkThemedSDUseGeometricPrecisionRendering() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         System.out.println(view.svgText());
         assertTrue(view.svgText().contains("text-rendering=\"geometricPrecision\""));
     }
 
     @Test
-    public void ClarityViewDiagramUseGrayArrows() throws Exception {
+    public void DarkThemedSDUseGrayArrows() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         System.out.println(view.svgText());
-        assertTrue(view.svgText().contains("style=\"stroke: #C5C8C6; stroke-width: 3.0;\""));
+        assertTrue(view.svgText().contains("style=\"stroke: #C5C8C6; stroke-width: 2.0;\""));
     }
 
     @Test
-    public void ClarityViewDiagramContainsHTMLTagsStrippedTextElement() throws Exception {
+    public void DarkThemedSDContainsHTMLTagsStrippedTextElement() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         System.out.println(view.svgText());
         assertTrue(view.svgText().contains("id=\"codebaseA.HtmlTagsStrippedText\""));
     }
 
     @Test
-    public void ClarityViewDiagramContainsJavaDocSymbolStrippedTextElement() throws Exception {
+    public void DarkThemedSDContainsJavaDocSymbolStrippedTextElement() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         System.out.println(view.svgText());
         assertTrue(view.svgText().contains("id=\"codebaseA.JavaDocSymbolStrippedText\""));
     }
 
     @Test
-    public void ClarityViewDiagramContainsDefaultTextElement() throws Exception {
+    public void DarkThemedSDContainsDefaultTextElement() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.DefaultText\""));
     }
 
     @Test
-    public void ClarityViewDiagramContainsDefaultTextUserElement() throws Exception {
+    public void DarkThemedSDContainsDefaultTextUserElement() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.DefaultTextUser\""));
     }
 
     @Test
-    public void ClarityViewDiagramContainsTextElement() throws Exception {
+    public void DarkThemedSDContainsTextElement() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.Text\""));
     }
 
     @Test
-    public void ClarityViewDiagramContainsNewTextClassElement() throws Exception {
+    public void DarkThemedSDContainsNewTextClassElement() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.NewTextClass\""));
     }
 
     //
 
     @Test
-    public void ClarityViewDiagramHTMLTagsStrippedTextElementIsGray() throws Exception {
+    public void DarkThemedSDHTMLTagsStrippedTextElementIsGray() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#C5C8C6\" font-family=\"Consolas,Arial\" font-size=\"18\" id=\"codebaseA.HtmlTagsStrippedText\""));
     }
 
     @Test
-    public void ClarityViewDiagramJavaDocSymbolStrippedTextElementIsGray() throws Exception {
+    public void DarkThemedSDJavaDocSymbolStrippedTextElementIsGray() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#C5C8C6\" font-family=\"Consolas,Arial\" font-size=\"18\" id=\"codebaseA.JavaDocSymbolStrippedText\""));
     }
 
     @Test
-    public void ClarityViewDiagramDefaultTextElementIsGray() throws Exception {
+    public void DarkThemedSDDefaultTextElementIsGray() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#C5C8C6\" font-family=\"Consolas,Arial\" font-size=\"18\" id=\"codebaseA.DefaultText\""));
     }
 
     @Test
-    public void ClarityViewDiagramDefaultTextUserElementIsRed() throws Exception {
+    public void DarkThemedSDDefaultTextUserElementIsRed() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#F97D7D\" font-family=\"Consolas,Arial\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.DefaultTextUser\""));
     }
 
     @Test
-    public void ClarityViewDiagramTextElementIsGray() throws Exception {
+    public void DarkThemedSDTextElementIsGray() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#C5C8C6\" font-family=\"Consolas,Arial\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.Text\""));
     }
 
     @Test
-    public void ClarityViewDiagramNewTextClassElementIsGreen() throws Exception {
+    public void DarkThemedSDNewTextClassElementIsGreen() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#22df80\" font-family=\"Consolas,Arial\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.NewTextClass\""));
     }
 
     @Test
-    public void ClarityViewDiagramNewMethodElementIsGreen() throws Exception {
+    public void DarkThemedSDNewMethodElementIsGreen() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#22df80\" font-family=\"Consolas,Arial\" font-size=\"16\" id=\"codebaseA.HtmlTagsStrippedText.newMethod()\""));
     }
 
     @Test
-    public void ClarityViewDiagramTestFieldVarIsRed() throws Exception {
+    public void DarkThemedSDTestFieldVarIsRed() throws Exception {
         OOPSourceCodeModel modelA = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#F97D7D\" font-family=\"Consolas,Arial\" font-size=\"16\" id=\"codebaseA.JavaDocSymbolStrippedText.text\""));
     }

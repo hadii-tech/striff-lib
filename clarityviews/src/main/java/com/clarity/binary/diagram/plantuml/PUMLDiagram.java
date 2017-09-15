@@ -12,6 +12,7 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
 import net.sourceforge.plantuml.svg.ComponentDisplayInfo;
+import net.sourceforge.plantuml.svg.PUMLImageSettings;
 
 public class PUMLDiagram implements Diagram {
 
@@ -93,9 +94,9 @@ public class PUMLDiagram implements Diagram {
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             if (keyClassName != null) {
-                reader.generateImage(keyClassName, displayComponents, os, new FileFormatOption(FileFormat.SVG));
+                reader.generateImage(keyClassName, displayComponents, os, new FileFormatOption(FileFormat.SVG), new PUMLImageSettings(colorScheme.linesWidth(), colorScheme.deletedComponentColor(), colorScheme.addedComponentColor()));
             } else {
-                reader.generateImage(displayComponents, os, new FileFormatOption(FileFormat.SVG));
+                reader.generateImage(displayComponents, os, new FileFormatOption(FileFormat.SVG), new PUMLImageSettings(colorScheme.linesWidth(), colorScheme.deletedComponentColor(), colorScheme.addedComponentColor()));
             }
         } catch (final IOException e1) {
             // TODO Auto-generated catch block
