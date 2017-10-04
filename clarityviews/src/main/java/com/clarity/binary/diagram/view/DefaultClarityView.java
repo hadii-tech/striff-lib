@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.clarity.binary.diagram.Diagram;
-import com.clarity.binary.diagram.RelatedComponentsGroup;
+import com.clarity.binary.diagram.RelatedBaseComponentsGroup;
 import com.clarity.binary.diagram.display.DiagramClassDisplayName;
 import com.clarity.binary.diagram.display.DiagramMethodDisplayName;
 import com.clarity.binary.diagram.plantuml.PUMLClassDiagramDesciption;
@@ -46,7 +46,7 @@ public class DefaultClarityView implements ClarityView, Serializable {
         List<String> components = new ArrayList<String>();
         components.add(diagramComponent.uniqueName());
         PUMLDiagramDesciption plantUMLClassDescription = new PUMLClassDiagramDesciption(
-                new RelatedComponentsGroup(model.getComponents(), binaryRelationships, components).components(),
+                new RelatedBaseComponentsGroup(model.getComponents(), binaryRelationships, components).components(),
                 model.getComponents(), binaryRelationships);
         List<ComponentDisplayInfo> displayComponents = new ArrayList<ComponentDisplayInfo>();
         for (final Map.Entry<String, Component> entry : model.getComponents().entrySet()) {

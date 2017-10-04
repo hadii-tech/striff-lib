@@ -7,8 +7,6 @@ import com.clarity.parser.RawFile;
 
 /**
  * Represents a collection of source files.
- *
- * @author Muntazir Fadhel
  */
 public class CodeBase {
 

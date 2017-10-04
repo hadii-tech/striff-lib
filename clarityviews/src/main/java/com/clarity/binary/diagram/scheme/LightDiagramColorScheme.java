@@ -129,7 +129,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String deletedComponentColor() {
-        return "#970000";
+        return "#e40000";
     }
 
     @Override

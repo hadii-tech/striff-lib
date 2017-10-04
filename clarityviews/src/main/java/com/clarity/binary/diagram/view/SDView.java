@@ -9,14 +9,14 @@ import java.util.Set;
 
 import com.clarity.binary.ComponentSet;
 import com.clarity.binary.diagram.Diagram;
-import com.clarity.binary.diagram.RelatedComponentsGroup;
+import com.clarity.binary.diagram.RelatedBaseComponentsGroup;
 import com.clarity.binary.diagram.display.DiagramClassDisplayName;
 import com.clarity.binary.diagram.display.DiagramMethodDisplayName;
 import com.clarity.binary.diagram.plantuml.PUMLDiagram;
 import com.clarity.binary.diagram.plantuml.PUMLDiagramDesciption;
 import com.clarity.binary.diagram.plantuml.StructureDiffPUMLDiagramDesciption;
-import com.clarity.binary.diagram.scheme.DarkDiagramColorScheme;
 import com.clarity.binary.diagram.scheme.DiagramColorScheme;
+import com.clarity.binary.diagram.scheme.LightDiagramColorScheme;
 import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.binary.extractor.ClassRelationshipsExtractor;
 import com.clarity.sourcemodel.Component;
@@ -26,16 +26,16 @@ import net.sourceforge.plantuml.svg.ComponentDisplayInfo;
 import net.sourceforge.plantuml.svg.SvgGraphics;
 
 /**
- * Generates a Structure Diff demonstrating the differences between the two
- * given code bases.
+ * Represents a Structure-Diff demonstrating the structural differences between
+ * the two given code bases.
  */
 public class SDView implements ClarityView, Serializable {
 
     private static final long serialVersionUID = -3125810981280395679L;
     private Diagram diagram;
 
-    public SDView(DiagramColorScheme colorScheme, OOPSourceCodeModel olderModel,
-            OOPSourceCodeModel newerModel, boolean callback) throws Exception {
+    public SDView(DiagramColorScheme colorScheme, OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel,
+            boolean callback, int maxSDSize) throws Exception {
 
         Map<String, BinaryClassRelationship> oldBinaryRelationships = new ClassRelationshipsExtractor<Object>()
                 .generateBinaryClassRelationships(olderModel);
@@ -85,16 +85,20 @@ public class SDView implements ClarityView, Serializable {
 
         // generate a list of components that are needed to draw a class diagram
         // for the added components
-        Set<Component> keyAddedComponents = new RelatedComponentsGroup(newerModel.getComponents(),
+        Set<Component> keyAddedComponents = new RelatedBaseComponentsGroup(newerModel.getComponents(),
                 newBinaryRelationships, addedComponents).components();
 
         // generate list of components that are needed to draw a class diagram
         // for the deleted components
-        Set<Component> keyDeletedComponents = new RelatedComponentsGroup(olderModel.getComponents(),
+        Set<Component> keyDeletedComponents = new RelatedBaseComponentsGroup(olderModel.getComponents(),
                 oldBinaryRelationships, deletedComponents).components();
 
         // generate a list of components needed to draw the entire diff diagram
         Set<Component> diagramComponents = new ComponentSet(keyAddedComponents, keyDeletedComponents).set();
+
+        if (diagramComponents.size() > maxSDSize) {
+            throw new Exception("Clarity-bot could not draw this diagram because it is too large!");
+        }
 
         // generate a list of binary relationships needed to draw the entire
         // diff diagram
@@ -111,47 +115,56 @@ public class SDView implements ClarityView, Serializable {
             if (addedComponents.contains(entry.getValue().uniqueName())) {
                 // mark all the newly added components green
                 if (entry.getValue().componentType().isBaseComponent()) {
-                    displayComponents.add(new ComponentDisplayInfo(
-                            new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
-                            entry.getValue().uniqueName(), colorScheme.addedComponentColor(), entry.getValue().componentType().getValue()));
+                    displayComponents.add(
+                            new ComponentDisplayInfo(new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
+                                    entry.getValue().uniqueName(), colorScheme.addedComponentColor(),
+                                    entry.getValue().componentType().getValue()));
 
                 } else if (entry.getValue().componentType().isMethodComponent()) {
                     displayComponents.add(new ComponentDisplayInfo(
                             new DiagramMethodDisplayName(entry.getValue().uniqueName()).value(),
-                            entry.getValue().uniqueName(), colorScheme.addedComponentColor(), entry.getValue().componentType().getValue()));
+                            entry.getValue().uniqueName(), colorScheme.addedComponentColor(),
+                            entry.getValue().componentType().getValue()));
                 } else {
-                    displayComponents.add(new ComponentDisplayInfo(entry.getValue().name(),
-                            entry.getValue().uniqueName(), colorScheme.addedComponentColor(), entry.getValue().componentType().getValue()));
+                    displayComponents
+                            .add(new ComponentDisplayInfo(entry.getValue().name(), entry.getValue().uniqueName(),
+                                    colorScheme.addedComponentColor(), entry.getValue().componentType().getValue()));
                 }
             } else if (deletedComponents.contains(entry.getValue().uniqueName())) {
                 // mark all the deleted components red
                 if (entry.getValue().componentType().isBaseComponent()) {
-                    displayComponents.add(new ComponentDisplayInfo(
-                            new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
-                            entry.getValue().uniqueName(), colorScheme.deletedComponentColor(), entry.getValue().componentType().getValue()));
+                    displayComponents.add(
+                            new ComponentDisplayInfo(new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
+                                    entry.getValue().uniqueName(), colorScheme.deletedComponentColor(),
+                                    entry.getValue().componentType().getValue()));
 
                 } else if (entry.getValue().componentType().isMethodComponent()) {
                     displayComponents.add(new ComponentDisplayInfo(
                             new DiagramMethodDisplayName(entry.getValue().uniqueName()).value(),
-                            entry.getValue().uniqueName(), colorScheme.deletedComponentColor(), entry.getValue().componentType().getValue()));
+                            entry.getValue().uniqueName(), colorScheme.deletedComponentColor(),
+                            entry.getValue().componentType().getValue()));
                 } else {
-                    displayComponents.add(new ComponentDisplayInfo(entry.getValue().name(),
-                            entry.getValue().uniqueName(), colorScheme.deletedComponentColor(), entry.getValue().componentType().getValue()));
+                    displayComponents
+                            .add(new ComponentDisplayInfo(entry.getValue().name(), entry.getValue().uniqueName(),
+                                    colorScheme.deletedComponentColor(), entry.getValue().componentType().getValue()));
                 }
             } else {
                 // mark all the unchanged components gray
                 if (entry.getValue().componentType().isBaseComponent()) {
-                    displayComponents.add(new ComponentDisplayInfo(
-                            new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
-                            entry.getValue().uniqueName(), colorScheme.classArrowFontColor(), entry.getValue().componentType().getValue()));
+                    displayComponents.add(
+                            new ComponentDisplayInfo(new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
+                                    entry.getValue().uniqueName(), colorScheme.classArrowFontColor(),
+                                    entry.getValue().componentType().getValue()));
 
                 } else if (entry.getValue().componentType().isMethodComponent()) {
                     displayComponents.add(new ComponentDisplayInfo(
                             new DiagramMethodDisplayName(entry.getValue().uniqueName()).value(),
-                            entry.getValue().uniqueName(), colorScheme.classArrowFontColor(), entry.getValue().componentType().getValue()));
+                            entry.getValue().uniqueName(), colorScheme.classArrowFontColor(),
+                            entry.getValue().componentType().getValue()));
                 } else {
-                    displayComponents.add(new ComponentDisplayInfo(entry.getValue().name(),
-                            entry.getValue().uniqueName(), colorScheme.classArrowFontColor(), entry.getValue().componentType().getValue()));
+                    displayComponents
+                            .add(new ComponentDisplayInfo(entry.getValue().name(), entry.getValue().uniqueName(),
+                                    colorScheme.classArrowFontColor(), entry.getValue().componentType().getValue()));
                 }
 
             }
@@ -163,10 +176,13 @@ public class SDView implements ClarityView, Serializable {
         this.diagram = new PUMLDiagram(diffClarityView, colorScheme, displayComponents);
     }
 
-    public SDView(OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel, boolean callback)
-            throws Exception {
+    public SDView(OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel, boolean callback) throws Exception {
+        this(new LightDiagramColorScheme(), olderModel, newerModel, callback, 75);
+    }
 
-        this(new DarkDiagramColorScheme(), olderModel, newerModel, callback);
+    public SDView(OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel, boolean callback, int maxSDSize)
+            throws Exception {
+        this(new LightDiagramColorScheme(), olderModel, newerModel, callback, maxSDSize);
     }
 
     @Override

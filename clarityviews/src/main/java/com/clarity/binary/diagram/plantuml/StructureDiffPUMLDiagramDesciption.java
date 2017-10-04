@@ -141,13 +141,18 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
                                 tempStrBuilder.append(" : ");
                                 tempStrBuilder.append("void" + "\n");
                             } else {
-                                // add the return/ field type
-                                tempStrBuilder.append(" : ");
-                                if (!childCmp.value().contains(".")) {
-                                    tempStrBuilder.append(childCmp.value() + "\n");
+                                if (childCmp.componentType() == ComponentType.ENUM_CONSTANT) {
+                                    tempStrBuilder.append("\n");
                                 } else {
-                                    tempStrBuilder.append(
-                                            childCmp.value().substring(childCmp.value().lastIndexOf(".") + 1) + "\n");
+                                    // add the return/ field type
+                                    tempStrBuilder.append(" : ");
+                                    if (!childCmp.value().contains(".")) {
+                                        tempStrBuilder.append(childCmp.value() + "\n");
+                                    } else {
+                                        tempStrBuilder.append(
+                                                childCmp.value().substring(childCmp.value().lastIndexOf(".") + 1)
+                                                        + "\n");
+                                    }
                                 }
                             }
                         }

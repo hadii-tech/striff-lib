@@ -1,4 +1,4 @@
-package clarityviews.test;
+package claritybot.test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.clarity.binary.diagram.RelatedComponentsGroup;
+import com.clarity.binary.diagram.RelatedBaseComponentsGroup;
 import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.binary.extractor.ClassRelationshipsExtractor;
 import com.clarity.binary.parse.ParsedProject;
@@ -19,7 +19,7 @@ import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
 
 /**
- * The {@link RelatedComponentsGroup} class is used to determine what
+ * The {@link RelatedBaseComponentsGroup} class is used to determine what
  * {@link Component}s to be displayed on a diagram. These tests exist to
  * maintain the optimal {@link Component}s are being chosen based on the given
  * code base and desired result set size.
@@ -49,7 +49,7 @@ public class RelatedComponentGroupTest {
         final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
-        assertTrue(new RelatedComponentsGroup(codeModel.getComponents(), binaryRelationships,
+        assertTrue(new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
                 codeModel.getComponent("com.sample.ClassA"), 2).components()
                         .contains(codeModel.getComponent("com.sample.ClassB")));
     }
@@ -78,7 +78,7 @@ public class RelatedComponentGroupTest {
         final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
-        Set<Component> cmps = new RelatedComponentsGroup(codeModel.getComponents(), binaryRelationships,
+        Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
                 codeModel.getComponent("com.sample.ClassA"), 3).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.size() == 3);
@@ -107,7 +107,7 @@ public class RelatedComponentGroupTest {
         final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
-        Set<Component> cmps = new RelatedComponentsGroup(codeModel.getComponents(), binaryRelationships,
+        Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
                 codeModel.getComponent("com.sample.ClassA"), 3).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.size() == 3);
@@ -136,7 +136,7 @@ public class RelatedComponentGroupTest {
         final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
-        Set<Component> cmps = new RelatedComponentsGroup(codeModel.getComponents(), binaryRelationships,
+        Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
                 codeModel.getComponent("com.sample.ClassA"), 1).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.size() == 2);
@@ -166,7 +166,7 @@ public class RelatedComponentGroupTest {
         final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
-        Set<Component> cmps = new RelatedComponentsGroup(codeModel.getComponents(), binaryRelationships,
+        Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
                 codeModel.getComponent("com.sample.ClassA"), 3).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassB")));
@@ -196,7 +196,7 @@ public class RelatedComponentGroupTest {
         final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
-        Set<Component> cmps = new RelatedComponentsGroup(codeModel.getComponents(), binaryRelationships,
+        Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
                 codeModel.getComponent("com.sample.ClassA"), 3).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassB")));
@@ -225,7 +225,7 @@ public class RelatedComponentGroupTest {
         final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
-        Set<Component> cmps = new RelatedComponentsGroup(codeModel.getComponents(), binaryRelationships,
+        Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
                 codeModel.getComponent("com.sample.ClassA"), 3).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassB")));
@@ -251,7 +251,7 @@ public class RelatedComponentGroupTest {
         final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
-        Set<Component> cmps = new RelatedComponentsGroup(codeModel.getComponents(), binaryRelationships,
+        Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
                 codeModel.getComponent("com.sample.ClassA"), 3).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassA")));
         assertTrue(cmps.size() == 1);

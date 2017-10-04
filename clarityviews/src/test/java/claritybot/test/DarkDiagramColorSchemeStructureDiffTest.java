@@ -1,4 +1,4 @@
-package clarityviews.test;
+package claritybot.test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -18,7 +18,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains("<text class=\"interactiveComponent\" fill=\"#22df80\""));
     }
 
@@ -28,7 +28,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText()
                 .contains("<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas,Arial\""));
     }
@@ -39,7 +39,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains(
                 "<text class=\"interactiveComponent\" fill=\"#22df80\" font-family=\"Consolas,Arial\" font-size=\"18\""));
     }
@@ -50,7 +50,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         System.out.println(view.svgText());
         assertTrue(view.svgText().contains("text-rendering=\"geometricPrecision\""));
     }
@@ -61,7 +61,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         System.out.println(view.svgText());
         assertTrue(view.svgText().contains("style=\"stroke: #C5C8C6; stroke-width: 2.0;\""));
     }
@@ -72,7 +72,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         System.out.println(view.svgText());
         assertTrue(view.svgText().contains("id=\"codebaseA.HtmlTagsStrippedText\""));
     }
@@ -83,7 +83,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         System.out.println(view.svgText());
         assertTrue(view.svgText().contains("id=\"codebaseA.JavaDocSymbolStrippedText\""));
     }
@@ -94,7 +94,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.DefaultText\""));
     }
 
@@ -104,7 +104,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.DefaultTextUser\""));
     }
 
@@ -114,7 +114,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.Text\""));
     }
 
@@ -124,7 +124,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains("id=\"codebaseA.NewTextClass\""));
     }
 
@@ -136,7 +136,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#C5C8C6\" font-family=\"Consolas,Arial\" font-size=\"18\" id=\"codebaseA.HtmlTagsStrippedText\""));
     }
@@ -147,7 +147,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#C5C8C6\" font-family=\"Consolas,Arial\" font-size=\"18\" id=\"codebaseA.JavaDocSymbolStrippedText\""));
     }
@@ -158,7 +158,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#C5C8C6\" font-family=\"Consolas,Arial\" font-size=\"18\" id=\"codebaseA.DefaultText\""));
     }
@@ -169,7 +169,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#F97D7D\" font-family=\"Consolas,Arial\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.DefaultTextUser\""));
     }
@@ -180,7 +180,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#C5C8C6\" font-family=\"Consolas,Arial\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.Text\""));
     }
@@ -191,7 +191,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#22df80\" font-family=\"Consolas,Arial\" font-size=\"18\" font-style=\"italic\" id=\"codebaseA.NewTextClass\""));
     }
@@ -202,7 +202,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#22df80\" font-family=\"Consolas,Arial\" font-size=\"16\" id=\"codebaseA.HtmlTagsStrippedText.newMethod()\""));
     }
@@ -213,7 +213,7 @@ public class DarkDiagramColorSchemeStructureDiffTest {
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseA/")).model();
         OOPSourceCodeModel modelB = new ParsedProject(
                 ClarityTestUtil.parseRequestContentObjFromResourceDir("/codebaseB/")).model();
-        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true).view();
+        Diagram view = new SDView(new DarkDiagramColorScheme(), modelA, modelB, true, 75).view();
         assertTrue(view.svgText().contains(
                 "fill=\"#F97D7D\" font-family=\"Consolas,Arial\" font-size=\"16\" id=\"codebaseA.JavaDocSymbolStrippedText.text\""));
     }

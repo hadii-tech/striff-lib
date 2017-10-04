@@ -1,4 +1,4 @@
-package clarityviews.test;
+package claritybot.test;
 
 import static org.junit.Assert.assertTrue;
 

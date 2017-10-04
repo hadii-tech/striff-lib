@@ -15,10 +15,10 @@ import net.sf.oval.constraint.NotNull;
 import net.sf.oval.constraint.Size;
 
 /**
- * Represents a group of components that are related to each other.
+ * Represents a group of base components that are related to each other.
  *
  */
-public class RelatedComponentsGroup {
+public class RelatedBaseComponentsGroup {
 
     private static final int MAX_MATCHES_PER_COMPONENT = 3;
 
@@ -47,7 +47,7 @@ public class RelatedComponentsGroup {
      * @param desiredResultSetSize
      *            Desired result set size of the related component group.
      */
-    public RelatedComponentsGroup(final Map<String, Component> allComponents,
+    public RelatedBaseComponentsGroup(final Map<String, Component> allComponents,
             final Map<String, BinaryClassRelationship> allRelationships, final Component mainComponent,
             final int desiredResultSetSize) {
         this.allComponents = allComponents;
@@ -65,15 +65,32 @@ public class RelatedComponentsGroup {
      *            All the binary relationships between the components to be
      *            considered.
      * @param mainComponents
-     *            A list of components that must be are the basis of and must be
-     *            included in the result set.
+     *            A list of components that are basis of and must be included in
+     *            the result set.
      */
-    public RelatedComponentsGroup(final Map<String, Component> allComponents,
+    public RelatedBaseComponentsGroup(final Map<String, Component> allComponents,
             final Map<String, BinaryClassRelationship> allRelationships, final List<String> mainComponents) {
         this.allComponents = allComponents;
         this.allRelationships = allRelationships;
         this.mainComponents = mainComponents;
-        this.desiredResultSetSize = 5;
+        List<Component> newComponents = new ArrayList<Component>();
+        for (String s : mainComponents) {
+            newComponents.add(allComponents.get(s));
+        }
+        this.desiredResultSetSize = 2 * numBaseComponents(newComponents).size();
+    }
+
+    private Set<Component> numBaseComponents(List<Component> components) {
+        Set<Component> baseComponents = new HashSet<Component>();
+        for (Component cmp : components) {
+            while (cmp != null && !cmp.componentType().isBaseComponent()) {
+                cmp = allComponents.get(cmp.parentUniqueName());
+            }
+            if (cmp != null) {
+                baseComponents.add(cmp);
+            }
+        }
+        return baseComponents;
     }
 
     /**
@@ -88,7 +105,7 @@ public class RelatedComponentsGroup {
 
             // if one of the main components is not a base component (eg: a
             // method or variable), get its parent base component.
-            while (!cmp.componentType().isBaseComponent() && cmp != null) {
+            while (cmp != null && !cmp.componentType().isBaseComponent()) {
                 cmp = allComponents.get(cmp.parentUniqueName());
             }
 
