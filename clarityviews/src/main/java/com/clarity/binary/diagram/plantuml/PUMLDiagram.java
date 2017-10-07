@@ -11,8 +11,8 @@ import com.clarity.binary.diagram.scheme.DiagramColorScheme;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
-import net.sourceforge.plantuml.svg.ComponentDisplayInfo;
 import net.sourceforge.plantuml.svg.PUMLImageSettings;
+import net.sourceforge.plantuml.svg.SDComponentDisplayInfo;
 
 public class PUMLDiagram implements Diagram {
 
@@ -20,18 +20,18 @@ public class PUMLDiagram implements Diagram {
     private static final String PLANT_UML_END_STRING = "\n@enduml";
     private PUMLDiagramDesciption plantUMLClassDiagramDescription;
     private DiagramColorScheme colorScheme;
-    private List<ComponentDisplayInfo> displayComponents;
+    private List<SDComponentDisplayInfo> displayComponents;
     private String keyClassName;
 
     public PUMLDiagram(final PUMLDiagramDesciption plantUMLClassDescription, DiagramColorScheme colorScheme,
-            List<ComponentDisplayInfo> displayComponents) {
+            List<SDComponentDisplayInfo> displayComponents) {
         this.plantUMLClassDiagramDescription = plantUMLClassDescription;
         this.colorScheme = colorScheme;
         this.displayComponents = displayComponents;
     }
 
     public PUMLDiagram(final PUMLDiagramDesciption plantUMLClassDescription, DiagramColorScheme colorScheme,
-            List<ComponentDisplayInfo> displayComponents, String keyClassName) {
+            List<SDComponentDisplayInfo> displayComponents, String keyClassName) {
         this.plantUMLClassDiagramDescription = plantUMLClassDescription;
         this.colorScheme = colorScheme;
         this.displayComponents = displayComponents;
@@ -94,9 +94,13 @@ public class PUMLDiagram implements Diagram {
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             if (keyClassName != null) {
-                reader.generateImage(keyClassName, displayComponents, os, new FileFormatOption(FileFormat.SVG), new PUMLImageSettings(colorScheme.linesWidth(), colorScheme.deletedComponentColor(), colorScheme.addedComponentColor()));
+                reader.generateImage(keyClassName, displayComponents, os, new FileFormatOption(FileFormat.SVG),
+                        new PUMLImageSettings(colorScheme.linesWidth(), colorScheme.deletedComponentColor(),
+                                colorScheme.addedComponentColor()));
             } else {
-                reader.generateImage(displayComponents, os, new FileFormatOption(FileFormat.SVG), new PUMLImageSettings(colorScheme.linesWidth(), colorScheme.deletedComponentColor(), colorScheme.addedComponentColor()));
+                reader.generateImage(displayComponents, os, new FileFormatOption(FileFormat.SVG),
+                        new PUMLImageSettings(colorScheme.linesWidth(), colorScheme.deletedComponentColor(),
+                                colorScheme.addedComponentColor()));
             }
         } catch (final IOException e1) {
             // TODO Auto-generated catch block

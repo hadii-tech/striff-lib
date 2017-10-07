@@ -229,12 +229,12 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
             List<BinaryClassRelationship> addedRelationships, List<BinaryClassRelationship> deletedRelationships) {
         for (BinaryClassRelationship bCR : addedRelationships) {
             if (bCR.equals(relation)) {
-                return colorScheme.addedComponentColor();
+                return "#e07070";
             }
         }
         for (BinaryClassRelationship bCR : deletedRelationships) {
             if (bCR.equals(relation)) {
-                return colorScheme.deletedComponentColor();
+                return "#7ceb96";
             }
         }
         return "";
