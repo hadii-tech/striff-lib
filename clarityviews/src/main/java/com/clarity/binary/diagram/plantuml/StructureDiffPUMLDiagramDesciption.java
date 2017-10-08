@@ -10,7 +10,6 @@ import com.clarity.binary.JavaDocSymbolStrippedText;
 import com.clarity.binary.LineBreakedText;
 import com.clarity.binary.diagram.DiagramConstants.BinaryClassAssociation;
 import com.clarity.binary.diagram.DiagramConstants.DefaultClassMultiplicities;
-import com.clarity.binary.diagram.scheme.DiagramColorScheme;
 import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.binary.extractor.ColoredBinaryClassAssociation;
 import com.clarity.sourcemodel.Component;
@@ -27,12 +26,11 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
     private List<String> addedComponents;
     private List<BinaryClassRelationship> deletedRelationships;
     private List<BinaryClassRelationship> addedRelationships;
-    private DiagramColorScheme colorScheme;
 
     public StructureDiffPUMLDiagramDesciption(Set<Component> diagramComponents,
             Set<BinaryClassRelationship> allRelationships, List<BinaryClassRelationship> deletedRelationships,
             List<BinaryClassRelationship> addedRelationships, List<String> deletedComponents,
-            List<String> addedComponents, Map<String, Component> allComponents, DiagramColorScheme colorScheme) {
+            List<String> addedComponents, Map<String, Component> allComponents) {
         this.diagramComponents = diagramComponents;
         this.allComponents = allComponents;
         this.addedComponents = addedComponents;
@@ -40,7 +38,6 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
         this.binaryRelationships = allRelationships;
         this.addedRelationships = addedRelationships;
         this.deletedRelationships = deletedRelationships;
-        this.colorScheme = colorScheme;
     }
 
     @Override

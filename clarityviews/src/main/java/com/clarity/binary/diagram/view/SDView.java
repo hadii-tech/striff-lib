@@ -11,6 +11,7 @@ import com.clarity.binary.ComponentSet;
 import com.clarity.binary.diagram.Diagram;
 import com.clarity.binary.diagram.RelatedBaseComponentsGroup;
 import com.clarity.binary.diagram.display.DiagramClassDisplayName;
+import com.clarity.binary.diagram.display.DiagramMethodDisplayName;
 import com.clarity.binary.diagram.plantuml.PUMLDiagram;
 import com.clarity.binary.diagram.plantuml.PUMLDiagramDesciption;
 import com.clarity.binary.diagram.plantuml.StructureDiffPUMLDiagramDesciption;
@@ -113,9 +114,19 @@ public class SDView implements ClarityView, Serializable {
         for (final Map.Entry<String, Component> entry : mergedCodeBase.getComponents().entrySet()) {
             if (addedComponents.contains(entry.getValue().uniqueName())) {
                 // mark all the added components
-                displayComponents.add(new SDComponentDisplayInfo(
-                        new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
-                        entry.getValue().uniqueName(), entry.getValue().componentType().getValue(), true, false));
+                if (entry.getValue().componentType().isBaseComponent()) {
+                    displayComponents.add(new SDComponentDisplayInfo(
+                            new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
+                            entry.getValue().uniqueName(), entry.getValue().componentType().getValue(), true, false));
+                } else if (entry.getValue().componentType().isMethodComponent()) {
+                    displayComponents.add(new SDComponentDisplayInfo(
+                            new DiagramMethodDisplayName(entry.getValue().uniqueName()).value(),
+                            entry.getValue().uniqueName(), entry.getValue().componentType().getValue(), true, false));
+                } else {
+                    displayComponents.add(new SDComponentDisplayInfo(entry.getValue().name(),
+                            entry.getValue().uniqueName(), entry.getValue().componentType().getValue(), true, false));
+
+                }
             }
             if (deletedComponents.contains(entry.getValue().uniqueName())) {
                 // mark all the deleted components
@@ -124,15 +135,24 @@ public class SDView implements ClarityView, Serializable {
                         entry.getValue().uniqueName(), entry.getValue().componentType().getValue(), false, true));
             } else {
                 // mark all the unchanged components
-                displayComponents.add(new SDComponentDisplayInfo(
-                        new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
-                        entry.getValue().uniqueName(), entry.getValue().componentType().getValue(), false, false));
+                if (entry.getValue().componentType().isBaseComponent()) {
+                    displayComponents.add(new SDComponentDisplayInfo(
+                            new DiagramClassDisplayName(entry.getValue().uniqueName()).value(),
+                            entry.getValue().uniqueName(), entry.getValue().componentType().getValue(), false, false));
+                } else if (entry.getValue().componentType().isMethodComponent()) {
+                    displayComponents.add(new SDComponentDisplayInfo(
+                            new DiagramMethodDisplayName(entry.getValue().uniqueName()).value(),
+                            entry.getValue().uniqueName(), entry.getValue().componentType().getValue(), false, true));
+                } else {
+                    displayComponents.add(new SDComponentDisplayInfo(entry.getValue().name(),
+                            entry.getValue().uniqueName(), entry.getValue().componentType().getValue(), false, true));
+                }
             }
         }
 
         PUMLDiagramDesciption diffClarityView = new StructureDiffPUMLDiagramDesciption(diagramComponents,
                 allRelationships, deletedRelationships, addedRelationships, deletedComponents, addedComponents,
-                mergedCodeBase.getComponents(), colorScheme);
+                mergedCodeBase.getComponents());
         SvgGraphics.componentCallBack = callback;
         this.diagram = new PUMLDiagram(diffClarityView, colorScheme, displayComponents);
     }

@@ -114,7 +114,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classBorderColor() {
-        return "#212121";
+        return "#000";
     }
 
     @Override
