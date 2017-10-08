@@ -4,7 +4,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String defaultFontName() {
-        return "Consolas, Menlo, Ubuntu, Arial";
+        return "Consolas,Menlo,Ubuntu";
     }
 
     @Override
@@ -14,7 +14,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classArrowFontName() {
-        return "Consolas, Menlo, Ubuntu, Arial";
+        return "Consolas,Menlo,Ubuntu,Aria";
     }
 
     @Override
@@ -49,12 +49,12 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classFontName() {
-        return "Consolas, Menlo, Ubuntu, Arial";
+        return "Consolas,Menlo,Ubuntu";
     }
 
     @Override
     public String classStereoTypeAttributeFontSize() {
-        return "Black";
+        return "#000";
     }
 
     @Override
@@ -69,7 +69,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classAttributeFontName() {
-        return "Consolas, Menlo, Ubuntu, Arial";
+        return "Consolas,Menlo,Ubuntu";
     }
 
     @Override
@@ -99,7 +99,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String packageFontName() {
-        return "Consolas, Menlo, Ubuntu, Arial";
+        return "Consolas,Menlo,Ubuntu";
     }
 
     @Override
@@ -134,6 +134,6 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String linesWidth() {
-        return "1.0";
+        return "1";
     }
 }
