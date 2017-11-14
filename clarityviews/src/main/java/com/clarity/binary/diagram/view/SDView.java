@@ -22,6 +22,7 @@ import com.clarity.binary.extractor.ClassRelationshipsExtractor;
 import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
 
+import net.sourceforge.plantuml.Log;
 import net.sourceforge.plantuml.svg.SDComponentDisplayInfo;
 import net.sourceforge.plantuml.svg.SvgGraphics;
 
@@ -46,19 +47,47 @@ public class SDView implements ClarityView, Serializable {
         // not in the older code base.
         List<String> addedComponents = new ArrayList<String>();
         for (final Map.Entry<String, Component> entry : newerModel.getComponents().entrySet()) {
-            if (!olderModel.getComponents().containsKey(entry.getKey())) {
+            if (!olderModel.containsComponent(entry.getKey())) {
                 addedComponents.add(entry.getKey());
             }
         }
+
+        // form a list of all base components that exist in the newer code base
+        // but not in the older code base.
+        Set<String> addedBaseComponents = new HashSet<String>();
+        addedComponents.forEach(s -> {
+            Component cmp = newerModel.getComponent(s);
+            while (cmp != null && !cmp.componentType().isBaseComponent()) {
+                cmp = newerModel.getComponent(cmp.parentUniqueName());
+            }
+            if (cmp != null && cmp.componentType().isBaseComponent()) {
+                addedBaseComponents.add(cmp.uniqueName());
+            }
+        });
 
         // form a list of all components that do not exist in the newer code
         // base but do exist in the older code base.
         List<String> deletedComponents = new ArrayList<String>();
         for (final Map.Entry<String, Component> entry : olderModel.getComponents().entrySet()) {
-            if (!newerModel.getComponents().containsKey(entry.getKey())) {
+            if (!newerModel.containsComponent(entry.getKey())) {
                 deletedComponents.add(entry.getKey());
             }
         }
+
+        // form a list of all base components that do not exist in the newer
+        // code
+        // base but do exist in the older code base.
+        Set<String> deletedBaseComponents = new HashSet<String>();
+        deletedBaseComponents.forEach(s -> {
+            Component cmp = olderModel.getComponent(s);
+            while (cmp != null && !cmp.componentType().isBaseComponent()) {
+                cmp = olderModel.getComponent(cmp.parentUniqueName());
+            }
+            if (cmp != null && cmp.componentType().isBaseComponent()) {
+                deletedBaseComponents.add(cmp.uniqueName());
+
+            }
+        });
 
         // form a list of all binary relationships that exist in the newer code
         // base but not in the older code base.
@@ -80,18 +109,19 @@ public class SDView implements ClarityView, Serializable {
 
         if (addedComponents.isEmpty() && addedRelationships.isEmpty() && deletedComponents.isEmpty()
                 && deletedRelationships.isEmpty()) {
+            Log.info("Source models are equivalent, returning..");
             return;
         }
 
         // generate a list of components that are needed to draw a class diagram
         // for the added components
         Set<Component> keyAddedComponents = new RelatedBaseComponentsGroup(newerModel.getComponents(),
-                newBinaryRelationships, addedComponents).components();
+                newBinaryRelationships, addedBaseComponents).components();
 
         // generate list of components that are needed to draw a class diagram
         // for the deleted components
         Set<Component> keyDeletedComponents = new RelatedBaseComponentsGroup(olderModel.getComponents(),
-                oldBinaryRelationships, deletedComponents).components();
+                oldBinaryRelationships, deletedBaseComponents).components();
 
         // generate a list of components needed to draw the entire diff diagram
         Set<Component> diagramComponents = new ComponentSet(keyAddedComponents, keyDeletedComponents).set();

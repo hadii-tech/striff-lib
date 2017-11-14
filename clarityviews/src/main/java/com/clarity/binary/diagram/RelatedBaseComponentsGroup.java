@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.clarity.binary.diagram.DiagramConstants.BinaryClassAssociation;
 import com.clarity.binary.extractor.BinaryClassRelationship;
@@ -30,7 +31,7 @@ public class RelatedBaseComponentsGroup {
 
     @NotNull
     @NotEmpty
-    private List<String> mainComponents;
+    private Set<String> mainComponents;
 
     @Size(min = 1)
     private int desiredResultSetSize;
@@ -52,7 +53,7 @@ public class RelatedBaseComponentsGroup {
             final int desiredResultSetSize) {
         this.allComponents = allComponents;
         this.allRelationships = allRelationships;
-        this.mainComponents = new ArrayList<String>();
+        this.mainComponents = new HashSet<String>();
         this.mainComponents.add(mainComponent.uniqueName());
         this.desiredResultSetSize = desiredResultSetSize;
     }
@@ -64,17 +65,17 @@ public class RelatedBaseComponentsGroup {
      * @param allRelationships
      *            All the binary relationships between the components to be
      *            considered.
-     * @param mainComponents
+     * @param addedBaseComponents
      *            A list of components that are basis of and must be included in
      *            the result set.
      */
     public RelatedBaseComponentsGroup(final Map<String, Component> allComponents,
-            final Map<String, BinaryClassRelationship> allRelationships, final List<String> mainComponents) {
+            final Map<String, BinaryClassRelationship> allRelationships, final Set<String> addedBaseComponents) {
         this.allComponents = allComponents;
         this.allRelationships = allRelationships;
-        this.mainComponents = mainComponents;
+        this.mainComponents = addedBaseComponents;
         List<Component> newComponents = new ArrayList<Component>();
-        for (String s : mainComponents) {
+        for (String s : addedBaseComponents) {
             newComponents.add(allComponents.get(s));
         }
         this.desiredResultSetSize = 2 * numBaseComponents(newComponents).size();
@@ -86,7 +87,7 @@ public class RelatedBaseComponentsGroup {
             while (cmp != null && !cmp.componentType().isBaseComponent()) {
                 cmp = allComponents.get(cmp.parentUniqueName());
             }
-            if (cmp != null) {
+            if (cmp != null && cmp.componentType().isBaseComponent()) {
                 baseComponents.add(cmp);
             }
         }
@@ -103,11 +104,11 @@ public class RelatedBaseComponentsGroup {
         for (String cmpName : mainComponents) {
             Component cmp = allComponents.get(cmpName);
 
-            // if one of the main components is not a base component (eg: a
-            // method or variable), get its parent base component.
-            while (cmp != null && !cmp.componentType().isBaseComponent()) {
-                cmp = allComponents.get(cmp.parentUniqueName());
-            }
+            // create a filtered map for all relationships relevant to the
+            // current loop Component.
+            Map<String, BinaryClassRelationship> relevantBinaryRelationships = allRelationships.entrySet().stream()
+                    .filter(map -> map.getKey().contains(cmpName))
+                    .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
 
             final List<Component> componentRelatedGroup = new ArrayList<Component>();
             componentRelatedGroup.add(cmp);
@@ -121,7 +122,7 @@ public class RelatedBaseComponentsGroup {
 
             for (int j = 0; j < tmpSuperComponentRelatedGroup.size(); j++) {
                 int matches = 0;
-                for (final Map.Entry<String, BinaryClassRelationship> entry : allRelationships.entrySet()) {
+                for (final Map.Entry<String, BinaryClassRelationship> entry : relevantBinaryRelationships.entrySet()) {
                     /**
                      * for the component represented by position j, only collect
                      * a maximum of MAX_MATCHES_PER_COMPONENT components related
@@ -166,7 +167,7 @@ public class RelatedBaseComponentsGroup {
 
             for (int j = 0; j < tmpSubComponentRelatedGroup.size(); j++) {
                 int matches = 0;
-                for (final Map.Entry<String, BinaryClassRelationship> entry : allRelationships.entrySet()) {
+                for (final Map.Entry<String, BinaryClassRelationship> entry : relevantBinaryRelationships.entrySet()) {
                     if (matches >= MAX_MATCHES_PER_COMPONENT) {
                         break;
                     }
