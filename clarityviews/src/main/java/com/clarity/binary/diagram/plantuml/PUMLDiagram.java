@@ -3,7 +3,6 @@ package com.clarity.binary.diagram.plantuml;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
 import com.clarity.binary.diagram.Diagram;
 import com.clarity.binary.diagram.scheme.DiagramColorScheme;
@@ -11,31 +10,17 @@ import com.clarity.binary.diagram.scheme.DiagramColorScheme;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
-import net.sourceforge.plantuml.svg.PUMLImageSettings;
-import net.sourceforge.plantuml.svg.SDComponentDisplayInfo;
 
 public class PUMLDiagram implements Diagram {
 
-    private static final String PLANT_UML_BEGIN_STRING = "@startuml\nskinparam linetype ortho\n";
+    private static final String PLANT_UML_BEGIN_STRING = "@startuml\n";
     private static final String PLANT_UML_END_STRING = "\n@enduml";
     private PUMLDiagramDesciption plantUMLClassDiagramDescription;
     private DiagramColorScheme colorScheme;
-    private List<SDComponentDisplayInfo> displayComponents;
-    private String keyClassName;
 
-    public PUMLDiagram(final PUMLDiagramDesciption plantUMLClassDescription, DiagramColorScheme colorScheme,
-            List<SDComponentDisplayInfo> displayComponents) {
+    public PUMLDiagram(final PUMLDiagramDesciption plantUMLClassDescription, DiagramColorScheme colorScheme) {
         this.plantUMLClassDiagramDescription = plantUMLClassDescription;
         this.colorScheme = colorScheme;
-        this.displayComponents = displayComponents;
-    }
-
-    public PUMLDiagram(final PUMLDiagramDesciption plantUMLClassDescription, DiagramColorScheme colorScheme,
-            List<SDComponentDisplayInfo> displayComponents, String keyClassName) {
-        this.plantUMLClassDiagramDescription = plantUMLClassDescription;
-        this.colorScheme = colorScheme;
-        this.displayComponents = displayComponents;
-        this.keyClassName = keyClassName;
     }
 
     @Override
@@ -64,25 +49,24 @@ public class PUMLDiagram implements Diagram {
 
     private String formPlantUMLSkinString(DiagramColorScheme colorScheme) {
         return "skinparam defaultFontName " + colorScheme.defaultFontName() + "\n" + "skinparam backgroundColor  "
-                + colorScheme.backgroundColor() + "\n" + "skinparam classArrowFontName "
-                + colorScheme.classArrowFontName() + "\n" + "skinparam classArrowColor " + colorScheme.classArrowColor()
-                + "\n" + "skinparam classBackgroundColor " + colorScheme.classBackgroundColor() + "\n"
-                + "skinparam classArrowFontColor " + colorScheme.classArrowFontColor() + "\n"
-                + "skinparam classArrowFontSize " + colorScheme.classArrowFontSize() + "\n"
-                + "skinparam classFontColor " + colorScheme.classArrowFontColor() + "\n" + "skinparam classFontSize "
-                + colorScheme.classFontSize() + "\n" + "skinparam classStereotypeFontColor "
-                + colorScheme.classStereotypeFontColor() + "\n" + "skinparam classAttributeFontColor "
-                + colorScheme.classAttributeFontColor() + "\n" + "skinparam classAttributeFontSize "
-                + colorScheme.classAttributeFontSize() + "\n" + "skinparam classFontName " + colorScheme.classFontName()
-                + "\n" + "skinparam classAttributeFontName " + colorScheme.classAttributeFontName() + "\n"
-                + "skinparam titleFontColor " + colorScheme.titleFontColor() + "\n"
-                + "skinparam packageBackgroundColor " + colorScheme.packageBackgroundColor() + "\n"
-                + "skinparam titleFontName " + colorScheme.titleFontName() + "\n" + "skinparam packageBorderColor "
-                + colorScheme.packageBorderColor() + "\n" + "skinparam packageFontColor "
-                + colorScheme.packageFontColor() + "\n" + "skinparam packageFontName " + colorScheme.packageFontName()
-                + "\n" + "skinparam packageFontStyle " + colorScheme.packageFontStyle() + "\n"
-                + "skinparam packageFontSize " + colorScheme.packageFontSize() + "\n" + "skinparam classBorderColor "
-                + colorScheme.classBorderColor() + "\n";
+                + colorScheme.backgroundColor() + "\n" + "\n" + "skinparam classArrowColor "
+                + colorScheme.classArrowColor() + "\n" + "skinparam classBackgroundColor "
+                + colorScheme.classBackgroundColor() + "\n" + "skinparam classArrowFontColor "
+                + colorScheme.classArrowFontColor() + "\n" + "skinparam classArrowFontSize "
+                + colorScheme.classArrowFontSize() + "\n" + "skinparam classFontColor "
+                + colorScheme.classArrowFontColor() + "\n" + "skinparam classFontSize " + colorScheme.classFontSize()
+                + "\n" + "skinparam classStereotypeFontColor " + colorScheme.classStereotypeFontColor() + "\n"
+                + "skinparam classAttributeFontColor " + colorScheme.classAttributeFontColor() + "\n"
+                + "skinparam classAttributeFontSize " + colorScheme.classAttributeFontSize() + "\n"
+                + "skinparam classFontName " + colorScheme.classFontName() + "\n" + "skinparam classAttributeFontName "
+                + colorScheme.classAttributeFontName() + "\n" + "skinparam titleFontColor "
+                + colorScheme.titleFontColor() + "\n" + "skinparam packageBackgroundColor "
+                + colorScheme.packageBackgroundColor() + "\n" + "skinparam titleFontName " + colorScheme.titleFontName()
+                + "\n" + "skinparam packageBorderColor " + colorScheme.packageBorderColor() + "\n"
+                + "skinparam packageFontColor " + colorScheme.packageFontColor() + "\n" + "skinparam packageFontName "
+                + colorScheme.packageFontName() + "\n" + "skinparam packageFontStyle " + colorScheme.packageFontStyle()
+                + "\n" + "skinparam packageFontSize " + colorScheme.packageFontSize() + "\n"
+                + "skinparam classBorderColor " + colorScheme.classBorderColor() + "\n";
     }
 
     /**
@@ -93,16 +77,12 @@ public class PUMLDiagram implements Diagram {
         final SourceStringReader reader = new SourceStringReader(source);
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
-            if (keyClassName != null) {
-                reader.generateImage(keyClassName, displayComponents, os, new FileFormatOption(FileFormat.SVG),
-                        new PUMLImageSettings(colorScheme.linesWidth(), colorScheme.deletedComponentColor(),
-                                colorScheme.addedComponentColor()));
-            } else {
-                reader.generateImage(displayComponents, os, new FileFormatOption(FileFormat.SVG),
-                        new PUMLImageSettings(colorScheme.linesWidth(), colorScheme.deletedComponentColor(),
-                                colorScheme.addedComponentColor()));
-            }
-        } catch (final IOException e1) {
+
+            reader.generateImage(os, new FileFormatOption(FileFormat.SVG));
+
+        } catch (
+
+        final IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }

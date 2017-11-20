@@ -4,7 +4,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String defaultFontName() {
-        return "Consolas,Menlo,Ubuntu";
+        return "Consolas,Menlo,Liberation Mono";
     }
 
     @Override
@@ -14,12 +14,12 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classArrowFontName() {
-        return "Consolas,Menlo,Ubuntu,Aria";
+        return "Consolas,Menlo,Liberation Mono";
     }
 
     @Override
     public String classArrowColor() {
-        return "#656565";
+        return "#000";
     }
 
     @Override
@@ -49,7 +49,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classFontName() {
-        return "Consolas,Menlo,Ubuntu";
+        return "Consolas,Menlo,Liberation Mono";
     }
 
     @Override
@@ -69,7 +69,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classAttributeFontName() {
-        return "Consolas,Menlo,Ubuntu";
+        return "Consolas,Menlo,Liberation Mono";
     }
 
     @Override
@@ -99,7 +99,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String packageFontName() {
-        return "Consolas,Menlo,Ubuntu";
+        return "Consolas,Menlo,Liberation Mono";
     }
 
     @Override
@@ -133,7 +133,17 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
     }
 
     @Override
+    public String addedRelationColor() {
+        return "#5f7a65";
+    }
+
+    @Override
+    public String deletedRelationColor() {
+        return "#fdaeb7";
+    }
+
+    @Override
     public String linesWidth() {
-        return "1";
+        return "0.5";
     }
 }

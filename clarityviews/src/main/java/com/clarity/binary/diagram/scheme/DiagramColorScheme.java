@@ -54,5 +54,9 @@ public interface DiagramColorScheme {
 
     String addedComponentColor();
 
+    String addedRelationColor();
+
+    String deletedRelationColor();
+
     String deletedComponentColor();
 }
