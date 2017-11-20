@@ -15,6 +15,7 @@ public class SimplifiedJavaDocText implements Text {
     @Override
     public String value() {
         String textValue = this.text.value();
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         List<String> docLines = new ArrayList(Arrays.asList(textValue.split("\\r?\\n")));
         for (int i = 0; i < docLines.size(); i++) {
             if (docLines.get(i).contains("@author")) {

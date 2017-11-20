@@ -137,7 +137,7 @@ public class RelatedComponentGroupTest {
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
-                codeModel.getComponent("com.sample.ClassA"), 1).components();
+                codeModel.getComponent("com.sample.ClassA"), 2).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.size() == 2);
     }
