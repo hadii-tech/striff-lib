@@ -104,10 +104,15 @@ public class RelatedBaseComponentsGroup {
         for (String cmpName : mainComponents) {
             Component cmp = allComponents.get(cmpName);
 
+            String potentialShortenedCmpName = cmpName;
+            if (cmpName.contains(".")) {
+                potentialShortenedCmpName = cmpName.substring(cmpName.lastIndexOf(".") + 1);
+            }
+            final String shortName = potentialShortenedCmpName;
             // create a filtered map for all relationships relevant to the
             // current loop Component.
             Map<String, BinaryClassRelationship> relevantBinaryRelationships = allRelationships.entrySet().stream()
-                    .filter(map -> map.getKey().contains(cmpName))
+                    .filter(map -> map.getKey().contains(shortName))
                     .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
 
             final List<Component> componentRelatedGroup = new ArrayList<Component>();
