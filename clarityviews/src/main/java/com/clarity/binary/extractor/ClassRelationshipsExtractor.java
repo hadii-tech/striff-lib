@@ -28,7 +28,7 @@ import com.clarity.sourcemodel.OOPSourceModelConstants.ComponentType;
  */
 public class ClassRelationshipsExtractor<T> implements Serializable {
 
-    public static enum InvocationSiteProperty {
+    public enum InvocationSiteProperty {
 
         FIELD, LOCAL, NONE, METHOD_PARAMETER, CONSTRUCTOR_PARAMETER;
     }
