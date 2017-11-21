@@ -2,8 +2,6 @@ package com.clarity.binary.diagram.scheme;
 
 public interface DiagramColorScheme {
 
-    String linesWidth();
-
     String defaultFontName();
 
     String backgroundColor();

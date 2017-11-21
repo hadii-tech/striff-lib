@@ -28,13 +28,13 @@ public class ColoredBinaryClassAssociation {
             case COMPOSITION:
                 return "--[" + hexColor + "]--";
             case GENERALISATION:
-                return "--[" + hexColor + "]--";
+                return "--[" + hexColor + ",bold]--";
             case DEPENDANCY:
                 return "--.[" + hexColor + "]--";
             case NONE:
                 return "--[" + hexColor + "]--";
             case REALIZATION:
-                return "--.[" + hexColor + "]--";
+                return "--.[" + hexColor + ",bold]--";
             case WEAK_ASSOCIATION:
                 return "--[" + hexColor + "]";
             case ASSOCIATION:

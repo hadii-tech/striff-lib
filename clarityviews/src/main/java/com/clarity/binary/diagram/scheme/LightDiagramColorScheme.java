@@ -34,7 +34,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classArrowFontSize() {
-        return "18";
+        return "12";
     }
 
     @Override
@@ -134,16 +134,11 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String addedRelationColor() {
-        return "#5f7a65";
+        return "#00cc00";
     }
 
     @Override
     public String deletedRelationColor() {
-        return "#fdaeb7";
-    }
-
-    @Override
-    public String linesWidth() {
-        return "0.5";
+        return "#cc0000";
     }
 }

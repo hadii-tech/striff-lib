@@ -6,19 +6,19 @@ public final class DiagramConstants {
         /**
          * Composition Association.
          */
-        AGGREGATION(5, "Aggregates", "--", "o", "o"),
+        AGGREGATION(5, "Aggregates", "-", "o", "o"),
         /**
          * Weak Binary Association.
          */
-        COMPOSITION(3, "Contains", "--", "*", "*"), DEPENDANCY(1, "Depends On", "-.-", "", ""),
+        COMPOSITION(3, "Contains", "-", "*", "*"), DEPENDANCY(1, "Depends On", "-.-", "", ""),
         /**
          * Generalization Association.
          */
-        GENERALISATION(7, "Extends", "--", "|>", "<|"),
+        GENERALISATION(7, "Extends", "-", "|>", "<|"),
         /**
          * Dependency association.
          */
-        NONE(0, "", "-", "", ""), REALIZATION(6, "Implements", "--.--", "|>", "<|"),
+        NONE(0, "", "-", "", ""), REALIZATION(6, "Implements", "-.-", "|>", "<|"),
         /**
         *
         */

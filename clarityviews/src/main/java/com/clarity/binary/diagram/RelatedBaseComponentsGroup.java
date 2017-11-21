@@ -13,15 +13,12 @@ import com.clarity.sourcemodel.Component;
 
 import net.sf.oval.constraint.NotEmpty;
 import net.sf.oval.constraint.NotNull;
-import net.sf.oval.constraint.Size;
 
 /**
  * Represents a group of base components that are related to each other.
  *
  */
 public class RelatedBaseComponentsGroup {
-
-    private static final int MAX_MATCHES_PER_COMPONENT = 3;
 
     @NotNull
     private Map<String, Component> allComponents;
@@ -32,9 +29,6 @@ public class RelatedBaseComponentsGroup {
     @NotNull
     @NotEmpty
     private Set<String> mainComponents;
-
-    @Size(min = 1)
-    private int desiredResultSetSize;
 
     /**
      *
@@ -55,7 +49,7 @@ public class RelatedBaseComponentsGroup {
         this.allRelationships = allRelationships;
         this.mainComponents = new HashSet<String>();
         this.mainComponents.add(mainComponent.uniqueName());
-        this.desiredResultSetSize = desiredResultSetSize;
+
     }
 
     /**
@@ -78,20 +72,6 @@ public class RelatedBaseComponentsGroup {
         for (String s : addedBaseComponents) {
             newComponents.add(allComponents.get(s));
         }
-        this.desiredResultSetSize = 2 * numBaseComponents(newComponents).size();
-    }
-
-    private Set<Component> numBaseComponents(List<Component> components) {
-        Set<Component> baseComponents = new HashSet<Component>();
-        for (Component cmp : components) {
-            while (cmp != null && !cmp.componentType().isBaseComponent()) {
-                cmp = allComponents.get(cmp.parentUniqueName());
-            }
-            if (cmp != null && cmp.componentType().isBaseComponent()) {
-                baseComponents.add(cmp);
-            }
-        }
-        return baseComponents;
     }
 
     /**
@@ -124,9 +104,8 @@ public class RelatedBaseComponentsGroup {
              */
             final List<Component> tmpSuperComponentRelatedGroup = new ArrayList<Component>();
             tmpSuperComponentRelatedGroup.add(cmp);
-
+            int superClassMatches = 0;
             for (int j = 0; j < tmpSuperComponentRelatedGroup.size(); j++) {
-                int matches = 0;
                 for (final Map.Entry<String, BinaryClassRelationship> entry : relevantBinaryRelationships.entrySet()) {
                     /**
                      * for the component represented by position j, only collect
@@ -134,7 +113,7 @@ public class RelatedBaseComponentsGroup {
                      * to j (see below). This is because we want to keep diagram
                      * sizes to minimum.
                      */
-                    if (matches >= MAX_MATCHES_PER_COMPONENT) {
+                    if (superClassMatches >= 2) {
                         break;
                     }
 
@@ -146,7 +125,7 @@ public class RelatedBaseComponentsGroup {
                         if (!tmpSuperComponentRelatedGroup.contains(bCR.getClassB())) {
                             // super class, place at beginning of list.
                             tmpSuperComponentRelatedGroup.add(bCR.getClassB());
-                            matches++;
+                            superClassMatches++;
                         }
                     }
 
@@ -156,7 +135,7 @@ public class RelatedBaseComponentsGroup {
                         if (!tmpSuperComponentRelatedGroup.contains(bCR.getClassA())) {
                             // super class, place at beginning of list.
                             tmpSuperComponentRelatedGroup.add(bCR.getClassA());
-                            matches++;
+                            superClassMatches++;
                         }
                     }
 
@@ -169,11 +148,10 @@ public class RelatedBaseComponentsGroup {
              */
             final List<Component> tmpSubComponentRelatedGroup = new ArrayList<Component>();
             tmpSubComponentRelatedGroup.add(cmp);
-
+            int subClassMatches = 0;
             for (int j = 0; j < tmpSubComponentRelatedGroup.size(); j++) {
-                int matches = 0;
                 for (final Map.Entry<String, BinaryClassRelationship> entry : relevantBinaryRelationships.entrySet()) {
-                    if (matches >= MAX_MATCHES_PER_COMPONENT) {
+                    if (subClassMatches >= 2) {
                         break;
                     }
 
@@ -184,7 +162,7 @@ public class RelatedBaseComponentsGroup {
                                     || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION)) {
                         if (!tmpSubComponentRelatedGroup.contains(bCR.getClassB())) {
                             tmpSubComponentRelatedGroup.add(bCR.getClassB());
-                            matches++;
+                            subClassMatches++;
                         }
                     }
 
@@ -193,7 +171,7 @@ public class RelatedBaseComponentsGroup {
                                     || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION)) {
                         if (!tmpSubComponentRelatedGroup.contains(bCR.getClassA())) {
                             tmpSubComponentRelatedGroup.add(bCR.getClassA());
-                            matches++;
+                            subClassMatches++;
                         }
                     }
                 }
@@ -213,11 +191,10 @@ public class RelatedBaseComponentsGroup {
              * Filter stage 3: Start with the beginning of the current result
              * list and look for composition/aggregation relationships.
              */
-            for (int j = 0; j < componentRelatedGroup.size()
-                    && componentRelatedGroup.size() < desiredResultSetSize; j++) {
-                int matches = 0;
+            int compositionMatches = 0;
+            for (int j = 0; j < componentRelatedGroup.size(); j++) {
                 for (final Map.Entry<String, BinaryClassRelationship> entry : allRelationships.entrySet()) {
-                    if (matches >= MAX_MATCHES_PER_COMPONENT) {
+                    if (compositionMatches >= 2) {
                         break;
                     }
                     final BinaryClassRelationship bCR = entry.getValue();
@@ -226,7 +203,7 @@ public class RelatedBaseComponentsGroup {
                                     || bCR.getbSideAssociation() == BinaryClassAssociation.COMPOSITION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassB())) {
                             componentRelatedGroup.add(bCR.getClassB());
-                            matches++;
+                            compositionMatches++;
                         }
                     }
                     if (bCR.getClassB().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
@@ -234,22 +211,20 @@ public class RelatedBaseComponentsGroup {
                                     || bCR.getbSideAssociation() == BinaryClassAssociation.COMPOSITION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassA())) {
                             componentRelatedGroup.add(bCR.getClassA());
-                            matches++;
+                            compositionMatches++;
                         }
                     }
                 }
             }
-
             /**
              * Filter stage 4: get any remaining components that are involved in
              * a extension/realization relationship with the list of components
              * collected so far.
              */
-            for (int j = 0; j < componentRelatedGroup.size()
-                    && componentRelatedGroup.size() < desiredResultSetSize; j++) {
-                int matches = 0;
+            int remainingAbstractMatches = 0;
+            for (int j = 0; j < componentRelatedGroup.size(); j++) {
                 for (final Map.Entry<String, BinaryClassRelationship> entry : allRelationships.entrySet()) {
-                    if (matches >= MAX_MATCHES_PER_COMPONENT) {
+                    if (remainingAbstractMatches >= 2) {
                         break;
                     }
                     final BinaryClassRelationship bCR = entry.getValue();
@@ -260,7 +235,7 @@ public class RelatedBaseComponentsGroup {
                                     || bCR.getbSideAssociation() == BinaryClassAssociation.REALIZATION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassB())) {
                             componentRelatedGroup.add(bCR.getClassB());
-                            matches++;
+                            remainingAbstractMatches++;
 
                         }
                     }
@@ -271,48 +246,49 @@ public class RelatedBaseComponentsGroup {
                                     || bCR.getaSideAssociation() == BinaryClassAssociation.REALIZATION)) {
                         if (!componentRelatedGroup.contains(bCR.getClassA())) {
                             componentRelatedGroup.add(bCR.getClassA());
-                            matches++;
+                            remainingAbstractMatches++;
                         }
                     }
                 }
             }
 
-            /**
-             * Filter stage 5: If there is space, find any remaining weak
-             * relationships.
-             */
-            for (int j = 0; j < componentRelatedGroup.size()
-                    && componentRelatedGroup.size() <= desiredResultSetSize; j++) {
-                for (final Map.Entry<String, BinaryClassRelationship> entry : allRelationships.entrySet()) {
-
-                    if (componentRelatedGroup.size() > desiredResultSetSize) {
-                        break;
-                    }
-
-                    final BinaryClassRelationship bCR = entry.getValue();
-                    if (bCR.getClassA().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
-                            && (bCR.getaSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.AGGREGATION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
-                                    || bCR.getaSideAssociation() == BinaryClassAssociation.AGGREGATION)) {
-                        if (!componentRelatedGroup.contains(bCR.getClassB())) {
-                            componentRelatedGroup.add(bCR.getClassB());
-                        }
-                    }
-                    if (bCR.getClassB().uniqueName().equals(componentRelatedGroup.get(j).uniqueName())
-                            && (bCR.getaSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.AGGREGATION
-                                    || bCR.getbSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
-                                    || bCR.getaSideAssociation() == BinaryClassAssociation.AGGREGATION)) {
-                        if (!componentRelatedGroup.contains(bCR.getClassA())) {
-                            componentRelatedGroup.add(bCR.getClassA());
-                        }
-                    }
-                }
-            }
             // add all the components related to the current component to the
             // overall component group
             overallRelatedGroup.addAll(componentRelatedGroup);
+        }
+
+        /**
+         * Filter stage 5: If there is space, add any remaining weak
+         * relationships.
+         */
+        final Set<Component> componentRelatedGroup = new HashSet<Component>(overallRelatedGroup);
+        for (Component tmpCmp : componentRelatedGroup) {
+            for (final Map.Entry<String, BinaryClassRelationship> entry : allRelationships.entrySet()) {
+
+                if (overallRelatedGroup.size() >= (mainComponents.size() * 2)) {
+                    break;
+                }
+
+                final BinaryClassRelationship bCR = entry.getValue();
+                if (bCR.getClassA().uniqueName().equals(tmpCmp.uniqueName())
+                        && (bCR.getaSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
+                                || bCR.getbSideAssociation() == BinaryClassAssociation.AGGREGATION
+                                || bCR.getbSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
+                                || bCR.getaSideAssociation() == BinaryClassAssociation.AGGREGATION)) {
+                    if (!componentRelatedGroup.contains(bCR.getClassB())) {
+                        overallRelatedGroup.add(bCR.getClassB());
+                    }
+                }
+                if (bCR.getClassB().uniqueName().equals(tmpCmp.uniqueName())
+                        && (bCR.getaSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
+                                || bCR.getbSideAssociation() == BinaryClassAssociation.AGGREGATION
+                                || bCR.getbSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION
+                                || bCR.getaSideAssociation() == BinaryClassAssociation.AGGREGATION)) {
+                    if (!componentRelatedGroup.contains(bCR.getClassA())) {
+                        overallRelatedGroup.add(bCR.getClassA());
+                    }
+                }
+            }
         }
         return overallRelatedGroup;
     }

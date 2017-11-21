@@ -13,7 +13,7 @@ public class SDManualTest {
     public void structureDiffManualTest() throws Exception {
         OOPSourceCodeModel oldModel = ClarityTestUtil.getGitHubRepoModel("zir0-93", "clarpse", "master");
         OOPSourceCodeModel newModel = ClarityTestUtil.getGitHubRepoModel("zir0-93", "clarpse", "golang_support");
-        Diagram view = new SignedSDDiagram(new SDView(oldModel, newModel, true, 400).view());
+        Diagram view = new SignedSDDiagram(new SDView(oldModel, newModel, true, 400).view(), "https://clarity-bot.com");
         System.out.println(view.svgText());
     }
 }
