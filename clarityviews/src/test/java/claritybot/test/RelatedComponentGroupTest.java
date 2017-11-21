@@ -20,18 +20,12 @@ import com.clarity.sourcemodel.OOPSourceCodeModel;
 
 /**
  * The {@link RelatedBaseComponentsGroup} class is used to determine what
- * {@link Component}s to be displayed on a diagram. These tests exist to
- * maintain the optimal {@link Component}s are being chosen based on the given
- * code base and desired result set size.
+ * {@link Component}s to be displayed on a diagram. These tests exist to ensure
+ * the optimal {@link Component}s are being chosen based on the given code base
+ * and desired.
  */
 public class RelatedComponentGroupTest {
 
-    /**
-     * A sample code base of three components where there exists an inheritance
-     * relationship and a composition relationship. As the desired Result Size
-     * is set to 2, we expect the ClassB involved in the Composition
-     * relationship to be present in the component grouping result.
-     */
     @Test
     public void testA() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + "import java.util.ArrayList;"
@@ -50,17 +44,10 @@ public class RelatedComponentGroupTest {
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         assertTrue(new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
-                codeModel.getComponent("com.sample.ClassA"), 2).components()
+                codeModel.getComponent("com.sample.ClassA")).components()
                         .contains(codeModel.getComponent("com.sample.ClassB")));
     }
 
-    /**
-     * A sample code base of three components where there exists an inheritance
-     * relationship and a composition relationship. As the desired Result Size
-     * is set to 3, we expect the component involved in the inheritance
-     * relationship to be present in the component grouping result making the
-     * overall size 3 components.
-     */
     @Test
     public void testB() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + "import java.util.ArrayList;"
@@ -79,18 +66,11 @@ public class RelatedComponentGroupTest {
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
-                codeModel.getComponent("com.sample.ClassA"), 3).components();
+                codeModel.getComponent("com.sample.ClassA")).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.size() == 3);
     }
 
-    /**
-     * A sample code base of three components where there exists an extensions
-     * relationship and a composition relationship. As the desired Result Size
-     * is set to 3, we expect the component involved in the extension
-     * relationship to be present in the component grouping result making the
-     * overall size 3 components.
-     */
     @Test
     public void testC() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + "import java.util.ArrayList;"
@@ -108,18 +88,11 @@ public class RelatedComponentGroupTest {
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
-                codeModel.getComponent("com.sample.ClassA"), 3).components();
+                codeModel.getComponent("com.sample.ClassA")).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.size() == 3);
     }
 
-    /**
-     * A sample code base of three components where there exists an inheritance
-     * relationship and a composition relationship. As the desired Result Size
-     * is set to 1, we expect the component involved in the inheritance
-     * relationship to be present in the component grouping result making the
-     * overall size 2 components.
-     */
     @Test
     public void testD() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + " import java.util.ArrayList;"
@@ -137,18 +110,11 @@ public class RelatedComponentGroupTest {
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
-                codeModel.getComponent("com.sample.ClassA"), 2).components();
+                codeModel.getComponent("com.sample.ClassA")).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
-        assertTrue(cmps.size() == 2);
+        assertTrue(cmps.size() == 3);
     }
 
-    /**
-     * A sample code base of three components where there exists two Composition
-     * relationships. One Component composes the main component, and the main
-     * component composes a different third component. With a desired result
-     * size of 3, we expect all the components to be returned. This test ensures
-     * the diagrams will extend in both directions.
-     */
     @Test
     public void testE() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + "import java.util.ArrayList;"
@@ -167,18 +133,12 @@ public class RelatedComponentGroupTest {
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
-                codeModel.getComponent("com.sample.ClassA"), 3).components();
+                codeModel.getComponent("com.sample.ClassA")).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassB")));
         assertTrue(cmps.size() == 3);
     }
 
-    /**
-     * A sample code base of three components where there exists two Inheritance
-     * relationships. The main component inherits a Component, and a third
-     * component inherits the main component. This test ensures the diagrams
-     * will extend in both directions.
-     */
     @Test
     public void testF() throws Exception {
         final RawFile file = new RawFile("ClassA.java",
@@ -197,18 +157,12 @@ public class RelatedComponentGroupTest {
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
-                codeModel.getComponent("com.sample.ClassA"), 3).components();
+                codeModel.getComponent("com.sample.ClassA")).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassB")));
         assertTrue(cmps.size() == 3);
     }
 
-    /**
-     * A sample code base of three components where there exists one Inheritance
-     * relationship and one extension relationship. The main component inherits
-     * a Component, and a third component extends the main component. This test
-     * ensures the diagrams will extend in both directions.
-     */
     @Test
     public void testG() throws Exception {
         final RawFile file = new RawFile("ClassA.java",
@@ -226,16 +180,12 @@ public class RelatedComponentGroupTest {
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
-                codeModel.getComponent("com.sample.ClassA"), 3).components();
+                codeModel.getComponent("com.sample.ClassA")).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassD")));
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassB")));
         assertTrue(cmps.size() == 3);
     }
 
-    /**
-     * A sample code base of three components where there exists no
-     * relationships. We expect only the main Component to be returned.
-     */
     @Test
     public void testH() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + " public class ClassA { }");
@@ -252,7 +202,7 @@ public class RelatedComponentGroupTest {
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
-                codeModel.getComponent("com.sample.ClassA"), 3).components();
+                codeModel.getComponent("com.sample.ClassA")).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassA")));
         assertTrue(cmps.size() == 1);
     }

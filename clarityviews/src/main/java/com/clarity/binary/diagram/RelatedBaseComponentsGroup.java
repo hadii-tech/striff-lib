@@ -39,12 +39,9 @@ public class RelatedBaseComponentsGroup {
      * @param mainComponent
      *            The component all other components in the group must have a
      *            relation with.
-     * @param desiredResultSetSize
-     *            Desired result set size of the related component group.
      */
     public RelatedBaseComponentsGroup(final Map<String, Component> allComponents,
-            final Map<String, BinaryClassRelationship> allRelationships, final Component mainComponent,
-            final int desiredResultSetSize) {
+            final Map<String, BinaryClassRelationship> allRelationships, final Component mainComponent) {
         this.allComponents = allComponents;
         this.allRelationships = allRelationships;
         this.mainComponents = new HashSet<String>();
