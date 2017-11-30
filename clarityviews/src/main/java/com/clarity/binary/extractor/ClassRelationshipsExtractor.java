@@ -36,13 +36,8 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
     private static final long serialVersionUID = -8777271960106904851L;
 
     /**
-     * Finds external class links from all the field, method, method param and
-     * local var components in the given component.
-     *
-     * @param currentComponent
-     *            the class that is being analyzed for associations.
-     * @param components
-     *            list of all components in the code base
+     * Finds external class links from all the field, method and method params
+     * in the given component.
      */
     private void genAssociations(final Component currentComponent, final Map<String, Component> components,
             final Map<String, BinaryClassRelationship> binaryRelationships) {
@@ -54,10 +49,10 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
             if (currentClass != null) {
                 // get a list of all the external class references this current
                 // component has..
-                final Set<ComponentInvocation> externalClassTypeReferences = currentComponent.componentInvocations();
+                final Set<ComponentInvocation> componentInvocations = currentComponent.componentInvocations();
                 // remove redundant invocations..
-                removeRedundantInvocations(externalClassTypeReferences, currentClass, components);
-                for (final ComponentInvocation externalClassTypeRef : externalClassTypeReferences) {
+                filterComponentInvocations(componentInvocations, components, currentClass, currentClass);
+                for (final ComponentInvocation externalClassTypeRef : componentInvocations) {
                     if (!externalClassTypeRef.empty()) {
                         final String externalClassType = externalClassTypeRef.invokedComponent();
                         if (components.containsKey(externalClassType)) {
@@ -81,7 +76,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                             // --> IF INVOCATION SITE IS CLASS FIELD:
                             if (currentComponent.componentType() == ComponentType.FIELD) {
                                 if (bCM == null) {
-                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
+                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.NONE);
                                 }
                                 if (currentComponent.modifiers().contains(
                                         OOPSourceModelConstants.getJavaAccessModifierMap().get(AccessModifiers.PRIVATE))
@@ -99,38 +94,19 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                             } else if ((currentComponent.componentType() == ComponentType.METHOD)
                                     && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
                                 if (bCM == null) {
-                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
+                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.NONE);
                                 }
-                                if (currentComponent.modifiers().contains(
-                                        OOPSourceModelConstants.getJavaAccessModifierMap().get(AccessModifiers.PRIVATE))
-                                        || currentComponent.modifiers().contains(OOPSourceModelConstants
-                                                .getJavaAccessModifierMap().get(AccessModifiers.PROTECTED))) {
-                                    bCA = BinaryClassAssociation.ASSOCIATION;
-                                } else {
-                                    bCA = BinaryClassAssociation.WEAK_ASSOCIATION;
-                                }
+                                bCA = BinaryClassAssociation.ASSOCIATION;
                                 externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
                                         com.clarity.binary.ClarityUtil.InvocationSiteProperty.METHOD_PARAMETER,
                                         currentComponent.modifiers(), bCA);
-
                                 // --> IF INVOCATION SITE IS CONSTRUCTOR
                             } else if ((currentComponent.componentType() == ComponentType.CONSTRUCTOR)
                                     && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
                                 if (bCM == null) {
-                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
+                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.NONE);
                                 }
                                 bCA = BinaryClassAssociation.ASSOCIATION;
-                                externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
-                                        com.clarity.binary.ClarityUtil.InvocationSiteProperty.CONSTRUCTOR_PARAMETER,
-                                        currentComponent.modifiers(), bCA);
-
-                                // --> IF INVOCATION SITE IS LOCAL VARIABLE
-                            } else if ((currentComponent.componentType() == ComponentType.LOCAL)
-                                    && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
-                                if (bCM == null) {
-                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOONE);
-                                }
-                                bCA = BinaryClassAssociation.WEAK_ASSOCIATION;
                                 externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
                                         com.clarity.binary.ClarityUtil.InvocationSiteProperty.CONSTRUCTOR_PARAMETER,
                                         currentComponent.modifiers(), bCA);
@@ -146,66 +122,42 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
         }
     }
 
-    private Set<ComponentInvocation> removeRedundantInvocations(Set<ComponentInvocation> externalClassTypeReferences,
-            Component currentClass, Map<String, Component> components) {
-        // remove from the list any references from this component's
-        // child methods that override another method. Why? because the
-        // classes it extends/implements
-        // already have this relationship, we do not need to include it
-        // again.
-        List<String> tmpList = new ArrayList<String>();
-        for (String possibleMethodCmpName : currentClass.children()) {
-            Component possibleMethodComponent = components.get(possibleMethodCmpName);
-            if (possibleMethodCmpName != null) {
-                if (possibleMethodComponent.componentType().isMethodComponent()) {
-                    for (ComponentInvocation possibleOverrideInvocation : possibleMethodComponent
-                            .componentInvocations(ComponentInvocations.ANNOTATION)) {
-                        if (possibleOverrideInvocation.invokedComponent().equals("Override")) {
-                            // remove invocations that equal the methods
-                            // return type
-                            // and parameters
-                            for (String possibleMethodCmpParamChildName : possibleMethodComponent.children()) {
-                                Component possibleMethodCmpParamChildCmp = components
-                                        .get(possibleMethodCmpParamChildName);
-                                if (possibleMethodCmpParamChildCmp != null && (possibleMethodCmpParamChildCmp
-                                        .componentType() == ComponentType.METHOD_PARAMETER_COMPONENT
-                                        || possibleMethodCmpParamChildCmp
-                                                .componentType() == ComponentType.CONSTRUCTOR_PARAMETER_COMPONENT)) {
-                                    // remove invocations corresponding to
-                                    // overridden method parameters
-                                    List<ComponentInvocation> tmpInvocations = possibleMethodCmpParamChildCmp
-                                            .componentInvocations(ComponentInvocations.DECLARATION);
-                                    if (!tmpInvocations.isEmpty()) {
-                                        for (ComponentInvocation invocation : tmpInvocations) {
-                                            tmpList.add(invocation.invokedComponent());
-                                        }
-                                    }
-                                    // remove invocations corresponding to
-                                    // overridden method return value
-                                    tmpList.add(possibleMethodComponent.value());
-                                }
-                            }
-                        }
-                    }
+    private void filterComponentInvocations(Set<ComponentInvocation> componentInvocations,
+            Map<String, Component> components, Component filterComponent, Component originalComponent) {
+
+        if (!filterComponent.componentInvocations(ComponentInvocations.EXTENSION).isEmpty()) {
+            for (ComponentInvocation inv : filterComponent.componentInvocations(ComponentInvocations.EXTENSION)) {
+                Component invokedComponent = components.get(inv.invokedComponent());
+                if (invokedComponent != null) {
+                    filterComponentInvocations(componentInvocations, components, invokedComponent, originalComponent);
+                }
+            }
+        }
+        if (!filterComponent.componentInvocations(ComponentInvocations.IMPLEMENTATION).isEmpty()) {
+            for (ComponentInvocation inv : filterComponent.componentInvocations(ComponentInvocations.IMPLEMENTATION)) {
+                Component invokedComponent = components.get(inv.invokedComponent());
+                if (invokedComponent != null) {
+                    filterComponentInvocations(componentInvocations, components, invokedComponent, originalComponent);
                 }
             }
         }
 
-        removeMatchingInvocations(tmpList, externalClassTypeReferences);
-        return externalClassTypeReferences;
+        if (!filterComponent.uniqueName().equals(originalComponent.uniqueName())) {
+            removeMatchingInvocations(filterComponent.componentInvocations(), componentInvocations);
+        }
     }
 
     /**
      * Removes all the to-be-removed-invocations from a given list of component
      * invocations.
      */
-    private void removeMatchingInvocations(List<String> invokedComponentsToBeRemoved,
+    private void removeMatchingInvocations(Set<ComponentInvocation> invokedComponentsToBeRemoved,
             Set<ComponentInvocation> externalClassTypeReferences) {
 
         List<ComponentInvocation> invocationsCopy = new ArrayList<ComponentInvocation>(externalClassTypeReferences);
         for (ComponentInvocation tmpInvocation : invocationsCopy) {
-            for (String toBeRemovedInvocation : invokedComponentsToBeRemoved) {
-                if (tmpInvocation.invokedComponent().equals(toBeRemovedInvocation)) {
+            for (ComponentInvocation toBeRemovedInvocation : invokedComponentsToBeRemoved) {
+                if (tmpInvocation.invokedComponent().equals(toBeRemovedInvocation.invokedComponent())) {
                     externalClassTypeReferences.remove(tmpInvocation);
                 }
             }
@@ -305,28 +257,20 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
     }
 
     /**
-     * Parse through all the classes and populate our collection of binary class
-     * relationships.
-     *
-     * @param sourceCodeModel
-     *            the polyglot representation of the codebase.
-     * @return list of all the binary class relationships found in the given
-     *         source code model
-     * @throws Exception
+     * Parse through all the components and populate our collection of binary
+     * class relationships.
      */
     public final Map<String, BinaryClassRelationship> generateBinaryClassRelationships(
             final OOPSourceCodeModel sourceCodeModel) throws Exception {
 
         final Map<String, BinaryClassRelationship> binaryRelationships = new ConcurrentHashMap<String, BinaryClassRelationship>();
-        final Map<String, com.clarity.sourcemodel.Component> classes = sourceCodeModel.getComponents();
-        for (final Map.Entry<String, Component> entry : classes.entrySet()) {
-            // get the class
-            if (entry.getValue().componentType().isMethodComponent()
-                    || entry.getValue().componentType().isBaseComponent()
-                    || entry.getValue().componentType() == ComponentType.FIELD) {
-                final Component tempClass = entry.getValue();
+        final Map<String, com.clarity.sourcemodel.Component> components = sourceCodeModel.getComponents();
+        for (final Map.Entry<String, Component> entry : components.entrySet()) {
+            final Component tempClass = entry.getValue();
+            ComponentType cmpType = entry.getValue().componentType();
+            if (cmpType.isBaseComponent() || cmpType.isMethodComponent() || cmpType == ComponentType.FIELD) {
                 // generate the binary class relationships..
-                genClassifierRelationships(tempClass, classes, binaryRelationships);
+                genClassifierRelationships(tempClass, components, binaryRelationships);
             }
         }
         return binaryRelationships;

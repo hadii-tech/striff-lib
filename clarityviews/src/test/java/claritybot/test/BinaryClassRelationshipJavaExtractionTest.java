@@ -201,12 +201,10 @@ public class BinaryClassRelationshipJavaExtractionTest {
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         final BinaryClassRelationship A_E = binaryRelationships.get("ClassA<<-->>ClassE");
-        Assert.assertTrue("Multiciplicity from ClassA to ClassE should be 'None'!",
-                A_E.getaSideMultiplicity().getValue().equals(
-                        com.clarity.binary.diagram.DiagramConstants.DefaultClassMultiplicities.NONE.getValue()));
-        Assert.assertTrue("Multiciplicity from ClassD to Class A should be 'None'!",
-                A_E.getbSideMultiplicity().getValue().equals(
-                        com.clarity.binary.diagram.DiagramConstants.DefaultClassMultiplicities.ZEROTOONE.getValue()));
+        Assert.assertTrue(A_E.getaSideMultiplicity().getValue()
+                .equals(com.clarity.binary.diagram.DiagramConstants.DefaultClassMultiplicities.NONE.getValue()));
+        Assert.assertTrue(A_E.getbSideMultiplicity().getValue()
+                .equals(com.clarity.binary.diagram.DiagramConstants.DefaultClassMultiplicities.NONE.getValue()));
     }
 
     @Test
@@ -226,15 +224,14 @@ public class BinaryClassRelationshipJavaExtractionTest {
                 .generateBinaryClassRelationships(codeModel);
         final BinaryClassRelationship A_E = binaryRelationships.get("ClassA<<-->>ClassE");
         Assert.assertTrue("Multiciplicity from ClassA to ClassE should be 'None'!",
-                A_E.getaSideAssociation() == BinaryClassAssociation.WEAK_ASSOCIATION);
+                A_E.getaSideAssociation() == BinaryClassAssociation.ASSOCIATION);
         Assert.assertTrue("Multiciplicity from ClassA to ClassE should be 'None'!",
                 A_E.getbSideAssociation() == BinaryClassAssociation.NONE);
     }
 
     /**
-     * Class relationships from overridden methods should not be displayed as
-     * the relation is already clear from the original implemented/extended
-     * class.
+     * relationships from overridden methods should not be displayed as the
+     * relation is already clear from the original implemented/extended class.
      */
     @Test
     public void testNoRelationsGeneratedFromOverridenMethods() throws Exception {
@@ -252,7 +249,11 @@ public class BinaryClassRelationshipJavaExtractionTest {
         final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
+        // relationship from class E to class D should not be shown because
+        // class E
+        // implements class A which already has that relationship
         assertTrue(binaryRelationships.get("ClassA<<-->>ClassD") != null);
-        assertTrue(binaryRelationships.get("ClassA<<-->>ClassE") == null);
+        assertTrue(binaryRelationships.get("ClassE<<-->>ClassD") == null);
     }
+
 }

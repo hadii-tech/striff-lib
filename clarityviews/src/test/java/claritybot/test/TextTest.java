@@ -24,7 +24,7 @@ public class TextTest {
 
         assertTrue(new HtmlTagsStrippedText(
                 new JavaDocSymbolStrippedText(new SimplifiedJavaDocText(new DefaultText(text)))).value().equals(
-                        "Validates a chess move. Use #doMove(int theFromFile, int theFromRank, int theToFile, int theToRank) to move a piece. @param theFromFile file from which a piece is being moved @param theFromRank rank from which a piece is being moved @param theToFile file to which a piece is being moved @param theToRank rank to which a piece is being moved"));
+                        "Validates a chess move. Use #doMove(int theFromFile, int theFromRank, int theToFile, int theToRank) to move a piece."));
     }
 
     @Test
@@ -35,5 +35,22 @@ public class TextTest {
         assertTrue(new HtmlTagsStrippedText(
                 new JavaDocSymbolStrippedText(new SimplifiedJavaDocText(new DefaultText(text)))).value()
                         .equals("Validates a chess move. Use org.junit.test.Tester. See org.junit.lolCakes"));
+    }
+
+    @Test
+    public void removeMultiLineUnwantedAnnotations() throws Exception {
+        String text = "/**\n" + "* Validates a chess move.\n" + "*\n"
+                + "* Use {@link #doMove(int theFromFile, int theFromRank, int theToFile, int theToRank)} to move a piece.\n"
+                + "*\n" + "* @class theFromFile file from which a piece is being moved\n" + "* @param theFromRank \n"
+                + "                 rank from which a piece is being moved\n"
+                + "                 rank from which a piece is being moved\n" + "// okays"
+                + "/* @version theToFile   file to which a piece is being moved\n" + "//"
+                + "// theToRank   rank to which a piece is being moved\n"
+                + "* @return            true if the move is valid, otherwise false\n" + "* @since             1.0\n"
+                + "*/";
+
+        assertTrue(new HtmlTagsStrippedText(
+                new JavaDocSymbolStrippedText(new SimplifiedJavaDocText(new DefaultText(text)))).value().equals(
+                        "Validates a chess move. Use #doMove(int theFromFile, int theFromRank, int theToFile, int theToRank) to move a piece."));
     }
 }
