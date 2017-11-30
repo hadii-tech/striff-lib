@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 public class SimplifiedJavaDocText implements Text {
 
     private Text text;
-    private String[] ignoreAnnotations = new String[] { "@version", "@since", "@return", "@throws", "@code",
+    private String[] ignoreAnnotations = new String[] {"@version", "@since", "@return", "@throws", "@code",
             "@abstract", "@access", "@alias", "@author", "@async", "@augments", "@borrows", "@callback", "@class",
             "@param" };
 
