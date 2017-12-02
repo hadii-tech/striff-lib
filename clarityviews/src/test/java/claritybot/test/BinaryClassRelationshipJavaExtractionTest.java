@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.clarity.binary.diagram.DiagramConstants.BinaryClassAssociation;
 import com.clarity.binary.diagram.DiagramConstants.DefaultClassMultiplicities;
 import com.clarity.binary.extractor.BinaryClassRelationship;
-import com.clarity.binary.extractor.ClassRelationshipsExtractor;
+import com.clarity.binary.extractor.BinaryClassRelationshipExtractor;
 import com.clarity.binary.parse.ParsedProject;
 import com.clarity.parser.Lang;
 import com.clarity.parser.ParseRequestContent;
@@ -34,7 +34,7 @@ public class BinaryClassRelationshipJavaExtractionTest {
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         final BinaryClassRelationship A_B = binaryRelationships.get("ClassA<<-->>ClassB");
@@ -52,7 +52,7 @@ public class BinaryClassRelationshipJavaExtractionTest {
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         final BinaryClassRelationship A_B = binaryRelationships.get("ClassA<<-->>ClassB");
@@ -60,27 +60,6 @@ public class BinaryClassRelationshipJavaExtractionTest {
                 A_B.getaSideAssociation() == BinaryClassAssociation.COMPOSITION);
         Assert.assertTrue("Relationship from ClassB to ClassA should be 'None'!",
                 A_B.getbSideAssociation() == BinaryClassAssociation.NONE);
-    }
-
-    @Test
-    public void testFieldVarLevelRelationMultiplicity() throws Exception {
-        final RawFile file = new RawFile("ClassA.java", "package com.sample;" + "import java.util.ArrayList;"
-                + "public class ClassA {  private ArrayList<ClassB> b;}");
-        final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
-        reqCon.insertFile(file);
-        reqCon.insertFile(file2);
-        reqCons.add(reqCon);
-        final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
-        final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
-                .generateBinaryClassRelationships(codeModel);
-        final BinaryClassRelationship A_B = binaryRelationships.get("ClassA<<-->>ClassB");
-        Assert.assertTrue("Multiciplicity from ClassA to ClassB should be '0..*'!",
-                A_B.getbSideMultiplicity().getValue().equals(DefaultClassMultiplicities.ZEROTOMANY.getValue()));
-        Assert.assertTrue("Multiciplicity from ClassB to ClassA should be '0..*'!",
-                A_B.getaSideMultiplicity().getValue().equals(DefaultClassMultiplicities.NONE.getValue()));
     }
 
     @Test
@@ -94,7 +73,7 @@ public class BinaryClassRelationshipJavaExtractionTest {
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         final BinaryClassRelationship A_C = binaryRelationships.get("ClassA<<-->>ClassC");
@@ -115,7 +94,7 @@ public class BinaryClassRelationshipJavaExtractionTest {
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         final BinaryClassRelationship A_C = binaryRelationships.get("ClassA<<-->>ClassC");
@@ -136,7 +115,7 @@ public class BinaryClassRelationshipJavaExtractionTest {
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         final BinaryClassRelationship A_D = binaryRelationships.get("ClassA<<-->>ClassD");
@@ -153,7 +132,7 @@ public class BinaryClassRelationshipJavaExtractionTest {
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         final BinaryClassRelationship A_D = binaryRelationships.get("ClassA<<-->>ClassD");
@@ -175,7 +154,7 @@ public class BinaryClassRelationshipJavaExtractionTest {
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         final BinaryClassRelationship A_D = binaryRelationships.get("ClassA<<-->>ClassD");
@@ -197,7 +176,7 @@ public class BinaryClassRelationshipJavaExtractionTest {
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         final BinaryClassRelationship A_E = binaryRelationships.get("ClassA<<-->>ClassE");
@@ -219,7 +198,7 @@ public class BinaryClassRelationshipJavaExtractionTest {
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         final BinaryClassRelationship A_E = binaryRelationships.get("ClassA<<-->>ClassE");
@@ -246,7 +225,7 @@ public class BinaryClassRelationshipJavaExtractionTest {
         reqCon.insertFile(file3);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject((reqCon)).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         // relationship from class E to class D should not be shown because

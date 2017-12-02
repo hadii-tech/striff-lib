@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.clarity.binary.diagram.RelatedBaseComponentsGroup;
 import com.clarity.binary.extractor.BinaryClassRelationship;
-import com.clarity.binary.extractor.ClassRelationshipsExtractor;
+import com.clarity.binary.extractor.BinaryClassRelationshipExtractor;
 import com.clarity.binary.parse.ParsedProject;
 import com.clarity.parser.Lang;
 import com.clarity.parser.ParseRequestContent;
@@ -40,7 +40,7 @@ public class RelatedComponentGroupTest {
         reqCon.insertFile(file3);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         assertTrue(new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
@@ -62,7 +62,7 @@ public class RelatedComponentGroupTest {
         reqCon.insertFile(file3);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
@@ -84,7 +84,7 @@ public class RelatedComponentGroupTest {
         reqCon.insertFile(file3);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
@@ -106,7 +106,7 @@ public class RelatedComponentGroupTest {
         reqCon.insertFile(file3);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
@@ -129,7 +129,7 @@ public class RelatedComponentGroupTest {
         reqCon.insertFile(file3);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
@@ -153,7 +153,7 @@ public class RelatedComponentGroupTest {
         reqCon.insertFile(file3);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
@@ -176,7 +176,7 @@ public class RelatedComponentGroupTest {
         reqCon.insertFile(file3);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
@@ -198,7 +198,7 @@ public class RelatedComponentGroupTest {
         reqCon.insertFile(file3);
         reqCons.add(reqCon);
         final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
-        final ClassRelationshipsExtractor<?> bCAS = new ClassRelationshipsExtractor<Object>();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
         final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
                 .generateBinaryClassRelationships(codeModel);
         Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,

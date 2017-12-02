@@ -18,8 +18,6 @@ import com.clarity.sourcemodel.Component;
  * external link objects are received, see
  * resolveExtClassLinkWithBinaryRelationship().
  *
- * @author Muntazir Fadhel
- *
  */
 public class BinaryClassRelationship implements Serializable {
 
@@ -163,23 +161,9 @@ public class BinaryClassRelationship implements Serializable {
 
         final BinaryClassAssociation currentSideAssociation = getAssociation(isDirForward);
         if (currentSideAssociation.getStrength() < incomingLink.getAssociationType().getStrength()) {
-            // if the incoming relationship is a weak association and the
-            // current relation is composition,
-            // need special casing to make the relationship a composition
-            // relationship..
-            if (((currentSideAssociation == BinaryClassAssociation.COMPOSITION)
-                    && (incomingLink.getAssociationType() == BinaryClassAssociation.WEAK_ASSOCIATION))
-                    || ((incomingLink.getAssociationType() == BinaryClassAssociation.COMPOSITION)
-                            && (currentSideAssociation == BinaryClassAssociation.WEAK_ASSOCIATION))) {
-                overwriteSideRelationship(isDirForward, BinaryClassAssociation.AGGREGATION,
-                        incomingLink.getTargetClassMultiplicity());
-            } else {
-                // otherwise, incoming association is stronger, need to edit
-                // current
-                // relationship to reflect its properties
-                overwriteSideRelationship(isDirForward, incomingLink.getAssociationType(),
-                        incomingLink.getTargetClassMultiplicity());
-            }
+
+            overwriteSideRelationship(isDirForward, incomingLink.getAssociationType(),
+                    incomingLink.getTargetClassMultiplicity());
         }
     }
 
@@ -188,19 +172,11 @@ public class BinaryClassRelationship implements Serializable {
         BinaryClassRelationship testRelationship = (BinaryClassRelationship) o;
         if (testRelationship.classA.uniqueName().equals(this.classA.uniqueName())
                 && testRelationship.classB.uniqueName().equals(this.classB.uniqueName())
-                && testRelationship.aSideAction.equals(this.aSideAction)
-                && testRelationship.bSideAction.equals(this.bSideAction)
-                && testRelationship.aSideMultiplicity.getValue().equals(this.aSideMultiplicity.getValue())
-                && testRelationship.bSideMultiplicity.getValue().equals(this.bSideMultiplicity.getValue())
                 && testRelationship.aSideAssociation.equals(this.aSideAssociation)
                 && testRelationship.bSideAssociation.equals(this.bSideAssociation)) {
             return true;
         } else if (testRelationship.classA.uniqueName().equals(this.classB.uniqueName())
                 && testRelationship.classB.uniqueName().equals(this.classA.uniqueName())
-                && testRelationship.aSideAction.equals(this.bSideAction)
-                && testRelationship.bSideAction.equals(this.aSideAction)
-                && testRelationship.aSideMultiplicity.getValue().equals(this.bSideMultiplicity.getValue())
-                && testRelationship.bSideMultiplicity.getValue().equals(this.aSideMultiplicity.getValue())
                 && testRelationship.aSideAssociation.equals(this.bSideAssociation)
                 && testRelationship.bSideAssociation.equals(this.aSideAssociation)) {
             return true;

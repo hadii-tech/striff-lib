@@ -16,7 +16,8 @@ import com.clarity.binary.diagram.plantuml.StructureDiffPUMLDiagramDesciption;
 import com.clarity.binary.diagram.scheme.DiagramColorScheme;
 import com.clarity.binary.diagram.scheme.LightDiagramColorScheme;
 import com.clarity.binary.extractor.BinaryClassRelationship;
-import com.clarity.binary.extractor.ClassRelationshipsExtractor;
+import com.clarity.binary.extractor.BinaryClassRelationshipExtractor;
+import com.clarity.binary.extractor.SimplifiedBinaryClassRelationships;
 import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
 
@@ -34,9 +35,9 @@ public class SDView implements ClarityView, Serializable {
     public SDView(DiagramColorScheme colorScheme, OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel,
             boolean callback, int maxSDSize) throws Exception {
 
-        Map<String, BinaryClassRelationship> oldBinaryRelationships = new ClassRelationshipsExtractor<Object>()
+        Map<String, BinaryClassRelationship> oldBinaryRelationships = new BinaryClassRelationshipExtractor<Object>()
                 .generateBinaryClassRelationships(olderModel);
-        Map<String, BinaryClassRelationship> newBinaryRelationships = new ClassRelationshipsExtractor<Object>()
+        Map<String, BinaryClassRelationship> newBinaryRelationships = new BinaryClassRelationshipExtractor<Object>()
                 .generateBinaryClassRelationships(newerModel);
 
         // form a list of all components that exist in the newer code base but
@@ -131,6 +132,7 @@ public class SDView implements ClarityView, Serializable {
         Set<BinaryClassRelationship> allRelationships = new HashSet<BinaryClassRelationship>();
         allRelationships.addAll(newBinaryRelationships.values());
         allRelationships.addAll(oldBinaryRelationships.values());
+        allRelationships = new SimplifiedBinaryClassRelationships(diagramComponents, allRelationships).relationships();
 
         // source code model representing the merging of the old and new code
         // base

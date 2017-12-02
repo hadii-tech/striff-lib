@@ -24,9 +24,8 @@ import com.clarity.sourcemodel.OOPSourceModelConstants.ComponentType;
 
 /**
  * Returns a list of binary class relationships from a given source code model.
- *
  */
-public class ClassRelationshipsExtractor<T> implements Serializable {
+public class BinaryClassRelationshipExtractor<T> implements Serializable {
 
     public enum InvocationSiteProperty {
 
@@ -61,23 +60,19 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                             BinaryClassAssociation bCA = null;
                             ExternalClassLink externalClassLink;
                             // check the component external types to see if we
-                            // have
-                            // some sort of array
+                            // have some sort of array
                             for (final ComponentInvocation externalTypeRef : currentComponent
                                     .componentInvocations(ComponentInvocations.DECLARATION)) {
                                 final String externalType = externalTypeRef.invokedComponent();
-                                if (ZeroToManyTypes.isZeroToManyType(externalType)) {
-                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.ZEROTOMANY);
-                                }
+                                bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.NONE);
+
                             }
                             // create external class link based on calling
                             // component
                             // type
                             // --> IF INVOCATION SITE IS CLASS FIELD:
                             if (currentComponent.componentType() == ComponentType.FIELD) {
-                                if (bCM == null) {
-                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.NONE);
-                                }
+
                                 if (currentComponent.modifiers().contains(
                                         OOPSourceModelConstants.getJavaAccessModifierMap().get(AccessModifiers.PRIVATE))
                                         || currentComponent.modifiers().contains(OOPSourceModelConstants
@@ -93,9 +88,7 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                                 // --> IF INVOCATION SITE IS METHOD
                             } else if ((currentComponent.componentType() == ComponentType.METHOD)
                                     && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
-                                if (bCM == null) {
-                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.NONE);
-                                }
+
                                 bCA = BinaryClassAssociation.ASSOCIATION;
                                 externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
                                         com.clarity.binary.ClarityUtil.InvocationSiteProperty.METHOD_PARAMETER,
@@ -103,17 +96,21 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
                                 // --> IF INVOCATION SITE IS CONSTRUCTOR
                             } else if ((currentComponent.componentType() == ComponentType.CONSTRUCTOR)
                                     && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
-                                if (bCM == null) {
-                                    bCM = new BinaryClassMultiplicity(DefaultClassMultiplicities.NONE);
-                                }
+
                                 bCA = BinaryClassAssociation.ASSOCIATION;
                                 externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
                                         com.clarity.binary.ClarityUtil.InvocationSiteProperty.CONSTRUCTOR_PARAMETER,
                                         currentComponent.modifiers(), bCA);
+                            } else if ((currentComponent.componentType() == ComponentType.LOCAL)
+                                    && !currentClass.uniqueName().equals(targetClass.uniqueName())) {
+
+                                bCA = BinaryClassAssociation.WEAK_ASSOCIATION;
+                                externalClassLink = new ExternalClassLink(currentClass, targetClass, bCM,
+                                        com.clarity.binary.ClarityUtil.InvocationSiteProperty.LOCAL,
+                                        currentComponent.modifiers(), bCA);
                             } else {
                                 continue;
                             }
-
                             generateBinaryClassRelationship(externalClassLink, binaryRelationships);
                         }
                     }
@@ -125,14 +122,6 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
     private void filterComponentInvocations(Set<ComponentInvocation> componentInvocations,
             Map<String, Component> components, Component filterComponent, Component originalComponent) {
 
-        if (!filterComponent.componentInvocations(ComponentInvocations.EXTENSION).isEmpty()) {
-            for (ComponentInvocation inv : filterComponent.componentInvocations(ComponentInvocations.EXTENSION)) {
-                Component invokedComponent = components.get(inv.invokedComponent());
-                if (invokedComponent != null) {
-                    filterComponentInvocations(componentInvocations, components, invokedComponent, originalComponent);
-                }
-            }
-        }
         if (!filterComponent.componentInvocations(ComponentInvocations.IMPLEMENTATION).isEmpty()) {
             for (ComponentInvocation inv : filterComponent.componentInvocations(ComponentInvocations.IMPLEMENTATION)) {
                 Component invokedComponent = components.get(inv.invokedComponent());
@@ -256,10 +245,6 @@ public class ClassRelationshipsExtractor<T> implements Serializable {
         }
     }
 
-    /**
-     * Parse through all the components and populate our collection of binary
-     * class relationships.
-     */
     public final Map<String, BinaryClassRelationship> generateBinaryClassRelationships(
             final OOPSourceCodeModel sourceCodeModel) throws Exception {
 

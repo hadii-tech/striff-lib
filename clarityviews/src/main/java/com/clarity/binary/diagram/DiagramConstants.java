@@ -10,7 +10,7 @@ public final class DiagramConstants {
         /**
          * Weak Binary Association.
          */
-        COMPOSITION(3, "Contains", "-", "*", "*"), DEPENDANCY(1, "Depends On", "-.-", "", ""),
+        COMPOSITION(6, "Contains", "-", "*", "*"), DEPENDANCY(1, "Depends On", "-.-", "", ""),
         /**
          * Generalization Association.
          */
@@ -18,11 +18,11 @@ public final class DiagramConstants {
         /**
          * Dependency association.
          */
-        NONE(0, "", "-", "", ""), REALIZATION(6, "Implements", "-.-", "|>", "<|"),
+        NONE(0, "", "-", "", ""), REALIZATION(8, "Implements", "-.-", "|>", "<|"),
         /**
         *
         */
-        WEAK_ASSOCIATION(4, "Uses", "--", ">", "<"), ASSOCIATION(2, "Uses", "--", ">", "<");
+        WEAK_ASSOCIATION(2, "Uses", "--", ">", "<"), ASSOCIATION(4, "Uses", "--", ">", "<");
 
         /**
          * label that appears at the top of class box in the class diagram.

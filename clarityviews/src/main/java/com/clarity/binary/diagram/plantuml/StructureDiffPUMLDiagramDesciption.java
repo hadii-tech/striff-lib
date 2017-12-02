@@ -86,11 +86,12 @@ public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption
                 for (final String classChildCmpName : component.children()) {
                     final Component childCmp = allComponents.get(classChildCmpName);
                     String childCmpPUMLStr = "";
-                    // only care about children of interface or abstract
-                    // classes, or special children
-                    // of regular classes
                     if (childCmp.componentType() == ComponentType.METHOD
                             || childCmp.componentType().isVariableComponent()) {
+                        if (childCmp.componentType().isMethodComponent()
+                                && (childCmp.name().startsWith("get") || childCmp.name().startsWith("set"))) {
+                            continue;
+                        }
                         // start entering the fields and methods...
                         if ((childCmp != null) && !childCmp.componentType().isBaseComponent()) {
                             // if the field/method is abstract or static, add

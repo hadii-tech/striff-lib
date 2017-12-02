@@ -13,7 +13,7 @@ import net.sourceforge.plantuml.SourceStringReader;
 
 public class PUMLDiagram implements Diagram {
 
-    private static final String PLANT_UML_BEGIN_STRING = "@startuml\n";
+    private static final String PLANT_UML_BEGIN_STRING = "@startuml\nskinparam linetype ortho\n";
     private static final String PLANT_UML_END_STRING = "\n@enduml";
     private PUMLDiagramDesciption plantUMLClassDiagramDescription;
     private DiagramColorScheme colorScheme;

@@ -77,7 +77,7 @@ public class RelatedBaseComponentsGroup {
      */
     public Set<Component> components() {
 
-        final Set<Component> overallRelatedGroup = new HashSet<Component>();
+        final List<Component> overallRelatedGroup = new ArrayList<Component>();
         for (String cmpName : mainComponents) {
             Component cmp = allComponents.get(cmpName);
 
@@ -258,7 +258,7 @@ public class RelatedBaseComponentsGroup {
          * Filter stage 5: If there is space, add any remaining weak
          * relationships.
          */
-        final Set<Component> componentRelatedGroup = new HashSet<Component>(overallRelatedGroup);
+        final List<Component> componentRelatedGroup = new ArrayList<Component>(overallRelatedGroup);
         for (Component tmpCmp : componentRelatedGroup) {
             for (final Map.Entry<String, BinaryClassRelationship> entry : allRelationships.entrySet()) {
 
@@ -287,6 +287,7 @@ public class RelatedBaseComponentsGroup {
                 }
             }
         }
-        return overallRelatedGroup;
+        // remove duplicate components by using a set.
+        return new HashSet<Component>(overallRelatedGroup);
     }
 }
