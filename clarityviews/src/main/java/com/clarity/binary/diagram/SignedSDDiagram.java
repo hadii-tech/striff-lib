@@ -24,4 +24,9 @@ public class SignedSDDiagram implements Diagram {
         }
         return svgText;
     }
+
+    @Override
+    public int size() {
+        return this.diagram.size();
+    }
 }

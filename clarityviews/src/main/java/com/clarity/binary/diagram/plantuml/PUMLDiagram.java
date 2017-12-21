@@ -1,15 +1,14 @@
 package com.clarity.binary.diagram.plantuml;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Date;
-
 import com.clarity.binary.diagram.Diagram;
 import com.clarity.binary.diagram.scheme.DiagramColorScheme;
-
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Date;
 
 public class PUMLDiagram implements Diagram {
 
@@ -17,14 +16,16 @@ public class PUMLDiagram implements Diagram {
     private static final String PLANT_UML_END_STRING = "\n@enduml";
     private PUMLDiagramDesciption plantUMLClassDiagramDescription;
     private DiagramColorScheme colorScheme;
+    private int size;
 
-    public PUMLDiagram(final PUMLDiagramDesciption plantUMLClassDescription, DiagramColorScheme colorScheme) {
+    public PUMLDiagram(final PUMLDiagramDesciption plantUMLClassDescription, DiagramColorScheme colorScheme, int size) {
         this.plantUMLClassDiagramDescription = plantUMLClassDescription;
         this.colorScheme = colorScheme;
+        this.size = size;
     }
 
     @Override
-    public final String svgText() throws InterruptedException, IOException {
+    public final String svgText() throws IOException {
 
         final long startTime = new Date().getTime();
         final String plantUMLString = genPlantUMLString();
@@ -35,10 +36,15 @@ public class PUMLDiagram implements Diagram {
         return diagramStr;
     }
 
+    @Override
+    public final int size() {
+        return this.size;
+    }
+
     /**
      * Forms a PlantUML compliant String representing the class diagram.
      */
-    private String genPlantUMLString() throws IOException {
+    private String genPlantUMLString() {
 
         final String diagramSkin = formPlantUMLSkinString(colorScheme);
 

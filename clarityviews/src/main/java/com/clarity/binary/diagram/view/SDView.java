@@ -8,7 +8,6 @@ import com.clarity.binary.diagram.plantuml.PUMLDiagram;
 import com.clarity.binary.diagram.plantuml.PUMLDiagramDesciption;
 import com.clarity.binary.diagram.plantuml.StructureDiffPUMLDiagramDesciption;
 import com.clarity.binary.diagram.scheme.DiagramColorScheme;
-import com.clarity.binary.diagram.scheme.LightDiagramColorScheme;
 import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.binary.extractor.BinaryClassRelationshipExtractor;
 import com.clarity.binary.extractor.SimplifiedBinaryClassRelationships;
@@ -27,13 +26,13 @@ import java.util.Set;
  * Represents a Structure-Diff demonstrating the structural differences between
  * the two given code bases.
  */
-public class SDView implements ClarityView, Serializable {
+public class SDView implements ClarityBotView, Serializable {
 
     private static final long serialVersionUID = -3125810981280395679L;
     private Diagram diagram;
 
     public SDView(DiagramColorScheme colorScheme, OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel,
-            boolean callback, int maxSDSize) throws Exception {
+                  int maxSDSize) throws Exception {
 
         Map<String, BinaryClassRelationship> oldBinaryRelationships = new BinaryClassRelationshipExtractor<Object>()
                 .generateBinaryClassRelationships(olderModel);
@@ -72,8 +71,7 @@ public class SDView implements ClarityView, Serializable {
         }
 
         // form a list of all base components that do not exist in the newer
-        // code
-        // base but do exist in the older code base.
+        // code base but do exist in the older code base.
         Set<String> deletedBaseComponents = new HashSet<String>();
         deletedBaseComponents.forEach(s -> {
             Component cmp = olderModel.getComponent(s);
@@ -142,16 +140,7 @@ public class SDView implements ClarityView, Serializable {
         PUMLDiagramDesciption diffClarityView = new StructureDiffPUMLDiagramDesciption(diagramComponents,
                 allRelationships, deletedRelationships, addedRelationships, deletedComponents, addedComponents,
                 mergedCodeBase.getComponents(), colorScheme);
-        this.diagram = new PUMLDiagram(diffClarityView, colorScheme);
-    }
-
-    public SDView(OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel, boolean callback) throws Exception {
-        this(new LightDiagramColorScheme(), olderModel, newerModel, callback, 75);
-    }
-
-    public SDView(OOPSourceCodeModel olderModel, OOPSourceCodeModel newerModel, boolean callback, int maxSDSize)
-            throws Exception {
-        this(new LightDiagramColorScheme(), olderModel, newerModel, callback, maxSDSize);
+        this.diagram = new PUMLDiagram(diffClarityView, colorScheme, diagramComponents.size());
     }
 
     @Override

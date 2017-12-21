@@ -9,4 +9,9 @@ public interface Diagram {
      * Returns a string representing the svg makeup of a class diagram.
      */
     String svgText() throws Exception;
+
+    /**
+     * Number of components involved in the diagram.
+     */
+    int size();
 }
