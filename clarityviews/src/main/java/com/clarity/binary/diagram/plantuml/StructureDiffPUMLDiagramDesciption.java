@@ -1,10 +1,5 @@
 package com.clarity.binary.diagram.plantuml;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.clarity.binary.DefaultText;
 import com.clarity.binary.HtmlTagsStrippedText;
 import com.clarity.binary.JavaDocSymbolStrippedText;
@@ -21,7 +16,12 @@ import com.clarity.sourcemodel.OOPSourceModelConstants;
 import com.clarity.sourcemodel.OOPSourceModelConstants.AccessModifiers;
 import com.clarity.sourcemodel.OOPSourceModelConstants.ComponentType;
 
-public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDesciption {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class StructureDiffPUMLDiagramDesciption implements PUMLDiagramDescription {
 
     private Set<Component> diagramComponents;
     private Map<String, Component> allComponents;

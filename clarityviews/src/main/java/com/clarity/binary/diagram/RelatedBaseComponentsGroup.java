@@ -274,7 +274,7 @@ public class RelatedBaseComponentsGroup {
         for (Component tmpCmp : componentRelatedGroup) {
             for (final Map.Entry<String, BinaryClassRelationship> entry : allRelationships.entrySet()) {
 
-                if (overallRelatedGroup.size() >= (mainComponents.size() * 2)) {
+                if (overallRelatedGroup.size() >= (5.0 * (Math.pow(mainComponents.size(), 0.5)))) {
                     break;
                 }
 
