@@ -1,12 +1,13 @@
 package claritybot.test;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import com.clarity.binary.parse.ParsedProject;
+import com.clarity.compiler.Lang;
+import com.clarity.compiler.RawFile;
+import com.clarity.compiler.SourceFiles;
+import com.clarity.sourcemodel.OOPSourceCodeModel;
+import org.apache.commons.io.IOUtils;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -14,14 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import org.apache.commons.io.IOUtils;
-
-import com.clarity.binary.parse.ParsedProject;
-import com.clarity.parser.Lang;
-import com.clarity.parser.ParseRequestContent;
-import com.clarity.parser.RawFile;
-import com.clarity.sourcemodel.OOPSourceCodeModel;
 
 public class ClarityTestUtil {
 
@@ -33,7 +26,7 @@ public class ClarityTestUtil {
         HttpURLConnection conn = (HttpURLConnection) repoUrl.openConnection();
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         IOUtils.copy(new BufferedInputStream(conn.getInputStream(), 1024), baos);
-        final ParseRequestContent sourceFiles = extractProjectFromArchive(new ByteArrayInputStream(baos.toByteArray()),
+        final SourceFiles sourceFiles = extractProjectFromArchive(new ByteArrayInputStream(baos.toByteArray()),
                 null, Lang.JAVA);
         OOPSourceCodeModel model = new ParsedProject(sourceFiles).model();
         return model;
@@ -54,10 +47,10 @@ public class ClarityTestUtil {
         return filenames;
     }
 
-    public static ParseRequestContent extractProjectFromArchive(final InputStream is, String project, Lang language)
+    public static SourceFiles extractProjectFromArchive(final InputStream is, String project, Lang language)
             throws Exception {
 
-        final ParseRequestContent sourceFiles = new ParseRequestContent(language);
+        final SourceFiles sourceFiles = new SourceFiles(language);
         boolean currentlyExtractingProject = false;
         boolean finishedExtracting = false;
         ZipInputStream zis = null;
@@ -122,9 +115,9 @@ public class ClarityTestUtil {
         return Thread.currentThread().getContextClassLoader();
     }
 
-    public static ParseRequestContent parseRequestContentObjFromResourceDir(String dir) throws IOException {
+    public static SourceFiles SourceFilesObjFromResourceDir(String dir) throws IOException {
 
-        ParseRequestContent req = new ParseRequestContent(Lang.JAVA);
+        SourceFiles req = new SourceFiles(Lang.JAVA);
         List<String> fileNames = getResourceFiles(dir);
         for (String s : fileNames) {
             req.insertFile(new RawFile(s.replace(".txt", ".java"),

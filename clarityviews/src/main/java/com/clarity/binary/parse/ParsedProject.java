@@ -1,16 +1,14 @@
 package com.clarity.binary.parse;
 
-import java.io.IOException;
-
-import com.clarity.parser.ClarpseProject;
-import com.clarity.parser.ParseRequestContent;
+import com.clarity.compiler.ClarpseProject;
+import com.clarity.compiler.SourceFiles;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
 
 public class ParsedProject {
 
-    private ParseRequestContent codebase;
+    private SourceFiles codebase;
 
-    public ParsedProject(ParseRequestContent codebase) throws IOException {
+    public ParsedProject(SourceFiles codebase) {
         this.codebase = codebase;
     }
 

@@ -1,22 +1,21 @@
 package claritybot.test;
 
-import static org.junit.Assert.assertTrue;
+import com.clarity.binary.diagram.RelatedBaseComponentsGroup;
+import com.clarity.binary.extractor.BinaryClassRelationship;
+import com.clarity.binary.extractor.BinaryClassRelationshipExtractor;
+import com.clarity.binary.parse.ParsedProject;
+import com.clarity.compiler.Lang;
+import com.clarity.compiler.RawFile;
+import com.clarity.compiler.SourceFiles;
+import com.clarity.sourcemodel.Component;
+import com.clarity.sourcemodel.OOPSourceCodeModel;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Test;
-
-import com.clarity.binary.diagram.RelatedBaseComponentsGroup;
-import com.clarity.binary.extractor.BinaryClassRelationship;
-import com.clarity.binary.extractor.BinaryClassRelationshipExtractor;
-import com.clarity.binary.parse.ParsedProject;
-import com.clarity.parser.Lang;
-import com.clarity.parser.ParseRequestContent;
-import com.clarity.parser.RawFile;
-import com.clarity.sourcemodel.Component;
-import com.clarity.sourcemodel.OOPSourceCodeModel;
+import static org.junit.Assert.assertTrue;
 
 /**
  * The {@link RelatedBaseComponentsGroup} class is used to determine what
@@ -33,8 +32,8 @@ public class RelatedComponentGroupTest {
         final RawFile file2 = new RawFile("ClassB.java",
                 "package com.sample; public class ClassB implements ClassD {}");
         final RawFile file3 = new RawFile("ClassD.java", "package com.sample; public class ClassD  {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCon.insertFile(file3);
@@ -55,8 +54,8 @@ public class RelatedComponentGroupTest {
         final RawFile file2 = new RawFile("ClassB.java",
                 "package com.sample; public class ClassB implements ClassD {}");
         final RawFile file3 = new RawFile("ClassD.java", "package com.sample; public class ClassD  {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCon.insertFile(file3);
@@ -77,8 +76,8 @@ public class RelatedComponentGroupTest {
                 + "public class ClassA {  private ArrayList<ClassB> b;}");
         final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB extends ClassD {}");
         final RawFile file3 = new RawFile("ClassD.java", "package com.sample; public class ClassD  {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCon.insertFile(file3);
@@ -99,8 +98,8 @@ public class RelatedComponentGroupTest {
                 + "public class ClassA implements ClassD {  private ArrayList<ClassB> b;}");
         final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB {}");
         final RawFile file3 = new RawFile("ClassD.java", "package com.sample; public class ClassD  {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCon.insertFile(file3);
@@ -122,8 +121,8 @@ public class RelatedComponentGroupTest {
         final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB {}");
         final RawFile file3 = new RawFile("ClassD.java",
                 "package com.sample; public class ClassD  { private ClassA classA;}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCon.insertFile(file3);
@@ -146,8 +145,8 @@ public class RelatedComponentGroupTest {
         final RawFile file2 = new RawFile("ClassB.java",
                 "package com.sample; public class ClassB implements ClassA {}");
         final RawFile file3 = new RawFile("ClassD.java", "package com.sample; public class ClassD  { }");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCon.insertFile(file3);
@@ -169,8 +168,8 @@ public class RelatedComponentGroupTest {
                 "package com.sample;" + "public class ClassA implements ClassD { }");
         final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB extends ClassA {}");
         final RawFile file3 = new RawFile("ClassD.java", "package com.sample; public class ClassD  { }");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCon.insertFile(file3);
@@ -191,8 +190,8 @@ public class RelatedComponentGroupTest {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + " public class ClassA { }");
         final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB {}");
         final RawFile file3 = new RawFile("ClassD.java", "package com.sample; public class ClassD  {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCon.insertFile(file3);
@@ -205,5 +204,24 @@ public class RelatedComponentGroupTest {
                 codeModel.getComponent("com.sample.ClassA")).components();
         assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassA")));
         assertTrue(cmps.size() == 1);
+    }
+
+    @Test
+    public void testI() throws Exception {
+        final RawFile file = new RawFile("ClassA.java", "package com.sample;" + "\n /**\n {@link ClassB classB  } \n */ \n public class ClassA { }");
+        final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB {}");
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
+        reqCon.insertFile(file);
+        reqCon.insertFile(file2);
+        reqCons.add(reqCon);
+        final OOPSourceCodeModel codeModel = new ParsedProject(reqCon).model();
+        final BinaryClassRelationshipExtractor<?> bCAS = new BinaryClassRelationshipExtractor<Object>();
+        final Map<String, BinaryClassRelationship> binaryRelationships = bCAS
+                .generateBinaryClassRelationships(codeModel);
+        Set<Component> cmps = new RelatedBaseComponentsGroup(codeModel.getComponents(), binaryRelationships,
+                codeModel.getComponent("com.sample.ClassA")).components();
+        assertTrue(cmps.contains(codeModel.getComponent("com.sample.ClassB")));
+        assertTrue(cmps.size() == 2);
     }
 }

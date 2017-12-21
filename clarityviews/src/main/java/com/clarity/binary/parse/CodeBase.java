@@ -1,9 +1,9 @@
 package com.clarity.binary.parse;
 
+import com.clarity.compiler.RawFile;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.clarity.parser.RawFile;
 
 /**
  * Represents a collection of source files.

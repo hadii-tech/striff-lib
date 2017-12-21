@@ -1,18 +1,15 @@
 package com.clarity.binary.diagram;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.clarity.binary.diagram.DiagramConstants.BinaryClassAssociation;
 import com.clarity.binary.extractor.BinaryClassRelationship;
+import com.clarity.invocation.ComponentInvocation;
 import com.clarity.sourcemodel.Component;
-
+import com.clarity.sourcemodel.OOPSourceModelConstants;
 import net.sf.oval.constraint.NotEmpty;
 import net.sf.oval.constraint.NotNull;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Represents a group of base components that are related to each other.
@@ -77,7 +74,7 @@ public class RelatedBaseComponentsGroup {
      */
     public Set<Component> components() {
 
-        final List<Component> overallRelatedGroup = new ArrayList<Component>();
+        final List<Component> overallRelatedGroup = new ArrayList<>();
         for (String cmpName : mainComponents) {
             Component cmp = allComponents.get(cmpName);
 
@@ -92,7 +89,7 @@ public class RelatedBaseComponentsGroup {
                     .filter(map -> map.getKey().contains(shortName))
                     .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
 
-            final List<Component> componentRelatedGroup = new ArrayList<Component>();
+            final List<Component> componentRelatedGroup = new ArrayList<>();
             componentRelatedGroup.add(cmp);
 
             /**
@@ -185,7 +182,18 @@ public class RelatedBaseComponentsGroup {
             componentRelatedGroup.addAll(tmpSubComponentRelatedGroup.subList(1, tmpSubComponentRelatedGroup.size()));
 
             /**
-             * Filter stage 3: Start with the beginning of the current result
+             * Filter stage 3: Any components mentioned by documentation should be included.
+             */
+
+            for (ComponentInvocation docMention : cmp.componentInvocations(OOPSourceModelConstants.ComponentInvocations.DOC_MENTION)) {
+                Component mentionedComponent = allComponents.get(docMention.invokedComponent());
+                if (mentionedComponent != null) {
+                    componentRelatedGroup.add(mentionedComponent);
+                }
+            }
+
+            /**
+             * Filter stage 4: Start with the beginning of the current result
              * list and look for composition/aggregation relationships.
              */
             int compositionMatches = 0;
@@ -214,7 +222,7 @@ public class RelatedBaseComponentsGroup {
                 }
             }
             /**
-             * Filter stage 4: get any remaining components that are involved in
+             * Filter stage 5: get any remaining components that are involved in
              * a extension/realization relationship with the list of components
              * collected so far.
              */
@@ -255,7 +263,7 @@ public class RelatedBaseComponentsGroup {
         }
 
         /**
-         * Filter stage 5: If there is space, add any remaining weak
+         * Filter stage 6: If there is space, add any remaining weak
          * relationships.
          */
         final List<Component> componentRelatedGroup = new ArrayList<Component>(overallRelatedGroup);

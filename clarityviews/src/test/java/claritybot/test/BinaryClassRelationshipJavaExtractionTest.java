@@ -1,22 +1,21 @@
 package claritybot.test;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Map;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.clarity.binary.diagram.DiagramConstants.BinaryClassAssociation;
 import com.clarity.binary.diagram.DiagramConstants.DefaultClassMultiplicities;
 import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.binary.extractor.BinaryClassRelationshipExtractor;
 import com.clarity.binary.parse.ParsedProject;
-import com.clarity.parser.Lang;
-import com.clarity.parser.ParseRequestContent;
-import com.clarity.parser.RawFile;
+import com.clarity.compiler.Lang;
+import com.clarity.compiler.RawFile;
+import com.clarity.compiler.SourceFiles;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests to ensure binary class relationships are being extracted properly.
@@ -28,8 +27,8 @@ public class BinaryClassRelationshipJavaExtractionTest {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + "import java.util.ArrayList;"
                 + "public class ClassA {  private ArrayList<ClassB> b;}");
         final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
@@ -46,8 +45,8 @@ public class BinaryClassRelationshipJavaExtractionTest {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;" + "import java.util.ArrayList;"
                 + "public class ClassA {  private ArrayList<ClassB> b;}");
         final RawFile file2 = new RawFile("ClassB.java", "package com.sample; public class ClassB {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
@@ -67,8 +66,8 @@ public class BinaryClassRelationshipJavaExtractionTest {
         final RawFile file = new RawFile("ClassA.java",
                 "package com.sample;" + "import java.util.ArrayList;" + "public class ClassA implements ClassC {}");
         final RawFile file2 = new RawFile("ClassC.java", "package com.sample; public interface ClassC {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
@@ -88,8 +87,8 @@ public class BinaryClassRelationshipJavaExtractionTest {
         final RawFile file = new RawFile("ClassA.java",
                 "package com.sample;" + "import java.util.ArrayList;" + "public class ClassA implements ClassC {}");
         final RawFile file2 = new RawFile("ClassC.java", "package com.sample; public interface ClassC {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
@@ -109,8 +108,8 @@ public class BinaryClassRelationshipJavaExtractionTest {
         final RawFile file = new RawFile("ClassA.java",
                 "package com.sample;" + " import java.util.ArrayList;" + "public class ClassA extends ClassD {}");
         final RawFile file2 = new RawFile("ClassD.java", "package com.sample; public class ClassD {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
@@ -126,8 +125,8 @@ public class BinaryClassRelationshipJavaExtractionTest {
     public void testExtensionLevelRelationTypes() throws Exception {
         final RawFile file = new RawFile("ClassA.java", "package com.sample;  public class ClassA extends ClassD {}");
         final RawFile file2 = new RawFile("ClassD.java", "package com.sample; public class ClassD {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCons.add(reqCon);
@@ -147,8 +146,8 @@ public class BinaryClassRelationshipJavaExtractionTest {
         final RawFile file = new RawFile("ClassA.java",
                 "package com.sample;" + "import java.util.ArrayList;" + "public class ClassA extends ClassD {}");
         final RawFile file2 = new RawFile("ClassD.java", "package com.sample; public class ClassD {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         file.name("sample.java");
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
@@ -169,8 +168,8 @@ public class BinaryClassRelationshipJavaExtractionTest {
         final RawFile file = new RawFile("ClassA.java",
                 "package com.sample;" + "import java.util.ArrayList;" + "public class ClassA { ClassE aMethod() {}}");
         final RawFile file2 = new RawFile("ClassE.java", "package com.sample; public class ClassE {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         file.name("sample.java");
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
@@ -191,8 +190,8 @@ public class BinaryClassRelationshipJavaExtractionTest {
         final RawFile file = new RawFile("ClassA.java",
                 "package com.sample;" + "import java.util.ArrayList;" + "public class ClassA { ClassE aMethod() {}}");
         final RawFile file2 = new RawFile("ClassE.java", "package com.sample; public class ClassE {}");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         file.name("sample.java");
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
@@ -218,8 +217,8 @@ public class BinaryClassRelationshipJavaExtractionTest {
         final RawFile file2 = new RawFile("ClassE.java",
                 "package test; public class ClassE implements ClassA { public ClassD aMethod () {} }");
         final RawFile file3 = new RawFile("ClassD.java", "package test; public class ClassD { }");
-        final ParseRequestContent reqCon = new ParseRequestContent(Lang.JAVA);
-        final ArrayList<ParseRequestContent> reqCons = new ArrayList<ParseRequestContent>();
+        final SourceFiles reqCon = new SourceFiles(Lang.JAVA);
+        final ArrayList<SourceFiles> reqCons = new ArrayList<SourceFiles>();
         reqCon.insertFile(file);
         reqCon.insertFile(file2);
         reqCon.insertFile(file3);

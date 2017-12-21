@@ -1,14 +1,8 @@
 package com.clarity.binary.diagram.view;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.clarity.binary.ComponentSet;
 import com.clarity.binary.diagram.Diagram;
+import com.clarity.binary.diagram.DiagramConstants.BinaryClassAssociation;
 import com.clarity.binary.diagram.RelatedBaseComponentsGroup;
 import com.clarity.binary.diagram.plantuml.PUMLDiagram;
 import com.clarity.binary.diagram.plantuml.PUMLDiagramDesciption;
@@ -20,8 +14,10 @@ import com.clarity.binary.extractor.BinaryClassRelationshipExtractor;
 import com.clarity.binary.extractor.SimplifiedBinaryClassRelationships;
 import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
-
 import net.sourceforge.plantuml.Log;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Represents a Structure-Diff demonstrating the structural differences between
@@ -104,8 +100,8 @@ public class SDView implements ClarityView, Serializable {
             }
         }
 
-        if (addedComponents.isEmpty() && addedRelationships.isEmpty() && deletedComponents.isEmpty()
-                && deletedRelationships.isEmpty()) {
+        if (((addedComponents.size() + deletedComponents.size()) < 3)
+                && ((noStrongRelations(addedRelationships) + noStrongRelations(deletedRelationships)) < 3)) {
             Log.info("Source models are equivalent, returning..");
             return;
         }
@@ -157,5 +153,18 @@ public class SDView implements ClarityView, Serializable {
     @Override
     public Diagram view() {
         return this.diagram;
+    }
+
+    private int noStrongRelations(List<BinaryClassRelationship> relations) {
+        int count = 0;
+        for (BinaryClassRelationship relation : relations) {
+            if (relation.getaSideAssociation().getStrength() > BinaryClassAssociation.WEAK_ASSOCIATION.getStrength()) {
+                count++;
+            }
+            if (relation.getbSideAssociation().getStrength() > BinaryClassAssociation.WEAK_ASSOCIATION.getStrength()) {
+                count++;
+            }
+        }
+        return count;
     }
 }
