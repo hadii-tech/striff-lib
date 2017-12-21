@@ -17,7 +17,11 @@ import com.clarity.sourcemodel.OOPSourceCodeModel;
 import net.sourceforge.plantuml.Log;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Represents a Structure-Diff demonstrating the structural differences between
