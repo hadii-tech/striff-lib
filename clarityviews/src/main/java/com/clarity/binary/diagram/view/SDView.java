@@ -14,6 +14,7 @@ import com.clarity.binary.extractor.BinaryClassRelationship;
 import com.clarity.binary.extractor.BinaryClassRelationshipExtractor;
 import com.clarity.sourcemodel.Component;
 import com.clarity.sourcemodel.OOPSourceCodeModel;
+import com.clarity.sourcemodel.OOPSourceModelConstants;
 import net.sourceforge.plantuml.Log;
 
 import java.io.Serializable;
@@ -54,11 +55,13 @@ public class SDView implements ClarityBotView, Serializable {
         Set<String> mainComponents = new HashSet<String>();
         addedComponents.forEach(s -> {
             Component cmp = newerModel.getComponent(s);
-            while (cmp != null && !cmp.componentType().isBaseComponent()) {
-                cmp = newerModel.getComponent(cmp.parentUniqueName());
-            }
-            if (cmp != null && cmp.componentType().isBaseComponent()) {
-                mainComponents.add(cmp.uniqueName());
+            if (cmp.componentType() != OOPSourceModelConstants.ComponentType.LOCAL) {
+                while (cmp != null && !cmp.componentType().isBaseComponent()) {
+                    cmp = newerModel.getComponent(cmp.parentUniqueName());
+                }
+                if (cmp != null && cmp.componentType().isBaseComponent()) {
+                    mainComponents.add(cmp.uniqueName());
+                }
             }
         });
 
@@ -75,12 +78,13 @@ public class SDView implements ClarityBotView, Serializable {
         // code base but do exist in the older code base.
         deletedComponents.forEach(s -> {
             Component cmp = olderModel.getComponent(s);
-            while (cmp != null && !cmp.componentType().isBaseComponent()) {
-                cmp = olderModel.getComponent(cmp.parentUniqueName());
-            }
-            if (cmp != null && cmp.componentType().isBaseComponent()) {
-                mainComponents.add(cmp.uniqueName());
-
+            if (cmp.componentType() != OOPSourceModelConstants.ComponentType.LOCAL) {
+                while (cmp != null && !cmp.componentType().isBaseComponent()) {
+                    cmp = olderModel.getComponent(cmp.parentUniqueName());
+                }
+                if (cmp != null && cmp.componentType().isBaseComponent()) {
+                    mainComponents.add(cmp.uniqueName());
+                }
             }
         });
 
@@ -153,8 +157,7 @@ public class SDView implements ClarityBotView, Serializable {
         for (BinaryClassRelationship relation : relations) {
             if (relation.getaSideAssociation().getStrength() >= BinaryClassAssociation.ASSOCIATION.getStrength()) {
                 count++;
-            }
-            if (relation.getbSideAssociation().getStrength() >= BinaryClassAssociation.ASSOCIATION.getStrength()) {
+            } else if (relation.getbSideAssociation().getStrength() >= BinaryClassAssociation.ASSOCIATION.getStrength()) {
                 count++;
             }
         }
