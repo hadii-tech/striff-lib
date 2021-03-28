@@ -11,7 +11,7 @@ public class TextTest {
 
 
     @Test
-    public void LineBreakedTextTest() {
+    public void lineBreakedTextTest() {
         assert(new LineBreakedText(new DefaultText("a test string that can be broken up."), 10))
         .value().equals("a test\n" +
                             "string\n" +
@@ -21,7 +21,7 @@ public class TextTest {
     }
 
     @Test
-    public void StriffComponentDocTextTest() throws Exception {
+    public void striffComponentDocTextTest() throws Exception {
         assertTrue(new StiffComponentDocText("/**\n" +
                                                     " * A test case defines the fixture to run multiple tests. To define a test case<br/>\n" +
                                                     " * <ol>\n" +
