@@ -1,7 +1,6 @@
 package com.hadii.striff.parse;
 
 import com.hadii.striff.ChangeSet;
-import com.hadii.striff.StriffOperation;
 import com.hadii.striff.diagram.DiagramComponent;
 import com.hadii.striff.diagram.StriffCodeModel;
 import com.hadii.striff.extractor.ExtractedRelationships;
