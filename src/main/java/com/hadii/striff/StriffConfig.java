@@ -29,7 +29,7 @@ public class StriffConfig {
     private Set<Lang> languages = new HashSet<>(Lang.supportedLanguages());
 
 
-    public StriffConfig() {}
+    public StriffConfig() { }
 
     public StriffConfig(OutputMode outputMode, Collection<Lang> languages) {
         this.outputMode = outputMode;
