@@ -4,8 +4,15 @@ import com.hadii.clarpse.compiler.ClarpseProject;
 import com.hadii.clarpse.compiler.Lang;
 import com.hadii.clarpse.compiler.ProjectFile;
 import com.hadii.clarpse.compiler.ProjectFiles;
+import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
+import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants.ComponentType;
+import com.hadii.striff.diagram.DiagramComponent;
 import com.hadii.striff.metrics.OOPMetricsProfile;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
@@ -246,4 +253,73 @@ public class OOPMetricsTest {
                 assertEquals(7.0, new OOPMetricsProfile(generatedSourceModel).weightedMethodComplexity(
                                 generatedSourceModel.getComponent("main.SampleStruct").get()));
         }
+
+        @Test
+        public void wmcMetricExceptionTest() throws Exception {
+                assertThrows(IllegalArgumentException.class,
+                                () -> {
+                                        Component fakeCmp = new Component();
+                                        fakeCmp.setComponentName("nonexistent");
+                                        fakeCmp.setComponentType(ComponentType.CLASS);
+                                        final String code = "package main\ntype ClassA struct {}";
+                                        final ProjectFiles rawData = new ProjectFiles();
+                                        rawData.insertFile(new ProjectFile("/sample.go", code));
+                                        rawData.insertFile(new ProjectFile("/go.mod", "module module/module/module"));
+                                        final ClarpseProject parseService = new ClarpseProject(rawData, Lang.GOLANG);
+                                        OOPSourceCodeModel generatedSourceModel = parseService.result().model();
+                                        new OOPMetricsProfile(generatedSourceModel).weightedMethodComplexity(fakeCmp);
+                                });
+        }
+
+        @Test
+        public void encapsulationMetricExceptionTest() throws Exception {
+                assertThrows(IllegalArgumentException.class,
+                                () -> {
+                                        Component fakeCmp = new Component();
+                                        fakeCmp.setComponentName("nonexistent");
+                                        fakeCmp.setComponentType(ComponentType.CLASS);
+                                        final String code = "package main\ntype ClassA struct {}";
+                                        final ProjectFiles rawData = new ProjectFiles();
+                                        rawData.insertFile(new ProjectFile("/sample.go", code));
+                                        rawData.insertFile(new ProjectFile("/go.mod", "module module/module/module"));
+                                        final ClarpseProject parseService = new ClarpseProject(rawData, Lang.GOLANG);
+                                        OOPSourceCodeModel generatedSourceModel = parseService.result().model();
+                                        new OOPMetricsProfile(generatedSourceModel).encapsulation(fakeCmp);
+                                });
+        }
+
+        @Test
+        public void efferentCouplingMetricExceptionTest() throws Exception {
+                assertThrows(IllegalArgumentException.class,
+                                () -> {
+                                        Component fakeCmp = new Component();
+                                        fakeCmp.setComponentName("nonexistent");
+                                        fakeCmp.setComponentType(ComponentType.CLASS);
+                                        final String code = "package main\ntype ClassA struct {}";
+                                        final ProjectFiles rawData = new ProjectFiles();
+                                        rawData.insertFile(new ProjectFile("/sample.go", code));
+                                        rawData.insertFile(new ProjectFile("/go.mod", "module module/module/module"));
+                                        final ClarpseProject parseService = new ClarpseProject(rawData, Lang.GOLANG);
+                                        OOPSourceCodeModel generatedSourceModel = parseService.result().model();
+                                        new OOPMetricsProfile(generatedSourceModel).efferentCoupling(fakeCmp);
+                                });
+        }
+
+        @Test
+        public void afferentCouplingMetricExceptionTest() throws Exception {
+                assertThrows(IllegalArgumentException.class,
+                                () -> {
+                                        Component fakeCmp = new Component();
+                                        fakeCmp.setComponentName("nonexistent");
+                                        fakeCmp.setComponentType(ComponentType.CLASS);
+                                        final String code = "package main\ntype ClassA struct {}";
+                                        final ProjectFiles rawData = new ProjectFiles();
+                                        rawData.insertFile(new ProjectFile("/sample.go", code));
+                                        rawData.insertFile(new ProjectFile("/go.mod", "module module/module/module"));
+                                        final ClarpseProject parseService = new ClarpseProject(rawData, Lang.GOLANG);
+                                        OOPSourceCodeModel generatedSourceModel = parseService.result().model();
+                                        new OOPMetricsProfile(generatedSourceModel).afferentCoupling(fakeCmp);
+                                });
+        }
+
 }
