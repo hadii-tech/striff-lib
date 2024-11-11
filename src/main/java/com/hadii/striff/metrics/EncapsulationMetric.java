@@ -32,7 +32,11 @@ public class EncapsulationMetric implements Metric {
             }
             // Avoid division by zero if there are no children
             int totalChildren = currComponent.children().size();
-            return totalChildren > 0 ? (double) privateMembers / totalChildren : 0.0;
+            if (totalChildren == 0) {
+                return 0.0;
+            } else {
+                return (double) privateMembers / totalChildren;
+            }
         } else {
             throw new IllegalArgumentException("Could not find component: " + cmpId + "!");
         }
