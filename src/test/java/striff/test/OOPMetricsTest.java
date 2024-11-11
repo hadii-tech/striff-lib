@@ -7,10 +7,8 @@ import com.hadii.clarpse.compiler.ProjectFiles;
 import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants.ComponentType;
-import com.hadii.striff.diagram.DiagramComponent;
 import com.hadii.striff.metrics.OOPMetricsProfile;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
@@ -251,7 +249,7 @@ public class OOPMetricsTest {
                 final ClarpseProject parseService = new ClarpseProject(rawData, Lang.GOLANG);
                 OOPSourceCodeModel generatedSourceModel = parseService.result().model();
                 assertEquals(7.0, new OOPMetricsProfile(generatedSourceModel).weightedMethodComplexity(
-                                generatedSourceModel.getComponent("main.SampleStruct").get()));
+                                generatedSourceModel.getComponent("main.SampleStruct").get()), 0.0);
         }
 
         @Test
