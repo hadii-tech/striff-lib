@@ -29,7 +29,8 @@ public class StriffOperation {
 
     private final StriffOutput striffOutput;
 
-    public StriffOperation(ProjectFiles originalPFs, ProjectFiles newPFs, StriffConfig config) throws IOException, PUMLDrawException, CompileException {
+    public StriffOperation(ProjectFiles originalPFs, ProjectFiles newPFs, StriffConfig config)
+            throws IOException, PUMLDrawException, CompileException {
         LOGGER.info("Starting new operation with config: " + config);
         validatePFs(originalPFs, newPFs, config.filesFilter);
         HashSet<ProjectFile> allFailures = new HashSet<>();
@@ -37,30 +38,31 @@ public class StriffOperation {
         this.striffOutput = new StriffOutput(diffedModel, config, allFailures);
     }
 
-    public StriffOperation(ProjectFiles originalPFs, ProjectFiles newPFs) throws PUMLDrawException, CompileException, IOException {
+    public StriffOperation(ProjectFiles originalPFs, ProjectFiles newPFs)
+            throws PUMLDrawException, CompileException, IOException {
         this(originalPFs, newPFs, new StriffConfig());
     }
 
     private static CodeDiff generateCodeDiff(ProjectFiles originalPFs, ProjectFiles newPFs,
-                                             StriffConfig config,
-                                             HashSet<ProjectFile> allFailures) throws CompileException {
+            StriffConfig config,
+            HashSet<ProjectFile> allFailures) throws CompileException {
         OOPSourceCodeModel oldModel = new OOPSourceCodeModel();
         OOPSourceCodeModel newModel = new OOPSourceCodeModel();
         for (Lang currLang : config.languages()) {
             CompileResult oldCR = new ClarpseProject(originalPFs, currLang).result();
             CompileResult newCR = new ClarpseProject(newPFs, currLang).result();
             allFailures.addAll(Stream.concat(newCR.failures().stream(),
-                                             oldCR.failures().stream()).collect(Collectors.toSet()));
+                    oldCR.failures().stream()).collect(Collectors.toSet()));
             oldModel.merge(oldCR.model());
             newModel.merge(newCR.model());
         }
         LOGGER.info("Generating code diff b/w old and new code models..");
         return new CodeDiff(new StriffCodeModel(oldModel),
-                            new StriffCodeModel(newModel));
+                new StriffCodeModel(newModel));
     }
 
     private void validatePFs(ProjectFiles originalFiles, ProjectFiles newFiles,
-                             Set<String> filesFilter) {
+            Set<String> filesFilter) {
         LOGGER.info("Validating input project files..");
         if (!filterFilesExistInProjects(originalFiles, newFiles, filesFilter)) {
             throw new IllegalArgumentException("One or more filter file paths are invalid: " + filesFilter + ".");
@@ -73,8 +75,9 @@ public class StriffOperation {
     }
 
     private boolean filterFilesExistInProjects(ProjectFiles originalPFs, ProjectFiles newPFs,
-                                               Set<String> filesFilter) {
-        return Stream.concat(originalPFs.files().stream(), newPFs.files().stream()).map(ProjectFile::path).collect(Collectors.toSet()).containsAll(filesFilter);
+            Set<String> filesFilter) {
+        return Stream.concat(originalPFs.files().stream(), newPFs.files().stream())
+                .map(ProjectFile::path).collect(Collectors.toSet()).containsAll(filesFilter);
     }
 
     public StriffOutput result() {

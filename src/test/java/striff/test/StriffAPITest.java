@@ -17,21 +17,17 @@ public class StriffAPITest {
 
         /**
          * The following test demonstrates how to generate striff diagrams for two
-         * versions of a
-         * code base located locally on disk. First replace the `ProjectFiles` paths
-         * with valid ones
-         * pointing to the two versions of your source code, then remove the @Ignore
-         * annotation and
-         * run the test. Striff diagrams representing the architectural difference
-         * between the two
-         * code bases will be outputted as SVG diagrams in the /tmp directory.
+         * versions of a code base located locally on disk. First replace the `ProjectFiles`
+         * paths with valid ones pointing to the two versions of your source code, then
+         * remove the @Ignore annotation and run the test. Striff diagrams representing the
+         * architectural difference between the two code bases will be outputted as SVG
+         * diagrams in the /tmp directory.
          */
         @Ignore
         @Test
         public void testDemonstrateStriffAPI() throws Exception {
                 // Note, a ProjectFiles instance can be instantiated with a path to a dir, zip
-                // file, or
-                // ZipInputStream representing your source code.
+                // file, or ZipInputStream representing your source code.
                 ProjectFiles originalCode = new ProjectFiles("/path/to/original/code");
                 ProjectFiles modifiedCode = new ProjectFiles("/path/to/modified/code");
                 List<StriffDiagram> striffs = new StriffOperation(
@@ -44,7 +40,7 @@ public class StriffAPITest {
          * We can also generate striffs based on a Pull Request in GitHub. Ensure
          * the source code refs exist and are still available before running.
          */
-        @Ignore
+        //@Ignore
         @Test
         public void testDemonstrateStriffAPIWithPR() throws Exception {
                 String baseRepoOwner = "junit-team";

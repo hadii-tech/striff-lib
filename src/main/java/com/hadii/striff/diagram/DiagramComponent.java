@@ -26,8 +26,13 @@ public class DiagramComponent {
                 Optional<Component> childCmp = srcModel.getComponent(child);
                 if (childCmp.isPresent()) {
                     if (childCmp.get().componentType() == OOPSourceModelConstants.ComponentType.FIELD
-                            || childCmp.get().componentType() == OOPSourceModelConstants.ComponentType.INTERFACE_CONSTANT) {
-                        children.add(new DiagramComponent(childCmp.get(), srcModel).uniqueName());
+                            || childCmp.get()
+                                    .componentType() == OOPSourceModelConstants.ComponentType.INTERFACE_CONSTANT) {
+                        String childName = new DiagramComponent(childCmp.get(), srcModel).uniqueName();
+                        children.add(childName);
+                        if (!childName.equals(child)) {
+                            System.out.println("gotcha");
+                        }
                     } else {
                         children.add(child);
                     }
@@ -46,12 +51,7 @@ public class DiagramComponent {
     }
 
     public String uniqueName() {
-        if (cmp.codeFragment() != null && (this.cmp.componentType() == OOPSourceModelConstants.ComponentType.FIELD
-                || this.cmp.componentType() == OOPSourceModelConstants.ComponentType.INTERFACE_CONSTANT)) {
-            return cmp.uniqueName() + "." + cmp.codeFragment();
-        } else {
-            return cmp.uniqueName();
-        }
+        return cmp.uniqueName();
     }
 
     public List<ComponentReference> references(OOPSourceModelConstants.TypeReferences implementation) {
@@ -115,13 +115,14 @@ public class DiagramComponent {
     }
 
     /**
-     * Fetches the current component's parent base component given the set of components in the code base.
+     * Fetches the current component's parent base component given the set of
+     * components in the code base.
      */
     public DiagramComponent parentBaseCmp(Map<String, DiagramComponent> codeBase) {
         String currParentClassName = this.cmp.parentUniqueName();
         DiagramComponent parent;
-        for (parent = codeBase.get(currParentClassName); parent != null && !parent.componentType().isBaseComponent();
-             parent = codeBase.get(currParentClassName)) {
+        for (parent = codeBase.get(currParentClassName); parent != null
+                && !parent.componentType().isBaseComponent(); parent = codeBase.get(currParentClassName)) {
             currParentClassName = parent.parentUniqueName();
         }
         return parent;

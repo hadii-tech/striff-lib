@@ -22,9 +22,9 @@ public class DiagramComponentTest {
         final ClarpseProject parseService = new ClarpseProject(rawData, Lang.GOLANG);
         final OOPSourceCodeModel codeModel = parseService.result().model();
         assertTrue(new DiagramComponent(codeModel.getComponent("main.ClassA").get(),
-                                    codeModel).children().stream().anyMatch(s -> s.equals("main.ClassA.Name.Name : []byte")));
+                                    codeModel).children().stream().anyMatch(s -> s.equals("main.ClassA.Name")));
         assertTrue(new DiagramComponent(codeModel.getComponent("main.ClassA").get(),
-                                        codeModel).children().stream().anyMatch(s -> s.equals("main.ClassA.Label.Label : string")));
+                                        codeModel).children().stream().anyMatch(s -> s.equals("main.ClassA.Label")));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class DiagramComponentTest {
         final ClarpseProject parseService = new ClarpseProject(rawData, Lang.GOLANG);
         final OOPSourceCodeModel codeModel = parseService.result().model();
         assertTrue(new DiagramComponent(codeModel.getComponent("main.ClassA.Name").get(), codeModel)
-                                            .uniqueName().equals("main.ClassA.Name.Name : []byte"));
+                                            .uniqueName().equals("main.ClassA.Name"));
     }
 
     @Test
