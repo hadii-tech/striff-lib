@@ -10,6 +10,7 @@ import java.util.Map;
  */
 public class StriffCodeModel {
 
+    private String test;
     private final Map<String, DiagramComponent> components = new HashMap<>();
 
     public StriffCodeModel(OOPSourceCodeModel srcModel) {
