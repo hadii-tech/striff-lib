@@ -1,5 +1,6 @@
 package com.hadii.striff.diagram.plantuml;
 
+import com.hadii.striff.diagram.ComponentHelper;
 import com.hadii.striff.diagram.DiagramComponent;
 import com.hadii.striff.diagram.display.DiagramDisplay;
 import com.hadii.striff.parse.CodeDiff;
@@ -22,7 +23,7 @@ final class PUMLPackageCode {
         StringBuffer stringBuffer = new StringBuffer();
         diagramDisplay.pkgColorMappings().forEach(entry -> {
             Set<DiagramComponent> pkgBaseCmps =
-                diagramComponents.stream().filter(cmp -> cmp.packagePath().equals(
+                diagramComponents.stream().filter(cmp -> ComponentHelper.packagePath(cmp.pkg()).equals(
                     entry.getKey()) && cmp.componentType().isBaseComponent())
                                  .collect(Collectors.toSet());
             if (entry.getKey() == null || entry.getKey().isEmpty()) {
@@ -35,7 +36,7 @@ final class PUMLPackageCode {
                         .append(" ")
                         .append(entry.getValue())
                         .append(" {\n")
-                        .append(new PUMLClassFieldsCode(codeDiff.components(),
+                        .append(new PUMLClassFieldsCode(codeDiff.mergedModel(),
                                                         codeDiff.changeSet(),
                                                         diagramDisplay).value(pkgBaseCmps))
                         .append("}\n");

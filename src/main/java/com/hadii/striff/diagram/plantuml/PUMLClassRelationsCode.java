@@ -1,5 +1,6 @@
 package com.hadii.striff.diagram.plantuml;
 
+import com.hadii.striff.diagram.ComponentHelper;
 import com.hadii.striff.diagram.DiagramComponent;
 import com.hadii.striff.extractor.DiagramConstants;
 import com.hadii.striff.diagram.display.DiagramDisplay;
@@ -19,12 +20,12 @@ final class PUMLClassRelationsCode {
     private final DiagramDisplay diagramDisplay;
     private StringBuilder tempStrBuilder;
 
-    PUMLClassRelationsCode(Set<DiagramComponent> diagramComponents, CodeDiff mergedModel,
+    PUMLClassRelationsCode(Set<DiagramComponent> diagramComponents, CodeDiff codeDiff,
                                   DiagramDisplay diagramDisplay) {
         this.diagramComponents = diagramComponents;
-        this.allRelations = mergedModel.extractedRels();
-        this.addedRelationships = mergedModel.changeSet().addedRelations();
-        this.deletedRelationships = mergedModel.changeSet().deletedRelations();
+        this.allRelations = codeDiff.extractedRels();
+        this.addedRelationships = codeDiff.changeSet().addedRelations();
+        this.deletedRelationships = codeDiff.changeSet().deletedRelations();
         this.diagramDisplay = diagramDisplay;
         genCode();
     }
@@ -35,7 +36,7 @@ final class PUMLClassRelationsCode {
     private void genCode() {
         this.tempStrBuilder = new StringBuilder();
         for (DiagramComponent currCmp : this.diagramComponents) {
-                for (ComponentRelation currCmpRel : this.allRelations.significantRels(currCmp)) {
+                for (ComponentRelation currCmpRel : this.allRelations.significantRels(currCmp.uniqueName())) {
                     // Ensure the relationship involves components from this diagram
                     if (this.diagramComponents.contains(currCmpRel.targetComponent())) {
                         // Get reverse relation between componentA and component B... this may be empty.
@@ -46,7 +47,7 @@ final class PUMLClassRelationsCode {
                             final DiagramConstants.ComponentAssociation aToBAssociation = currCmpRel.associationType();
                             final DiagramConstants.ComponentAssociation bToAAssociation = reverseRel.associationType();
                             // Insert original component name
-                            this.tempStrBuilder.append(sanitizedCmpName(currCmpRel.originalComponent().packagePath()))
+                            this.tempStrBuilder.append(sanitizedCmpName(ComponentHelper.packagePath(currCmpRel.originalComponent().pkg())))
                                                .append(".")
                                                .append(sanitizedCmpName(currCmpRel.originalComponent().name()))
                                                .append(" ");
@@ -101,7 +102,7 @@ final class PUMLClassRelationsCode {
                                                    .append("\" ");
                             }
                             // Insert target component name
-                            this.tempStrBuilder.append(sanitizedCmpName(currCmpRel.targetComponent().packagePath()))
+                            this.tempStrBuilder.append(sanitizedCmpName(ComponentHelper.packagePath(currCmpRel.targetComponent().pkg())))
                                                .append(".")
                                                .append(sanitizedCmpName(currCmpRel.targetComponent().name()))
                                                .append(" ");

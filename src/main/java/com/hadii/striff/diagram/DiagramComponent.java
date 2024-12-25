@@ -4,12 +4,10 @@ import com.hadii.clarpse.reference.ComponentReference;
 import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants;
+import com.hadii.clarpse.sourcemodel.Package;
+import com.hadii.striff.metrics.MetricChange;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents the building blocks of a Striff diagram.
@@ -18,36 +16,64 @@ public class DiagramComponent {
 
     private final Component cmp;
     private final List<String> children = new ArrayList<>();
+    private MetricChange metricChange;
 
+    /**
+     * Creates a DiagramComponent from a Component and optionally populates its children.
+     *
+     * @param cmp      Underlying component
+     * @param srcModel Source code model (may be null)
+     */
     public DiagramComponent(Component cmp, OOPSourceCodeModel srcModel) {
-        this.cmp = cmp;
+        this.cmp = cmp == null ? new Component() : cmp;
         if (srcModel != null) {
-            for (String child : cmp.children()) {
-                Optional<Component> childCmp = srcModel.getComponent(child);
-                if (childCmp.isPresent()) {
-                    if (childCmp.get().componentType() == OOPSourceModelConstants.ComponentType.FIELD
-                            || childCmp.get()
-                                    .componentType() == OOPSourceModelConstants.ComponentType.INTERFACE_CONSTANT) {
-                        String childName = new DiagramComponent(childCmp.get(), srcModel).uniqueName();
-                        children.add(childName);
-                        if (!childName.equals(child)) {
-                            System.out.println("gotcha");
-                        }
-                    } else {
-                        children.add(child);
-                    }
-                }
-            }
+            this.cmp.children().stream()
+                    .filter(child -> srcModel.getComponent(child).isPresent())
+                    .forEach(children::add);
         }
     }
 
+    /**
+     * Creates a DiagramComponent with a dummy underlying Component whose name is set
+     * to {@code componentName}. For testing or placeholder usage.
+     *
+     * @param componentName Name of the dummy component.
+     */
     public DiagramComponent(String componentName) {
-        this(new Component(), new OOPSourceCodeModel());
+        this(new Component(), null);
         this.cmp.setComponentName(componentName);
     }
 
+    /**
+     * Creates a DiagramComponent with a placeholder Component name and an optional MetricChange.
+     *
+     * @param cmpName       Name of the placeholder component
+     * @param metricChange  Metric change data 
+     * @param srcModel      Source code model (may be null)
+     */
+    public DiagramComponent(String cmpName, MetricChange metricChange, OOPSourceCodeModel srcModel) {
+        this(srcModel.getComponent(cmpName).get(), srcModel);
+        this.metricChange = metricChange;
+    }
+
+    /**
+     * @return The MetricChange object associated with this DiagramComponent (may be null).
+     */
+    public MetricChange getMetricChange() {
+        return metricChange;
+    }
+
+    /**
+     * Checks whether this DiagramComponent has a non-null MetricChange.
+     *
+     * @return true if metricChange is not null, false otherwise
+     */
+    public boolean hasMetricChange() {
+        return metricChange != null;
+    }
+
     public List<String> children() {
-        return this.children;
+        return Collections.unmodifiableList(this.children);
     }
 
     public String uniqueName() {
@@ -98,16 +124,8 @@ public class DiagramComponent {
         this.cmp.setName(name);
     }
 
-    public String packagePath() {
-        if (this.cmp.pkg() != null) {
-            if (!this.cmp.pkg().ellipsisSeparatedPkgPath().isEmpty()) {
-                return this.cmp.pkg().ellipsisSeparatedPkgPath();
-            } else {
-                return this.cmp.pkg().name();
-            }
-        } else {
-            return "";
-        }
+    public Package pkg() {
+        return this.cmp.pkg();
     }
 
     public String componentName() {
@@ -115,15 +133,17 @@ public class DiagramComponent {
     }
 
     /**
-     * Fetches the current component's parent base component given the set of
-     * components in the code base.
+     * Fetches the current component's parent base component if it exists, returning null otherwise.
+     *
+     * @param codeBase A map of uniqueName -> DiagramComponent representing the entire code base
+     * @return The parent base DiagramComponent, or null if none is found.
      */
     public DiagramComponent parentBaseCmp(Map<String, DiagramComponent> codeBase) {
         String currParentClassName = this.cmp.parentUniqueName();
-        DiagramComponent parent;
-        for (parent = codeBase.get(currParentClassName); parent != null
-                && !parent.componentType().isBaseComponent(); parent = codeBase.get(currParentClassName)) {
+        DiagramComponent parent = codeBase.get(currParentClassName);
+        while (parent != null && !parent.componentType().isBaseComponent()) {
             currParentClassName = parent.parentUniqueName();
+            parent = codeBase.get(currParentClassName);
         }
         return parent;
     }
@@ -139,7 +159,7 @@ public class DiagramComponent {
             return false;
         }
         DiagramComponent other = (DiagramComponent) obj;
-        return other.uniqueName().equals(this.uniqueName());
+        return Objects.equals(this.uniqueName(), other.uniqueName());
     }
 
     @Override

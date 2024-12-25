@@ -7,7 +7,6 @@ import com.hadii.clarpse.compiler.Lang;
 import com.hadii.clarpse.compiler.ProjectFile;
 import com.hadii.clarpse.compiler.ProjectFiles;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
-import com.hadii.striff.diagram.StriffCodeModel;
 import com.hadii.striff.diagram.StriffOutput;
 import com.hadii.striff.diagram.plantuml.PUMLDrawException;
 import com.hadii.striff.parse.CodeDiff;
@@ -57,8 +56,7 @@ public class StriffOperation {
             newModel.merge(newCR.model());
         }
         LOGGER.info("Generating code diff b/w old and new code models..");
-        return new CodeDiff(new StriffCodeModel(oldModel),
-                new StriffCodeModel(newModel));
+        return new CodeDiff(oldModel,newModel);
     }
 
     private void validatePFs(ProjectFiles originalFiles, ProjectFiles newFiles,
