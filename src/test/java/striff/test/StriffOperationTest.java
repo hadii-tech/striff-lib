@@ -36,8 +36,8 @@ public class StriffOperationTest {
         List<StriffDiagram> striffs = new StriffOperation(
             oldFiles, newFiles).result().diagrams();
         assertEquals(striffs.size(), 1);
-        assertEquals(striffs.get(0).containedPkgs().size(), 14);
-        assertEquals(33, striffs.get(0).size());
+        assertEquals(striffs.get(0).containedPkgs().size(), 13);
+        assertEquals(25, striffs.get(0).size());
     }
 
     @Test

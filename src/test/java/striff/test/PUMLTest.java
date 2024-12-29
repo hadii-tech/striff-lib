@@ -46,9 +46,58 @@ public class PUMLTest {
         newFiles.insertFile(fileA);
         newFiles.insertFile(fileB);
         List<StriffDiagram> diagrams = new StriffOperation(
-            oldFiles, newFiles,
-            new StriffConfig(OutputMode.DEFAULT, List.of(Lang.JAVA))).result().diagrams();
-        // Empty files filter means changes across all files are included in generated striffs.
+                oldFiles, newFiles,
+                new StriffConfig(OutputMode.DEFAULT, List.of(Lang.JAVA))).result().diagrams();
+        // Empty files filter means changes across all files are included in generated
+        // striffs.
         Assert.assertTrue(diagrams.get(0).svg().contains("<text id=\"ClassA\""));
+    }
+
+    @Test
+    public void testDiagramContainsNewField() throws PUMLDrawException, IOException, CompileException {
+        final ProjectFile fileA = new ProjectFile("/fileA.java", "public class ClassA {public String test;}");
+        final ProjectFiles oldFiles = new ProjectFiles();
+        final ProjectFiles newFiles = new ProjectFiles();
+        newFiles.insertFile(fileA);
+        List<StriffDiagram> diagrams = new StriffOperation(
+                oldFiles, newFiles,
+                new StriffConfig(OutputMode.DEFAULT, List.of(Lang.JAVA))).result().diagrams();
+        Assert.assertTrue(diagrams.get(0).svg().contains("<back:#bef5cb>test : String</back>"));
+    }
+
+    @Test
+    public void testDiagramContainsDeletedField() throws PUMLDrawException, IOException, CompileException {
+        final ProjectFile fileA = new ProjectFile("/fileA.java", "public class ClassA {public String test;}");
+        final ProjectFiles oldFiles = new ProjectFiles();
+        oldFiles.insertFile(fileA);
+        final ProjectFiles newFiles = new ProjectFiles();
+        List<StriffDiagram> diagrams = new StriffOperation(
+                oldFiles, newFiles,
+                new StriffConfig(OutputMode.DEFAULT, List.of(Lang.JAVA))).result().diagrams();
+        Assert.assertTrue(diagrams.get(0).svg().contains("<back:#fdaeb7>test : String</back>"));
+    }
+
+    @Test
+    public void testDiagramContainsNewMethod() throws PUMLDrawException, IOException, CompileException {
+        final ProjectFile fileA = new ProjectFile("/fileA.java", "public class ClassA {public String test() {}}");
+        final ProjectFiles oldFiles = new ProjectFiles();
+        final ProjectFiles newFiles = new ProjectFiles();
+        newFiles.insertFile(fileA);
+        List<StriffDiagram> diagrams = new StriffOperation(
+                oldFiles, newFiles,
+                new StriffConfig(OutputMode.DEFAULT, List.of(Lang.JAVA))).result().diagrams();
+        Assert.assertTrue(diagrams.get(0).svg().contains("<back:#bef5cb>test() : String</back>"));
+    }
+
+@Test
+    public void testDiagramContainsDeletedMethod() throws PUMLDrawException, IOException, CompileException {
+        final ProjectFile fileA = new ProjectFile("/fileA.java", "public class ClassA {public String test() {}}");
+        final ProjectFiles oldFiles = new ProjectFiles();
+        final ProjectFiles newFiles = new ProjectFiles();
+        oldFiles.insertFile(fileA);
+        List<StriffDiagram> diagrams = new StriffOperation(
+                oldFiles, newFiles,
+                new StriffConfig(OutputMode.DEFAULT, List.of(Lang.JAVA))).result().diagrams();
+        Assert.assertTrue(diagrams.get(0).svg().contains("<back:#fdaeb7>test() : String</back>"));
     }
 }

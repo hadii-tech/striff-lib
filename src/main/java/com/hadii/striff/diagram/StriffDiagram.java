@@ -18,12 +18,12 @@ public class StriffDiagram {
     private final String svgCode;
     private final Set<DiagramComponent> cmps;
 
-    public StriffDiagram(CodeDiff mergedModel, Set<DiagramComponent> diagramComponentSet,
+    public StriffDiagram(CodeDiff codeDiff, Set<DiagramComponent> diagramComponentSet,
                          DiagramDisplay diagramDisplay)
             throws IOException, PUMLDrawException {
         this.cmps = diagramComponentSet;
-        this.cmps.forEach(cmp -> this.containedPkgs.add(cmp.packagePath()));
-        this.svgCode = new PUMLDiagram(mergedModel, diagramComponentSet, diagramDisplay).svgText();
+        this.cmps.forEach(cmp -> this.containedPkgs.add(ComponentHelper.packagePath(cmp.pkg())));
+        this.svgCode = new PUMLDiagram(codeDiff, diagramComponentSet, diagramDisplay).svgText();
     }
 
     public String svg() {

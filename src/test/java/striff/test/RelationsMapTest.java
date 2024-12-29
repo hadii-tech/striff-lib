@@ -3,7 +3,6 @@ package striff.test;
 import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants;
-import com.hadii.striff.diagram.DiagramComponent;
 import com.hadii.striff.extractor.DiagramConstants.ComponentAssociation;
 import com.hadii.striff.extractor.ComponentRelation;
 import com.hadii.striff.extractor.RelationsMap;
@@ -19,25 +18,23 @@ import static org.junit.Assert.assertTrue;
  */
 public class RelationsMapTest {
 
-    private static DiagramComponent classA;
-    private static DiagramComponent classB;
+    private static Component classA;
+    private static Component classB;
 
 
     @BeforeClass
     public static void setup()  {
         OOPSourceCodeModel codeModel = new OOPSourceCodeModel();
-        Component cmpA = new Component();
-        cmpA.setName("ClassA");
-        cmpA.setComponentName("ClassA");
-        cmpA.setComponentType(OOPSourceModelConstants.ComponentType.CLASS);
-        codeModel.insertComponent(cmpA);
-        classA =  new DiagramComponent(cmpA, new OOPSourceCodeModel());
-        Component cmpB = new Component();
-        cmpB.setName("ClassB");
-        cmpB.setComponentName("ClassB");
-        cmpB.setComponentType(OOPSourceModelConstants.ComponentType.CLASS);
-        codeModel.insertComponent(cmpB);
-        classB =  new DiagramComponent(cmpA, new OOPSourceCodeModel());
+        classA = new Component();
+        classA.setName("ClassA");
+        classA.setComponentName("ClassA");
+        classA.setComponentType(OOPSourceModelConstants.ComponentType.CLASS);
+        codeModel.insertComponent(classA);
+        classB = new Component();
+        classB.setName("ClassB");
+        classB.setComponentName("ClassB");
+        classB.setComponentType(OOPSourceModelConstants.ComponentType.CLASS);
+        codeModel.insertComponent(classB);
     }
 
 
@@ -80,7 +77,7 @@ public class RelationsMapTest {
         relMap.insertRelation(rel1);
         relMap.insertRelation(new ComponentRelation(
             classA, classB, null, ComponentAssociation.AGGREGATION));
-        assertTrue(relMap.hasRels(classA));
+        assertTrue(relMap.hasRels(classA.uniqueName()));
     }
 
     @Test

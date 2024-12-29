@@ -86,7 +86,7 @@ public class StriffOutput {
     }
 
     private Set<String> cmpPkgs(Set<DiagramComponent> cmps) {
-        return cmps.stream().map(DiagramComponent::packagePath).collect(Collectors.toSet());
+        return cmps.stream().map(cmp -> ComponentHelper.packagePath(cmp.pkg())).collect(Collectors.toSet());
     }
 
     public List<StriffDiagram> diagrams() {

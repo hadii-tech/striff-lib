@@ -1,6 +1,6 @@
 package com.hadii.striff.extractor;
 
-import com.hadii.striff.diagram.DiagramComponent;
+import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.striff.extractor.DiagramConstants.ComponentAssociation;
 
 /**
@@ -9,15 +9,15 @@ import com.hadii.striff.extractor.DiagramConstants.ComponentAssociation;
  */
 public class ComponentRelation implements Comparable<ComponentRelation> {
 
-    private DiagramComponent originalComponent;
-    private DiagramComponent targetComponent;
+    private Component originalComponent;
+    private Component targetComponent;
     // linkTargetMultiplicity of the link…
     private ComponentAssociationMultiplicity targetComponentRelationMultiplicity =
         new ComponentAssociationMultiplicity(DiagramConstants.DefaultClassMultiplicities.NONE);
     private ComponentAssociation associationType = ComponentAssociation.NONE;
 
-    public ComponentRelation(final DiagramComponent originalComponent,
-                             final DiagramComponent targetComponent,
+    public ComponentRelation(final Component originalComponent,
+                             final Component targetComponent,
                              final ComponentAssociationMultiplicity targetComponentRelationMultiplicity,
                              final ComponentAssociation associationType) {
         validateRelCmpTypes(originalComponent, targetComponent);
@@ -27,7 +27,7 @@ public class ComponentRelation implements Comparable<ComponentRelation> {
         this.associationType = (associationType);
     }
 
-    private void validateRelCmpTypes(DiagramComponent originalCmp, DiagramComponent targetCmp) {
+    private void validateRelCmpTypes(Component originalCmp, Component targetCmp) {
         if (!targetCmp.componentType().isBaseComponent()) {
             throw new IllegalArgumentException("Target component " + targetCmp.uniqueName()
                                                    + " is not a base component!");
@@ -60,11 +60,11 @@ public class ComponentRelation implements Comparable<ComponentRelation> {
     }
 
 
-    public DiagramComponent targetComponent() {
+    public Component targetComponent() {
         return targetComponent;
     }
 
-    public DiagramComponent originalComponent() {
+    public Component originalComponent() {
         return originalComponent;
     }
 
