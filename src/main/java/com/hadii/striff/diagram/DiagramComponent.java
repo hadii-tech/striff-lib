@@ -14,8 +14,6 @@ import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants;
 import com.hadii.clarpse.sourcemodel.Package;
 import com.hadii.striff.metrics.MetricChange;
 
-
-
 /**
  * Represents the building blocks of a Striff diagram.
  */
@@ -26,13 +24,18 @@ public class DiagramComponent {
     private MetricChange metricChange;
 
     /**
-     * Creates a DiagramComponent from a Component and optionally populates its children.
+     * Creates a DiagramComponent from a Component and optionally populates its
+     * children.
      *
      * @param cmp      Underlying component
      * @param srcModel Source code model (may be null)
      */
     public DiagramComponent(Component cmp, OOPSourceCodeModel srcModel) {
-        this.cmp = cmp == null ? new Component() : cmp;
+        if (cmp == null) {
+            this.cmp = new Component();
+        } else {
+            this.cmp = cmp;
+        }
         if (srcModel != null) {
             this.cmp.children().stream()
                     .filter(child -> srcModel.getComponent(child).isPresent())
@@ -41,7 +44,8 @@ public class DiagramComponent {
     }
 
     /**
-     * Creates a DiagramComponent with a dummy underlying Component whose name is set
+     * Creates a DiagramComponent with a dummy underlying Component whose name is
+     * set
      * to {@code componentName}. For testing or placeholder usage.
      *
      * @param componentName Name of the dummy component.
@@ -52,11 +56,12 @@ public class DiagramComponent {
     }
 
     /**
-     * Creates a DiagramComponent with a placeholder Component name and an optional MetricChange.
+     * Creates a DiagramComponent with a placeholder Component name and an optional
+     * MetricChange.
      *
-     * @param cmpName       Name of the placeholder component
-     * @param metricChange  Metric change data 
-     * @param srcModel      Source code model (may be null)
+     * @param cmpName      Name of the placeholder component
+     * @param metricChange Metric change data
+     * @param srcModel     Source code model (may be null)
      */
     public DiagramComponent(String cmpName, MetricChange metricChange, OOPSourceCodeModel srcModel) {
         this(srcModel.getComponent(cmpName).get(), srcModel);
@@ -64,7 +69,8 @@ public class DiagramComponent {
     }
 
     /**
-     * @return The MetricChange object associated with this DiagramComponent (may be null).
+     * @return The MetricChange object associated with this DiagramComponent (may be
+     *         null).
      */
     public MetricChange getMetricChange() {
         return metricChange;
@@ -140,9 +146,11 @@ public class DiagramComponent {
     }
 
     /**
-     * Fetches the current component's parent base component if it exists, returning null otherwise.
+     * Fetches the current component's parent base component if it exists, returning
+     * null otherwise.
      *
-     * @param codeBase A map of uniqueName -> DiagramComponent representing the entire code base
+     * @param codeBase A map of uniqueName -> DiagramComponent representing the
+     *                 entire code base
      * @return The parent base DiagramComponent, or null if none is found.
      */
     public DiagramComponent parentBaseCmp(Map<String, DiagramComponent> codeBase) {

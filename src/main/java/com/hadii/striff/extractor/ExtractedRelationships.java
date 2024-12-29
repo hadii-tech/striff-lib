@@ -1,11 +1,14 @@
 package com.hadii.striff.extractor;
 
-import com.hadii.clarpse.reference.ComponentReference;
-import com.hadii.clarpse.sourcemodel.*;
-import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants.AccessModifiers;
-import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants.ComponentType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.hadii.clarpse.reference.ComponentReference;
+import com.hadii.clarpse.sourcemodel.Component;
+import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
+import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants;
+import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants.AccessModifiers;
+import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants.ComponentType;
 
 import java.util.Set;
 
