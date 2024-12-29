@@ -26,7 +26,7 @@ public final class ChangeSet {
 
     /**
      * A representation of the changes between an original and final code base.
-     * 
+     *
      * @param oldModel The original source code model
      * @param newModel The final source code model
      */

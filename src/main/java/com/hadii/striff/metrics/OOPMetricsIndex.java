@@ -1,12 +1,18 @@
 package com.hadii.striff.metrics;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
 import com.hadii.clarpse.reference.ComponentReference;
 import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants.ComponentType;
 import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants.TypeReferences;
-
-import java.util.*;
 
 public class OOPMetricsIndex {
     private final OOPSourceCodeModel srcModel;
@@ -113,8 +119,8 @@ public class OOPMetricsIndex {
                                 .map(srcModel::getComponent)
                                 .filter(Optional::isPresent)
                                 .map(Optional::get)
-                                .filter(ch -> ch.modifiers().contains("private") ||
-                                        ch.modifiers().contains("protected"))
+                                .filter(ch -> ch.modifiers().contains("private")
+                                        || ch.modifiers().contains("protected"))
                                 .count();
                         encapsulationValues.put(id, (double) privateProtectedCount / total);
                     }

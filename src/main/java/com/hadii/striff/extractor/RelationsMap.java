@@ -15,10 +15,7 @@ public class RelationsMap {
 
     /**
      * Map Structure.
-     * Map < Original Component Unique Name, Map < Target Component, List[Relation
-     * 
-     * b/w
-     * Components] >>
+     * Map < Original Component Unique Name, Map < Target Component, List[Relation b/w Components] >>
      */
     private final Map<String, Map<Component, TreeSet<ComponentRelation>>> relMap = new HashMap<>();
 

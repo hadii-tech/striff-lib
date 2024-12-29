@@ -68,12 +68,14 @@ public class ExtractedRelationships {
      * given component.
      */
     private void extractAssociations(final Component component, OOPSourceCodeModel model) {
-        if (component.componentType().isBaseComponent())
+        if (component.componentType().isBaseComponent()) {
             return;
+        }
 
         Component baseComponent = findParentBaseComponent(component, model);
-        if (baseComponent == null)
+        if (baseComponent == null) {
             return;
+        }
 
         Set<ComponentReference> references = component.references();
         removeRedundantReferences(references, model, baseComponent);

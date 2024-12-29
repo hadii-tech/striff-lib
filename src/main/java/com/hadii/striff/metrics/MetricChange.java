@@ -2,12 +2,18 @@ package com.hadii.striff.metrics;
 
 public class MetricChange {
     private final String className;
-    private final double oldNOC, updatedNOC;
-    private final double oldDIT, updatedDIT;
-    private final double oldWMC, updatedWMC;
-    private final double oldAC, updatedAC;
-    private final double oldEC, updatedEC;
-    private final double oldEncapsulation, updatedEncapsulation;
+    private final double oldNOC;
+    private final double updatedNOC;
+    private final double oldDIT;
+    private final double updatedDIT;
+    private final double oldWMC;
+    private final double updatedWMC;
+    private final double oldAC;
+    private final double updatedAC;
+    private final double oldEC;
+    private final double updatedEC;
+    private final double oldEncapsulation;
+    private final double updatedEncapsulation;
 
     public MetricChange(String className,
             double oldNOC, double updatedNOC,
@@ -33,13 +39,13 @@ public class MetricChange {
 
     @Override
     public String toString() {
-        return String.format("Metric changes for class '%s':\n" +
-                "- NOC: %.2f -> %.2f\n" +
-                "- DIT: %.2f -> %.2f\n" +
-                "- WMC: %.2f -> %.2f\n" +
-                "- Afferent Coupling: %.2f -> %.2f\n" +
-                "- Efferent Coupling: %.2f -> %.2f\n" +
-                "- Encapsulation: %.2f -> %.2f\n",
+        return String.format("Metric changes for class '%s':\n"
+                + "- NOC: %.2f -> %.2f\n"
+                + "- DIT: %.2f -> %.2f\n"
+                + "- WMC: %.2f -> %.2f\n"
+                + "- Afferent Coupling: %.2f -> %.2f\n"
+                + "- Efferent Coupling: %.2f -> %.2f\n"
+                + "- Encapsulation: %.2f -> %.2f\n",
                 className, oldNOC, updatedNOC, oldDIT, updatedDIT, oldWMC, updatedWMC,
                 oldAC, updatedAC, oldEC, updatedEC, oldEncapsulation, updatedEncapsulation);
     }

@@ -1,5 +1,12 @@
 package com.hadii.striff.diagram;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
 import com.hadii.clarpse.reference.ComponentReference;
 import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
@@ -7,7 +14,7 @@ import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants;
 import com.hadii.clarpse.sourcemodel.Package;
 import com.hadii.striff.metrics.MetricChange;
 
-import java.util.*;
+
 
 /**
  * Represents the building blocks of a Striff diagram.

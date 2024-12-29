@@ -56,7 +56,7 @@ public class StriffOperation {
             newModel.merge(newCR.model());
         }
         LOGGER.info("Generating code diff b/w old and new code models..");
-        return new CodeDiff(oldModel,newModel);
+        return new CodeDiff(oldModel, newModel);
     }
 
     private void validatePFs(ProjectFiles originalFiles, ProjectFiles newFiles,
