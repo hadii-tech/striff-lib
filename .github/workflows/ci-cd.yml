@@ -22,8 +22,3 @@ jobs:
         run: bash <(curl -s https://codecov.io/bash)
 env:
   MAVEN_OPTS: "-Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.http.ssl.ignore.validity.dates=true"
-  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-  DO_TOKEN: ${{ secrets.DO_TOKEN }}
-  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-  MONGODB_URI: ${{ secrets.MONGODB_URI }}
-  GH_API_URL: ${{ secrets.GH_API_URL }}

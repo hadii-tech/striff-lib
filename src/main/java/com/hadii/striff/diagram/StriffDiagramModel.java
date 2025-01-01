@@ -1,6 +1,7 @@
 package com.hadii.striff.diagram;
 
 import com.google.common.collect.Sets;
+import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.striff.ChangeSet;
 import com.hadii.striff.extractor.ComponentRelation;
 import com.hadii.striff.metrics.OOPMetricsChangeAnalyzer;
@@ -32,8 +33,14 @@ public class StriffDiagramModel {
 
     public StriffDiagramModel(CodeDiff codeDiff, Set<String> sourceFilesFilter) {
         LOGGER.info("Generating diagram model..");
+        Set<String> targetCmpNames = codeDiff.mergedModel().components()
+                .filter(cmp -> sourceFilesFilter.contains(cmp.sourceFile())).map(Component::uniqueName)
+                .collect(Collectors.toSet());
+        LOGGER.debug("The following compoenents will be analyzed: " + targetCmpNames);
+        LOGGER.info("Calculating metrics...");
         OOPMetricsChangeAnalyzer oopMetricsChangeAnalyzer = new OOPMetricsChangeAnalyzer(
-                codeDiff.oldModel(), codeDiff.newModel(), sourceFilesFilter);
+                codeDiff.oldModel(), codeDiff.newModel(), targetCmpNames);
+         LOGGER.info("Selecting diagram components...");
         calculateCoreBaseCmps(codeDiff, sourceFilesFilter).forEach(
                 cmpName -> this.diagramCmps.add(new DiagramComponent(
                         cmpName, oopMetricsChangeAnalyzer.analyzeChanges(cmpName).get(), codeDiff.mergedModel())));

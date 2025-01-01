@@ -74,8 +74,8 @@ public final class ChangeSet {
 
     private void addKeyRelComponents(Component... keyRelCmps) {
         for (Component keyRelCmp : keyRelCmps) {
-            if (!this.addedComponents.contains(keyRelCmp)
-                    && !this.deletedComponents.contains(keyRelCmp)) {
+            if (!this.addedComponents.contains(keyRelCmp.uniqueName())
+                    && !this.deletedComponents.contains(keyRelCmp.uniqueName())) {
                 this.keyRelationsComponents.add(keyRelCmp.uniqueName());
             }
         }

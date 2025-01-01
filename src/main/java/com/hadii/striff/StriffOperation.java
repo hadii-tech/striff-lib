@@ -33,7 +33,9 @@ public class StriffOperation {
         LOGGER.info("Starting new operation with config: " + config);
         validatePFs(originalPFs, newPFs, config.filesFilter);
         HashSet<ProjectFile> allFailures = new HashSet<>();
+        LOGGER.info("Generating code diff metadata..");
         CodeDiff diffedModel = generateCodeDiff(originalPFs, newPFs, config, allFailures);
+        LOGGER.info("Generating striff output metadat.. ");
         this.striffOutput = new StriffOutput(diffedModel, config, allFailures);
     }
 

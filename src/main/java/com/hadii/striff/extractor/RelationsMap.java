@@ -10,12 +10,14 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import com.hadii.clarpse.sourcemodel.Component;
+import com.hadii.striff.diagram.DiagramComponent;
 
 public class RelationsMap {
 
     /**
      * Map Structure.
-     * Map < Original Component Unique Name, Map < Target Component, List[Relation b/w Components] >>
+     * Map < Original Component Unique Name, Map < Target Component, List[Relation
+     * b/w Components] >>
      */
     private final Map<String, Map<Component, TreeSet<ComponentRelation>>> relMap = new HashMap<>();
 
@@ -30,11 +32,10 @@ public class RelationsMap {
 
     /**
      * Returns the most significant relationship for every pair of the given
-     * component
-     * and all other components it shares one or more relationships with.
+     * component and all other components it shares one or more relationships with.
      */
     public Set<ComponentRelation> significantRels(Component cmp) {
-       return significantRels(cmp.uniqueName());
+        return significantRels(cmp.uniqueName());
     }
 
     public Set<ComponentRelation> significantRels(String cmpUniqueName) {
@@ -105,5 +106,11 @@ public class RelationsMap {
                     .get(0);
         }
         return significantRel;
+    }
+
+    public Set<ComponentRelation> significantRels(Set<DiagramComponent> currPartition) {
+        Set<ComponentRelation> relations = new HashSet<>();
+        currPartition.forEach(cmp -> relations.addAll(this.significantRels(cmp.uniqueName())));
+        return relations;
     }
 }

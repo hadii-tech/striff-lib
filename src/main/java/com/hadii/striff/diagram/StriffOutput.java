@@ -29,11 +29,12 @@ public class StriffOutput {
     private final List<StriffDiagram> diagrams = new ArrayList<>();
 
     public StriffOutput(CodeDiff codeDiff, StriffConfig config) throws PUMLDrawException,
-        IOException {
+            IOException {
         this(codeDiff, config, Collections.emptySet());
     }
 
-    public StriffOutput(CodeDiff codeDiff, StriffConfig config, Set<ProjectFile> compileFailures) throws PUMLDrawException, IOException {
+    public StriffOutput(CodeDiff codeDiff, StriffConfig config, Set<ProjectFile> compileFailures)
+            throws PUMLDrawException, IOException {
         StriffDiagramModel sDM = new StriffDiagramModel(codeDiff, config.filesFilter);
         generateDiagrams(codeDiff, partitionConfig(sDM, config));
         if (config.filesFilter.isEmpty()) {
@@ -42,11 +43,12 @@ public class StriffOutput {
         } else {
             // Display only the warnings related to the filter list.
             compileFailures.stream().filter(failure -> config.filesFilter.contains(failure.path()))
-                           .forEach(failure -> this.compileWarnings.add(failure.path()));
+                    .forEach(failure -> this.compileWarnings.add(failure.path()));
         }
     }
 
-    private Pair<PartitionStrategy, PartitionPlacement> partitionConfig(StriffDiagramModel striffDiagramModel, StriffConfig config) {
+    private Pair<PartitionStrategy, PartitionPlacement> partitionConfig(StriffDiagramModel striffDiagramModel,
+            StriffConfig config) {
         PartitionStrategy strategy;
         PartitionPlacement placementStrat;
         if (config.outputMode == OutputMode.DEFAULT) {
@@ -54,13 +56,13 @@ public class StriffOutput {
             placementStrat = PartitionPlacement.CONDENSED;
         } else {
             throw new IllegalArgumentException("Output mode " + config.outputMode.name() + " is "
-                                                   + "not currently supported!");
+                    + "not currently supported!");
         }
         return Pair.of(strategy, placementStrat);
     }
 
-    private void generateDiagrams(CodeDiff mergedModel, Pair<PartitionStrategy,
-        PartitionPlacement> partitionConf) throws IOException, PUMLDrawException {
+    private void generateDiagrams(CodeDiff codeDiff, Pair<PartitionStrategy, PartitionPlacement> partitionConf)
+            throws IOException, PUMLDrawException {
         LOGGER.info("Generating diagram with partition conf: " + partitionConf);
         PartitionPlacement placementStrategy = partitionConf.getRight();
         PartitionStrategy partitionStrategy = partitionConf.getLeft();
@@ -68,19 +70,21 @@ public class StriffOutput {
         LOGGER.info(cmpPartitions.size() + " partitions were generated.");
         if (placementStrategy == PartitionPlacement.ONE_PER_DIAGRAM) {
             for (Set<DiagramComponent> currPartition : cmpPartitions) {
-                this.insertDiagram(new StriffDiagram(mergedModel, currPartition,
-                                                     new DiagramDisplay(new LightDiagramColorScheme(), this.cmpPkgs(currPartition))));
+                this.insertDiagram(new StriffDiagram(codeDiff, currPartition,
+                        new DiagramDisplay(new LightDiagramColorScheme(), this.cmpPkgs(currPartition)),
+                        codeDiff.extractedRels().significantRels(currPartition)));
             }
         } else if (placementStrategy == PartitionPlacement.CONDENSED) {
             // Condense partitions into one diagram.
-            Set<DiagramComponent> condensedPartition =
-                cmpPartitions.stream().flatMap(Set::stream).collect(Collectors.toSet());
+            Set<DiagramComponent> condensedPartition = cmpPartitions.stream().flatMap(Set::stream)
+                    .collect(Collectors.toSet());
             this.insertDiagram(new StriffDiagram(
-                mergedModel, condensedPartition, new DiagramDisplay(new LightDiagramColorScheme(),
-                                                                    this.cmpPkgs(condensedPartition))));
+                    codeDiff, condensedPartition, new DiagramDisplay(new LightDiagramColorScheme(),
+                            this.cmpPkgs(condensedPartition)),
+                    codeDiff.extractedRels().significantRels(condensedPartition)));
         } else {
             throw new IllegalArgumentException("Placement strategy " + placementStrategy + " is "
-                                                   + "not supported!");
+                    + "not supported!");
         }
         LOGGER.info(this.diagrams.size() + " diagrams were generated.");
     }

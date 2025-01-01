@@ -9,10 +9,13 @@ import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 public class OOPMetricsChangeAnalyzer {
     private final OOPMetricsProfile oldProfile;
     private final OOPMetricsProfile updatedProfile;
-
-    public OOPMetricsChangeAnalyzer(OOPSourceCodeModel oldModel, OOPSourceCodeModel updatedModel, Set<String> targetComponents) {
-        this.oldProfile = new OOPMetricsProfile(oldModel, targetComponents);
-        this.updatedProfile = new OOPMetricsProfile(updatedModel, targetComponents);
+    private Set<String> targetComponents;
+    
+        public OOPMetricsChangeAnalyzer(OOPSourceCodeModel oldModel, OOPSourceCodeModel updatedModel,
+                Set<String> targetComponents) {
+            this.oldProfile = new OOPMetricsProfile(oldModel, targetComponents);
+            this.updatedProfile = new OOPMetricsProfile(updatedModel, targetComponents);
+            this.targetComponents = targetComponents;
     }
 
     public Optional<MetricChange> analyzeChanges(String componentUniqueName) {
@@ -20,7 +23,10 @@ public class OOPMetricsChangeAnalyzer {
         Optional<Component> updatedComponent = updatedProfile.getSourceModel().getComponent(componentUniqueName);
 
         if (!oldComponent.isPresent() && !updatedComponent.isPresent()) {
-            return Optional.empty(); // The class does not exist in either model
+            throw new IllegalArgumentException(componentUniqueName + " does not exist!");
+        }
+        if (this.targetComponents != null && !this.targetComponents.isEmpty() && !this.targetComponents.contains(componentUniqueName)) {
+            throw new IllegalArgumentException(componentUniqueName + " was not specified for analysis!");
         }
 
         double oldNOC = oldComponent.map(oldProfile::noc).orElse(0.0);
@@ -48,7 +54,6 @@ public class OOPMetricsChangeAnalyzer {
                 oldWMC, updatedWMC,
                 oldAC, updatedAC,
                 oldEC, updatedEC,
-                oldEncapsulation, updatedEncapsulation
-        ));
+                oldEncapsulation, updatedEncapsulation));
     }
 }
