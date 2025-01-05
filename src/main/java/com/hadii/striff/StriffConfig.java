@@ -21,15 +21,18 @@ public class StriffConfig {
 
     public OutputMode outputMode = OutputMode.DEFAULT;
     /**
-     * Optional set of source files to restrict the analysis of architectural differences
-     * to *specific* source files. When an empty set is provided, striffs will display
+     * Optional set of source files to restrict the analysis of architectural
+     * differences
+     * to *specific* source files. When an empty set is provided, striffs will
+     * display
      * architectural differences encountered across all source files.
      */
     public Set<String> filesFilter = Collections.emptySet();
     private Set<Lang> languages = new HashSet<>(Lang.supportedLanguages());
+    private boolean outputMetrics = false;
 
-
-    public StriffConfig() { }
+    public StriffConfig() {
+    }
 
     public StriffConfig(OutputMode outputMode, Collection<Lang> languages) {
         this.outputMode = outputMode;
@@ -44,12 +47,14 @@ public class StriffConfig {
      * Constructs a StriffConfig object.
      *
      * @param outputMode  Desired output mode for striff diagrams.
-     * @param filesFilter A set of files to restrict the analysis of architectural differences to.
+     * @param filesFilter A set of files to restrict the analysis of architectural
+     *                    differences to.
      */
     public StriffConfig(OutputMode outputMode, List<String> filesFilter) {
         this.outputMode = outputMode;
-        this.filesFilter =
-            filesFilter.stream().filter(file -> Lang.supportedSourceFileExtns().stream().anyMatch(file::endsWith)).collect(Collectors.toSet());
+        this.filesFilter = filesFilter.stream()
+                .filter(file -> Lang.supportedSourceFileExtns().stream().anyMatch(file::endsWith))
+                .collect(Collectors.toSet());
         LOGGER.info("Setting list of filter files to: " + this.filesFilter + ".");
     }
 
@@ -58,21 +63,23 @@ public class StriffConfig {
      *
      * @param outputMode  Desired output mode for striff diagrams.
      * @param languages   Desired programming languages to use for the analysis.
-     * @param filesFilter A set of files to restrict the analysis of architectural differences to.
+     * @param filesFilter A set of files to restrict the analysis of architectural
+     *                    differences to.
      */
     public StriffConfig(OutputMode outputMode, Collection<Lang> languages,
-                        List<String> filesFilter) {
+            List<String> filesFilter) {
         this(outputMode, languages);
         this.languages = new HashSet<>(Lang.supportedLanguages());
-        this.filesFilter =
-            filesFilter.stream().filter(file -> Lang.supportedSourceFileExtns().stream().anyMatch(file::endsWith)).collect(Collectors.toSet());
+        this.filesFilter = filesFilter.stream()
+                .filter(file -> Lang.supportedSourceFileExtns().stream().anyMatch(file::endsWith))
+                .collect(Collectors.toSet());
         LOGGER.info("Setting list of filter files to: " + this.filesFilter + ".");
     }
 
     @Override
     public String toString() {
         return "Output Mode: " + this.outputMode + ", Languages: " + this.languages + ", Filter "
-            + "Files: " + this.filesFilter;
+                + "Files: " + this.filesFilter;
     }
 
     public Set<Lang> languages() {

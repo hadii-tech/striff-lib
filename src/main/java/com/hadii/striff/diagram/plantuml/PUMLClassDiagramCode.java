@@ -39,6 +39,7 @@ final class PUMLClassDiagramCode {
                 + "\nskinparam classArrowFontColor " + colorScheme.classArrowFontColor()
                 + "\nskinparam classArrowFontSize " + colorScheme.classArrowFontSize()
                 + "\nskinparam classFontColor " + colorScheme.classFontColor()
+                + "\nskinparam classFontSize " + colorScheme.classFontSize()
                 + "\nskinparam classStereotypeFontColor " + colorScheme.classStereoTypeFontColor()
                 + "\nskinparam CircledCharacterFontColor " + colorScheme.classCircledCharacterFontColor()
                 + "\nskinparam CircledCharacterFontSize " + colorScheme.classCircledCharacterFontSize()

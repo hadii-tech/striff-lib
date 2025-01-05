@@ -36,7 +36,7 @@ public class StriffDiagramModel {
         Set<String> targetCmpNames = codeDiff.mergedModel().components()
                 .filter(cmp -> sourceFilesFilter.contains(cmp.sourceFile())).map(Component::uniqueName)
                 .collect(Collectors.toSet());
-        LOGGER.debug("The following compoenents will be analyzed: " + targetCmpNames);
+        LOGGER.debug("The following components will be analyzed: " + targetCmpNames);
         LOGGER.info("Calculating metrics...");
         OOPMetricsChangeAnalyzer oopMetricsChangeAnalyzer = new OOPMetricsChangeAnalyzer(
                 codeDiff.oldModel(), codeDiff.newModel(), targetCmpNames);
@@ -70,7 +70,7 @@ public class StriffDiagramModel {
                 }
             }
         });
-        LOGGER.info(this.diagramCmps.size() + " components will be displayed.");
+        LOGGER.info(diagramCmpNames.size() + " components will be displayed.");
         return diagramCmpNames;
     }
 

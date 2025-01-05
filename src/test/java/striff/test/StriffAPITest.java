@@ -37,7 +37,7 @@ public class StriffAPITest {
         }
 
         /**
-         * We can also generate striffs based on a Pull Request in GitHub. Ensure
+         * Generates striffs based on a Pull Request in GitHub. Ensure
          * the source code refs exist and are still available before running.
          */
         //@Ignore

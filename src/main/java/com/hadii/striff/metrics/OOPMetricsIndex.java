@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import com.hadii.clarpse.reference.ComponentReference;
 import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
@@ -38,46 +40,69 @@ public class OOPMetricsIndex {
     private final Map<String, Double> subclasses = new HashMap<>();
     private final Map<String, List<String>> childrenMap = new HashMap<>();
 
-    public OOPMetricsIndex(OOPSourceCodeModel srcModel, Set<String> targetComponents) {
+    public OOPMetricsIndex(OOPSourceCodeModel srcModel, @NonNull Set<String> targetComponents) {
         this.srcModel = srcModel;
         this.targetComponents = targetComponents;
         // 1) Compute afferent coupling (Ca) for ALL components
-        computeAfferentCouplingGlobally();
-        // 2) Build childrenMap for ALL components (for NOC and for DIT references)
-        buildChildrenMapGlobally();
-        // 3) Compute NOC from childrenMap for ALL components
+        computeMetrics();
+        // 2) Compute NOC from childrenMap for ALL components
         computeNOCGlobally();
-        // 4) Compute local metrics (Ce, WMC, Encapsulation) only for target components
-        computeLocalMetricsForTargets();
-        // 5) DIT is computed on-demand with recursion to capture any parents outside
+        // 3) DIT is computed on-demand with recursion to capture any parents outside
         // the target set
     }
 
-    private void computeAfferentCouplingGlobally() {
-        // We must see who references whom, so we loop over ALL components
+    private void computeMetrics() {
+        // Loop over ALL components
         srcModel.components().filter(c -> c.componentType().isBaseComponent()).forEach(c -> {
-            c.references().forEach(ref -> {
-                String target = ref.invokedComponent();
-                if (!target.equals(c.uniqueName())) {
-                    afferentReferences.merge(target, 1.0, Double::sum);
-                }
-            });
-        });
-    }
+            String id = c.uniqueName();
 
-    private void buildChildrenMapGlobally() {
-        // For NOC and DIT, we need to know who extends whom
-        // We'll do this for ALL components, because even if a parent is outside
-        // targetComponents,
-        // the child might be inside targetComponents and needs accurate NOC or DIT
-        // references.
-        srcModel.components().filter(c -> c.componentType().isBaseComponent()).forEach(c -> {
+            // For NOC and DIT, we need to know who extends whom.
             // For each extension reference, let the parent know it has a child
             c.references(TypeReferences.EXTENSION).forEach(extRef -> {
                 String parent = extRef.invokedComponent();
                 String child = c.uniqueName();
                 childrenMap.computeIfAbsent(parent, k -> new ArrayList<>()).add(child);
             });
+
+            // Afferent Coupling (AC)
+            c.references().forEach(ref -> {
+                String target = ref.invokedComponent();
+                if (!target.equals(c.uniqueName())) {
+                    afferentReferences.merge(target, 1.0, Double::sum);
+                }
+            });
+
+            // Process remaining metrics for target components only since they are
+            // calculated locally.
+            if (this.targetComponents.isEmpty() || this.targetComponents.contains(c.uniqueName())) {
+                // Efferent Coupling (EC)
+                efferentReferences.put(id, (double) c.references().size());
+
+                // Weighted Method Complexity (WMC)
+                double wmc = c.children().stream()
+                        .map(srcModel::getComponent)
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .filter(ch -> ch.componentType() == ComponentType.METHOD)
+                        .mapToDouble(Component::cyclo)
+                        .sum();
+                wmcValues.put(id, wmc);
+
+                // Encapsulation ratio
+                int total = c.children().size();
+                if (total == 0) {
+                    encapsulationValues.put(id, 0.0);
+                } else {
+                    long privateProtectedCount = c.children().stream()
+                            .map(srcModel::getComponent)
+                            .filter(Optional::isPresent)
+                            .map(Optional::get)
+                            .filter(ch -> ch.modifiers().contains("private")
+                                    || ch.modifiers().contains("protected"))
+                            .count();
+                    encapsulationValues.put(id, (double) privateProtectedCount / total);
+                }
+            }
         });
     }
 
@@ -86,45 +111,6 @@ public class OOPMetricsIndex {
         childrenMap.forEach((parentId, children) -> {
             subclasses.put(parentId, (double) children.size());
         });
-    }
-
-    private void computeLocalMetricsForTargets() {
-        // Only compute Ce, WMC, Encapsulation for the target set
-        // If targetComponents == null, we interpret that as "do all"
-        srcModel.components()
-                .filter(c -> c.componentType().isBaseComponent()
-                        && (targetComponents == null || targetComponents.contains(c.uniqueName())))
-                .forEach(c -> {
-                    String id = c.uniqueName();
-
-                    // Efferent Coupling (Ce)
-                    efferentReferences.put(id, (double) c.references().size());
-
-                    // Weighted Method Complexity (WMC)
-                    double wmc = c.children().stream()
-                            .map(srcModel::getComponent)
-                            .filter(Optional::isPresent)
-                            .map(Optional::get)
-                            .filter(ch -> ch.componentType() == ComponentType.METHOD)
-                            .mapToDouble(Component::cyclo)
-                            .sum();
-                    wmcValues.put(id, wmc);
-
-                    // Encapsulation ratio
-                    int total = c.children().size();
-                    if (total == 0) {
-                        encapsulationValues.put(id, 0.0);
-                    } else {
-                        long privateProtectedCount = c.children().stream()
-                                .map(srcModel::getComponent)
-                                .filter(Optional::isPresent)
-                                .map(Optional::get)
-                                .filter(ch -> ch.modifiers().contains("private")
-                                        || ch.modifiers().contains("protected"))
-                                .count();
-                        encapsulationValues.put(id, (double) privateProtectedCount / total);
-                    }
-                });
     }
 
     // On-demand, recursive DIT (Depth of Inheritance Tree)

@@ -10,11 +10,11 @@ import com.hadii.striff.metrics.OOPMetricsChangeAnalyzer;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,7 +26,7 @@ public class OOPMetricsChangeAnalyzerTest {
         public void javaSingleClassNoMetricChange() throws CompileException {
                 OOPSourceCodeModel oldModel = createSingleJavaClassModel("test", "ClassA");
                 OOPSourceCodeModel newModel = createSingleJavaClassModel("test", "ClassA");
-                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, null, "test.ClassA");
+                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, new HashSet<>(), "test.ClassA");
                 assertTrue("ClassA should be found in both models => some MetricChange object even if no differences.",
                                 maybeChange.isPresent());
                 assertTrue("Expected no change in NOC for ClassA => 0->0.",
@@ -37,7 +37,7 @@ public class OOPMetricsChangeAnalyzerTest {
         public void javaClassOnlyInNewModel() throws CompileException {
                 OOPSourceCodeModel oldModel = createEmptyJavaModel();
                 OOPSourceCodeModel newModel = createSingleJavaClassModel("test", "ClassA");
-                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, null, "test.ClassA");
+                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, new HashSet<>(), "test.ClassA");
                 assertTrue("ClassA only in new => expect a MetricChange with old=0.0 metrics.",
                                 maybeChange.isPresent());
         }
@@ -48,9 +48,9 @@ public class OOPMetricsChangeAnalyzerTest {
                                 "ClassA");
                 OOPSourceCodeModel newModel = createSingleGoStructModel("package main\ntype ClassA struct {}",
                                 "ClassA");
-                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, null, "main.ClassA");
+                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, new HashSet<>(), "main.ClassA");
                 if (!maybeChange.isPresent()) {
-                        maybeChange = analyzeChange(oldModel, newModel, null, "ClassA");
+                        maybeChange = analyzeChange(oldModel, newModel, new HashSet<>(), "ClassA");
                 }
                 assertTrue("Expect a MetricChange object even if no difference in metrics.",
                                 maybeChange.isPresent());
@@ -64,9 +64,9 @@ public class OOPMetricsChangeAnalyzerTest {
                 String newCode = "package main\ntype DifferentStruct struct {}";
                 OOPSourceCodeModel oldModel = createSingleGoStructModel(oldCode, "OldStruct");
                 OOPSourceCodeModel newModel = createSingleGoStructModel(newCode, "DifferentStruct");
-                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, null, "main.OldStruct");
+                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, new HashSet<>(), "main.OldStruct");
                 if (!maybeChange.isPresent()) {
-                        maybeChange = analyzeChange(oldModel, newModel, null, "OldStruct");
+                        maybeChange = analyzeChange(oldModel, newModel, new HashSet<>(), "OldStruct");
                 }
                 assertTrue("OldStruct missing in new => expect a valid MetricChange with new=0.0.",
                                 maybeChange.isPresent());
@@ -76,7 +76,7 @@ public class OOPMetricsChangeAnalyzerTest {
         public void cornerCaseClassMissingInNewModel() throws CompileException {
                 OOPSourceCodeModel oldModel = createSingleJavaClassModel("test", "ClassA");
                 OOPSourceCodeModel newModel = createEmptyJavaModel();
-                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, null, "test.ClassA");
+                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, new HashSet<>(), "test.ClassA");
                 assertTrue("ClassA only in old => MetricChange should exist with new=0.0 metrics.",
                                 maybeChange.isPresent());
         }
@@ -87,7 +87,7 @@ public class OOPMetricsChangeAnalyzerTest {
                 OOPSourceCodeModel newModel = createEmptyJavaModel();
                 // Assert that IllegalArgumentException is thrown
                 assertThrows(IllegalArgumentException.class, () -> {
-                        analyzeChange(oldModel, newModel, null, "test.ClassA");
+                        analyzeChange(oldModel, newModel, new HashSet<>(), "test.ClassA");
                 });
         }
 
@@ -108,7 +108,7 @@ public class OOPMetricsChangeAnalyzerTest {
                 OOPSourceCodeModel newModel = createSingleJavaClassModel("test", "ClassA");
                 // Assert that IllegalArgumentException is thrown
                 assertThrows(IllegalArgumentException.class, () -> {
-                        analyzeChange(oldModel, newModel, null, "test.NoSuchClass");
+                        analyzeChange(oldModel, newModel, new HashSet<>(), "test.NoSuchClass");
                 });
         }
 
@@ -116,7 +116,7 @@ public class OOPMetricsChangeAnalyzerTest {
         public void detailedMetricChangesForClassB() throws CompileException {
                 OOPSourceCodeModel oldModel = createDetailedOldModel();
                 OOPSourceCodeModel newModel = createDetailedNewModel();
-                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, null, "test.ClassB");
+                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, new HashSet<>(), "test.ClassB");
                 assertTrue("ClassB must exist in both old & new with changed metrics.",
                                 maybeChange.isPresent());
 

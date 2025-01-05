@@ -4,10 +4,17 @@ import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants;
 import com.hadii.striff.ChangeSet;
 import com.hadii.striff.diagram.DiagramComponent;
+import com.hadii.striff.diagram.StriffDiagramModel;
+import com.hadii.striff.diagram.display.MetricBadges;
 import com.hadii.striff.diagram.display.DiagramDisplay;
 import com.hadii.striff.text.StiffComponentDocText;
-import org.apache.commons.lang3.StringUtils;
 
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -23,6 +30,7 @@ final class PUMLClassFieldsCode {
     private final Set<String> addedComponents;
     private final Set<String> modifiedComponents;
     private final DiagramDisplay diagramDisplay;
+    private static final Logger LOGGER = LogManager.getLogger(PUMLClassFieldsCode.class);
 
     PUMLClassFieldsCode(OOPSourceCodeModel mergedModel, ChangeSet changeSet,
             DiagramDisplay diagramDisplay) {
@@ -70,6 +78,15 @@ final class PUMLClassFieldsCode {
             }
             // Insert background color tag
             componentPUMLStrings.add(enhanceBaseCmp(cmp, cmpPUMLStr) + " {\n");
+            // Insert metrics
+            try {
+                componentPUMLStrings
+                        .add(new MetricBadges(diagramDisplay.colorScheme()).metricBadges(cmp.getMetricChange(),
+                                this.deletedComponents.contains(cmp.uniqueName()), this.addedComponents.contains(cmp.uniqueName())));
+            } catch (Exception e) {
+                LOGGER.error("Could not generate badges!", e);
+                componentPUMLStrings.add("---\n");
+            }
             // Stores the required length of lines in the cmp's doc text preamble
             int docTextCharLen = 80;
             // Get all child components
@@ -134,9 +151,9 @@ final class PUMLClassFieldsCode {
                 if (!componentDoc.isEmpty()) {
                     // Only insert line if the cmp displays children
                     if (zeroFields && zeroMethods) {
-                        componentPUMLStrings.add(1, componentDoc + "\n");
+                        componentPUMLStrings.add(2, componentDoc + "\n");
                     } else {
-                        componentPUMLStrings.add(1, componentDoc + "--\n");
+                        componentPUMLStrings.add(2, componentDoc + "--\n");
                     }
                 }
             }

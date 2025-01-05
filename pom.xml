@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.hadii-tech</groupId>
@@ -9,7 +10,8 @@
 	<description>striff-lib is a java library for generating striff diagrams.</description>
 	<url>https://github.com/hadii-tech/striff-lib</url>
 	<properties>
-		<java.version>11</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 	</properties>
 	<licenses>
 		<license>
@@ -44,6 +46,11 @@
 			<artifactId>clarpse</artifactId>
 			<version>7.1.4</version>
 		</dependency>
+		<dependency>
+			<groupId>io.github.dsibilio</groupId>
+			<artifactId>badge-maker</artifactId>
+			<version>2.0.0</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.gephi/gephi-toolkit -->
 		<dependency>
 			<groupId>org.gephi</groupId>
@@ -54,6 +61,16 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20180130</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-transcoder</artifactId>
+			<version>1.16</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-codec</artifactId>
+			<version>1.16</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -73,7 +90,7 @@
 		<dependency>
 			<groupId>net.sourceforge.plantuml</groupId>
 			<artifactId>plantuml</artifactId>
-			<version>1.2020.8</version>
+			<version>1.2020.23</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jsoup</groupId>
@@ -101,7 +118,7 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.7</version>
 		</dependency>
-    </dependencies>
+	</dependencies>
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
@@ -137,10 +154,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.10.1</version>
 				<configuration>
-					<source>11</source>
-					<target>11</target>
+					<source>17</source>
+					<target>17</target>
 					<compilerArgument>-Xlint:all</compilerArgument>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>

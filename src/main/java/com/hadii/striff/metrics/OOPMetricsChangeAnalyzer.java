@@ -3,6 +3,8 @@ package com.hadii.striff.metrics;
 import java.util.Optional;
 import java.util.Set;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 
@@ -12,7 +14,7 @@ public class OOPMetricsChangeAnalyzer {
     private Set<String> targetComponents;
     
         public OOPMetricsChangeAnalyzer(OOPSourceCodeModel oldModel, OOPSourceCodeModel updatedModel,
-                Set<String> targetComponents) {
+                @NonNull Set<String> targetComponents) {
             this.oldProfile = new OOPMetricsProfile(oldModel, targetComponents);
             this.updatedProfile = new OOPMetricsProfile(updatedModel, targetComponents);
             this.targetComponents = targetComponents;

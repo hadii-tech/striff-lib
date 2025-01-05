@@ -89,7 +89,7 @@ public class PUMLTest {
         Assert.assertTrue(diagrams.get(0).svg().contains("<back:#bef5cb>test() : String</back>"));
     }
 
-@Test
+    @Test
     public void testDiagramContainsDeletedMethod() throws PUMLDrawException, IOException, CompileException {
         final ProjectFile fileA = new ProjectFile("/fileA.java", "public class ClassA {public String test() {}}");
         final ProjectFiles oldFiles = new ProjectFiles();

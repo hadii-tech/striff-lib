@@ -13,7 +13,7 @@ public class OOPMetricsProfile {
     }
 
     public OOPMetricsProfile(OOPSourceCodeModel srcModel) {
-        this(srcModel, null); // No filtering; compute metrics for all components
+        this(srcModel, null); 
     }
 
     public double noc(Component cmp) {
