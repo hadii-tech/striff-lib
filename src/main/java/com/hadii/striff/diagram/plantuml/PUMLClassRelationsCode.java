@@ -7,26 +7,24 @@ import com.hadii.striff.diagram.display.DiagramDisplay;
 import com.hadii.striff.extractor.ComponentAssociationMultiplicity;
 import com.hadii.striff.extractor.ComponentRelation;
 import com.hadii.striff.extractor.RelationsMap;
-import com.hadii.striff.parse.CodeDiff;
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
 final class PUMLClassRelationsCode {
 
     private final Set<DiagramComponent> diagramComponents;
-    private final RelationsMap allRelations;
-    private final RelationsMap addedRelationships;
-    private final RelationsMap deletedRelationships;
+    private final RelationsMap diagramRels;
+    private final RelationsMap addedRels;
+    private final RelationsMap deletedRels;
     private final DiagramDisplay diagramDisplay;
     private StringBuilder tempStrBuilder;
 
-    PUMLClassRelationsCode(Set<DiagramComponent> diagramComponents, CodeDiff codeDiff,
-            DiagramDisplay diagramDisplay) {
+    PUMLClassRelationsCode(Set<DiagramComponent> diagramComponents, RelationsMap diagramRels, RelationsMap addedRels,
+            RelationsMap deletedRels, DiagramDisplay diagramDisplay) {
         this.diagramComponents = diagramComponents;
-        this.allRelations = codeDiff.extractedRels();
-        this.addedRelationships = codeDiff.changeSet().addedRelations();
-        this.deletedRelationships = codeDiff.changeSet().deletedRelations();
+        this.diagramRels = diagramRels;
+        this.addedRels = addedRels;
+        this.deletedRels = deletedRels;
         this.diagramDisplay = diagramDisplay;
         genCode();
     }
@@ -40,11 +38,11 @@ final class PUMLClassRelationsCode {
         Set<String> diagramCmpNames = this.diagramComponents.stream().map(DiagramComponent::uniqueName)
                 .collect(Collectors.toSet());
         for (DiagramComponent currCmp : this.diagramComponents) {
-            for (ComponentRelation currCmpRel : this.allRelations.significantRels(currCmp.uniqueName())) {
+            for (ComponentRelation currCmpRel : this.diagramRels.significantRels(currCmp.uniqueName())) {
                 // Ensure the relationship involves components from this diagram
                 if (diagramCmpNames.contains(currCmpRel.targetComponent().uniqueName())) {
                     // Get reverse relation between componentA and component B... this may be empty.
-                    ComponentRelation reverseRel = this.allRelations.mostSignificantRelation(
+                    ComponentRelation reverseRel = this.diagramRels.mostSignificantRelation(
                             currCmpRel.targetComponent(), currCmpRel.originalComponent());
                     if ((currCmp.name() != null) && ((currCmpRel.targetComponent().name() != null)
                             && !currCmp.uniqueName().contains("(")
@@ -60,7 +58,7 @@ final class PUMLClassRelationsCode {
                                 .append(" ");
                         // Insert BtoA multiplicity if it's not a standard 0-1 multiplicity
                         ComponentAssociationMultiplicity bToAMultiplicity = reverseRel
-                                .getTargetComponentRelationMultiplicity();
+                                .targetComponentRelationMultiplicity();
                         if (!bToAMultiplicity.value().isEmpty()
                                 && !bToAMultiplicity.value()
                                         .equals(DiagramConstants.DefaultClassMultiplicities.ZEROTOONE.value())) {
@@ -86,11 +84,11 @@ final class PUMLClassRelationsCode {
                         if (aToBAssociation.strength() > bToAAssociation.strength()) {
                             this.tempStrBuilder.append(
                                     new PUMLRelText(aToBAssociation, arrowDiffColor(
-                                            currCmpRel, addedRelationships, deletedRelationships)).text());
+                                            currCmpRel, addedRels, deletedRels)).text());
                         } else {
                             this.tempStrBuilder.append(
                                     new PUMLRelText(bToAAssociation, arrowDiffColor(
-                                            reverseRel, addedRelationships, deletedRelationships)).text());
+                                            reverseRel, addedRels, deletedRels)).text());
                         }
                         // If B aggregates or composes A, draw B's relationship arrow next...
                         if (bToAAssociation.equals(DiagramConstants.ComponentAssociation.COMPOSITION)
@@ -108,7 +106,7 @@ final class PUMLClassRelationsCode {
                         }
                         // Insert AtoB multiplicity if it's not a standard 0-1 multiplicity
                         ComponentAssociationMultiplicity aToBMultiplicity = currCmpRel
-                                .getTargetComponentRelationMultiplicity();
+                                .targetComponentRelationMultiplicity();
                         if (!aToBMultiplicity.value().isEmpty()
                                 && !aToBMultiplicity.value()
                                         .equals(DiagramConstants.DefaultClassMultiplicities.ZEROTOONE.value())) {

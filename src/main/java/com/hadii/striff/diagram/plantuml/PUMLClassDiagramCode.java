@@ -1,10 +1,10 @@
 package com.hadii.striff.diagram.plantuml;
 
 import com.hadii.striff.diagram.display.DiagramDisplay;
+import com.hadii.striff.extractor.RelationsMap;
+import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 import com.hadii.striff.diagram.DiagramComponent;
 import com.hadii.striff.diagram.display.DiagramColorScheme;
-import com.hadii.striff.parse.CodeDiff;
-
 import java.util.Set;
 
 final class PUMLClassDiagramCode {
@@ -13,14 +13,16 @@ final class PUMLClassDiagramCode {
     private static final String PLANT_UML_END_STRING = "\n@enduml";
     private final String code;
 
-
-    PUMLClassDiagramCode(final CodeDiff codeDiff, final DiagramDisplay diagramDisplay,
-                         final Set<DiagramComponent> diagramComponents) {
+    PUMLClassDiagramCode(RelationsMap diagramRels, RelationsMap addedRels, RelationsMap deletedRels,
+            final DiagramDisplay diagramDisplay, OOPSourceCodeModel mergedModel, Set<String> addedCmps,
+            Set<String> deletedCmps, Set<String> modifiedCmps, final Set<DiagramComponent> diagramCmps) {
         this.code = PLANT_UML_BEGIN_STRING
                 + plantUMLSkinParamText(diagramDisplay.colorScheme())
-                + new PUMLPackageCode(diagramDisplay, codeDiff, diagramComponents).value()
+                + new PUMLPackageCode(diagramDisplay, mergedModel, addedCmps, deletedCmps, modifiedCmps,
+                        diagramCmps).value()
                 + "\n"
-                + new PUMLClassRelationsCode(diagramComponents, codeDiff, diagramDisplay).value()
+                + new PUMLClassRelationsCode(diagramCmps, diagramRels, addedRels, deletedRels, diagramDisplay)
+                        .value()
                 + PLANT_UML_END_STRING;
     }
 
@@ -49,7 +51,7 @@ final class PUMLClassDiagramCode {
                 + "\nskinparam titleFontColor " + colorScheme.titleFontColor()
                 + "\nskinparam packageBackgroundColor " + colorScheme.packageBackgroundColor()
                 + "\nskinparam groupInheritance 2"
-               // + "\nskinparam linetype polyline"
+                // + "\nskinparam linetype polyline"
                 + "\nskinparam titleFontName " + colorScheme.titleFontName()
                 + "\nskinparam packageBorderColor " + colorScheme.packageBorderColor()
                 + "\nskinparam packageFontColor " + colorScheme.packageFontColor()

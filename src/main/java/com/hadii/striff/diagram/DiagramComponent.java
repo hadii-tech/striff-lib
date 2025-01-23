@@ -1,12 +1,7 @@
 package com.hadii.striff.diagram;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hadii.clarpse.reference.ComponentReference;
 import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
@@ -14,9 +9,9 @@ import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants;
 import com.hadii.clarpse.sourcemodel.Package;
 import com.hadii.striff.metrics.MetricChange;
 
-/**
- * Represents the building blocks of a Striff diagram.
- */
+import java.util.*;
+import java.util.stream.Collectors;
+
 public class DiagramComponent {
 
     private final Component cmp;
@@ -24,12 +19,13 @@ public class DiagramComponent {
     private MetricChange metricChange;
 
     /**
-     * Creates a DiagramComponent from a Component and optionally populates its
-     * children.
-     *
-     * @param cmp      Underlying component
-     * @param srcModel Source code model (may be null)
+     * If serialization only is needed, this no-arg constructor
+     * can be omitted. Required if deserialization is needed.
      */
+    public DiagramComponent() {
+        this.cmp = new Component();
+    }
+
     public DiagramComponent(Component cmp, OOPSourceCodeModel srcModel) {
         if (cmp == null) {
             this.cmp = new Component();
@@ -43,52 +39,35 @@ public class DiagramComponent {
         }
     }
 
-    /**
-     * Creates a DiagramComponent with a dummy underlying Component whose name is
-     * set
-     * to {@code componentName}. For testing or placeholder usage.
-     *
-     * @param componentName Name of the dummy component.
-     */
     public DiagramComponent(String componentName) {
-        this(new Component(), null);
+        this();
         this.cmp.setComponentName(componentName);
     }
 
-    /**
-     * Creates a DiagramComponent with a placeholder Component name and an optional
-     * MetricChange.
-     *
-     * @param cmpName      Name of the placeholder component
-     * @param metricChange Metric change data
-     * @param srcModel     Source code model (may be null)
-     */
     public DiagramComponent(String cmpName, MetricChange metricChange, OOPSourceCodeModel srcModel) {
-        this(srcModel.getComponent(cmpName).get(), srcModel);
+        this(srcModel.getComponent(cmpName).orElse(new Component()), srcModel);
         this.metricChange = metricChange;
     }
 
-    /**
-     * @return The MetricChange object associated with this DiagramComponent (may be
-     *         null).
-     */
+    public DiagramComponent(String cmpName, OOPSourceCodeModel srcModel) {
+        this(srcModel.getComponent(cmpName).orElse(new Component()), srcModel);
+    }
+
+    @JsonProperty("metricChange")
     public MetricChange getMetricChange() {
         return metricChange;
     }
 
-    /**
-     * Checks whether this DiagramComponent has a non-null MetricChange.
-     *
-     * @return true if metricChange is not null, false otherwise
-     */
     public boolean hasMetricChange() {
         return metricChange != null;
     }
 
+    @JsonProperty("children")
     public List<String> children() {
         return Collections.unmodifiableList(this.children);
     }
 
+    @JsonProperty("uniqueName")
     public String uniqueName() {
         return cmp.uniqueName();
     }
@@ -97,70 +76,73 @@ public class DiagramComponent {
         return cmp.references(implementation);
     }
 
+    @JsonProperty("modifiers")
     public Set<String> modifiers() {
         return this.cmp.modifiers();
     }
 
+    @JsonProperty("componentType")
     public OOPSourceModelConstants.ComponentType componentType() {
         return this.cmp.componentType();
     }
 
+    @JsonIgnore
     public String parentUniqueName() {
         return this.cmp.parentUniqueName();
+    }
+
+    @JsonProperty("refs")
+    private Set<String> refs() {
+        return this.cmp.references().stream().map(ref -> ref.toString()).collect(Collectors.toSet());
     }
 
     public Set<ComponentReference> references() {
         return this.cmp.references();
     }
 
+    @JsonProperty("name")
     public String name() {
         return this.cmp.name();
     }
 
+    @JsonIgnore
     public String codeFragment() {
         return this.cmp.codeFragment();
     }
 
+    @JsonIgnore
     public int componentHashCode() {
         return this.cmp.codeHash();
     }
 
+    @JsonProperty("comment")
     public String comment() {
         return this.cmp.comment();
     }
 
+    @JsonProperty("sourceFile")
     public String sourceFile() {
         return this.cmp.sourceFile();
     }
 
+    @JsonIgnore
     public void setName(String name) {
         this.cmp.setName(name);
     }
 
+    @JsonProperty("package")
+    private String packageName() {
+        return this.cmp.pkg.toString();
+    }
+
+    @JsonIgnore
     public Package pkg() {
         return this.cmp.pkg();
     }
 
+    @JsonProperty("componentName")
     public String componentName() {
         return this.cmp.componentName();
-    }
-
-    /**
-     * Fetches the current component's parent base component if it exists, returning
-     * null otherwise.
-     *
-     * @param codeBase A map of uniqueName -> DiagramComponent representing the
-     *                 entire code base
-     * @return The parent base DiagramComponent, or null if none is found.
-     */
-    public DiagramComponent parentBaseCmp(Map<String, DiagramComponent> codeBase) {
-        String currParentClassName = this.cmp.parentUniqueName();
-        DiagramComponent parent = codeBase.get(currParentClassName);
-        while (parent != null && !parent.componentType().isBaseComponent()) {
-            currParentClassName = parent.parentUniqueName();
-            parent = codeBase.get(currParentClassName);
-        }
-        return parent;
     }
 
     @Override

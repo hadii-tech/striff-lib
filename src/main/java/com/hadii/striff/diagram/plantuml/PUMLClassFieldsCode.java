@@ -4,17 +4,14 @@ import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants;
 import com.hadii.striff.ChangeSet;
 import com.hadii.striff.diagram.DiagramComponent;
-import com.hadii.striff.diagram.StriffDiagramModel;
 import com.hadii.striff.diagram.display.MetricBadges;
 import com.hadii.striff.diagram.display.DiagramDisplay;
 import com.hadii.striff.text.StiffComponentDocText;
 
-import org.apache.batik.transcoder.TranscoderException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -30,14 +27,15 @@ final class PUMLClassFieldsCode {
     private final Set<String> addedComponents;
     private final Set<String> modifiedComponents;
     private final DiagramDisplay diagramDisplay;
+    private int commentTextIndex = 1;
     private static final Logger LOGGER = LogManager.getLogger(PUMLClassFieldsCode.class);
 
-    PUMLClassFieldsCode(OOPSourceCodeModel mergedModel, ChangeSet changeSet,
-            DiagramDisplay diagramDisplay) {
+    PUMLClassFieldsCode(OOPSourceCodeModel mergedModel, Set<String> addedCmps, Set<String> deletedCmps,
+            Set<String> modifiedCmps, DiagramDisplay diagramDisplay) {
         this.mergedModel = mergedModel;
-        this.addedComponents = changeSet.addedComponents();
-        this.deletedComponents = changeSet.deletedComponents();
-        this.modifiedComponents = changeSet.modifiedComponents();
+        this.addedComponents = addedCmps;
+        this.deletedComponents = deletedCmps;
+        this.modifiedComponents = modifiedCmps;
         this.diagramDisplay = diagramDisplay;
     }
 
@@ -80,9 +78,13 @@ final class PUMLClassFieldsCode {
             componentPUMLStrings.add(enhanceBaseCmp(cmp, cmpPUMLStr) + " {\n");
             // Insert metrics
             try {
-                componentPUMLStrings
-                        .add(new MetricBadges(diagramDisplay.colorScheme()).metricBadges(cmp.getMetricChange(),
-                                this.deletedComponents.contains(cmp.uniqueName()), this.addedComponents.contains(cmp.uniqueName())));
+                if (cmp.hasMetricChange()) {
+                    this.commentTextIndex = 2;
+                    componentPUMLStrings
+                            .add(new MetricBadges(diagramDisplay.colorScheme()).metricBadges(cmp.getMetricChange(),
+                                    this.deletedComponents.contains(cmp.uniqueName()),
+                                    this.addedComponents.contains(cmp.uniqueName())));
+                }
             } catch (Exception e) {
                 LOGGER.error("Could not generate badges!", e);
                 componentPUMLStrings.add("---\n");
@@ -151,9 +153,9 @@ final class PUMLClassFieldsCode {
                 if (!componentDoc.isEmpty()) {
                     // Only insert line if the cmp displays children
                     if (zeroFields && zeroMethods) {
-                        componentPUMLStrings.add(2, componentDoc + "\n");
+                        componentPUMLStrings.add(this.commentTextIndex, componentDoc + "\n");
                     } else {
-                        componentPUMLStrings.add(2, componentDoc + "--\n");
+                        componentPUMLStrings.add(this.commentTextIndex, componentDoc + "--\n");
                     }
                 }
             }

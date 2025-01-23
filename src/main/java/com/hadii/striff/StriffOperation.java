@@ -31,7 +31,7 @@ public class StriffOperation {
     public StriffOperation(ProjectFiles originalPFs, ProjectFiles newPFs, StriffConfig config)
             throws IOException, PUMLDrawException, CompileException {
         LOGGER.info("Starting new operation with config: " + config);
-        validatePFs(originalPFs, newPFs, config.filesFilter);
+        validatePFs(originalPFs, newPFs, config.filesFilter());
         HashSet<ProjectFile> allFailures = new HashSet<>();
         LOGGER.info("Generating code diff metadata..");
         CodeDiff diffedModel = generateCodeDiff(originalPFs, newPFs, config, allFailures);

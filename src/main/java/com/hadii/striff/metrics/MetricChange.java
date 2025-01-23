@@ -1,19 +1,24 @@
 package com.hadii.striff.metrics;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class MetricChange {
     private final String className;
-    private final double oldNOC;
-    private final double updatedNOC;
-    private final double oldDIT;
-    private final double updatedDIT;
-    private final double oldWMC;
-    private final double updatedWMC;
-    private final double oldAC;
-    private final double updatedAC;
-    private final double oldEC;
-    private final double updatedEC;
-    private final double oldEncapsulation;
-    private final double updatedEncapsulation;
+    private final BigDecimal oldNOC;
+    private final BigDecimal updatedNOC;
+    private final BigDecimal oldDIT;
+    private final BigDecimal updatedDIT;
+    private final BigDecimal oldWMC;
+    private final BigDecimal updatedWMC;
+    private final BigDecimal oldAC;
+    private final BigDecimal updatedAC;
+    private final BigDecimal oldEC;
+    private final BigDecimal updatedEC;
+    private final BigDecimal oldEncapsulation;
+    private final BigDecimal updatedEncapsulation;
 
     public MetricChange(String className,
             double oldNOC, double updatedNOC,
@@ -23,18 +28,18 @@ public class MetricChange {
             double oldEC, double updatedEC,
             double oldEncapsulation, double updatedEncapsulation) {
         this.className = className;
-        this.oldNOC = oldNOC;
-        this.updatedNOC = updatedNOC;
-        this.oldDIT = oldDIT;
-        this.updatedDIT = updatedDIT;
-        this.oldWMC = oldWMC;
-        this.updatedWMC = updatedWMC;
-        this.oldAC = oldAC;
-        this.updatedAC = updatedAC;
-        this.oldEC = oldEC;
-        this.updatedEC = updatedEC;
-        this.oldEncapsulation = oldEncapsulation;
-        this.updatedEncapsulation = updatedEncapsulation;
+        this.oldNOC = BigDecimal.valueOf(oldNOC).setScale(2, RoundingMode.HALF_UP);
+        this.updatedNOC = BigDecimal.valueOf(updatedNOC).setScale(2, RoundingMode.HALF_UP);
+        this.oldDIT = BigDecimal.valueOf(oldDIT).setScale(2, RoundingMode.HALF_UP);
+        this.updatedDIT = BigDecimal.valueOf(updatedDIT).setScale(2, RoundingMode.HALF_UP);
+        this.oldWMC = BigDecimal.valueOf(oldWMC).setScale(2, RoundingMode.HALF_UP);
+        this.updatedWMC = BigDecimal.valueOf(updatedWMC).setScale(2, RoundingMode.HALF_UP);
+        this.oldAC = BigDecimal.valueOf(oldAC).setScale(2, RoundingMode.HALF_UP);
+        this.updatedAC = BigDecimal.valueOf(updatedAC).setScale(2, RoundingMode.HALF_UP);
+        this.oldEC = BigDecimal.valueOf(oldEC).setScale(2, RoundingMode.HALF_UP);
+        this.updatedEC = BigDecimal.valueOf(updatedEC).setScale(2, RoundingMode.HALF_UP);
+        this.oldEncapsulation = BigDecimal.valueOf(oldEncapsulation).setScale(2, RoundingMode.HALF_UP);
+        this.updatedEncapsulation = BigDecimal.valueOf(updatedEncapsulation).setScale(2, RoundingMode.HALF_UP);
     }
 
     @Override
@@ -50,55 +55,68 @@ public class MetricChange {
                 oldAC, updatedAC, oldEC, updatedEC, oldEncapsulation, updatedEncapsulation);
     }
 
-    public String getClassName() {
+    @JsonIgnore
+    public String className() {
         return className;
     }
 
-    public double getOldNOC() {
-        return oldNOC;
+    @JsonProperty("oldNOC")
+    public double oldNOC() {
+        return oldNOC.doubleValue();
     }
 
-    public double getUpdatedNOC() {
-        return updatedNOC;
+    @JsonProperty("updatedNOC")
+    public double updatedNOC() {
+        return updatedNOC.doubleValue();
     }
 
-    public double getOldDIT() {
-        return oldDIT;
+    @JsonProperty("oldDIT")
+    public double oldDIT() {
+        return oldDIT.doubleValue();
     }
 
-    public double getUpdatedDIT() {
-        return updatedDIT;
+    @JsonProperty("updatedDIT")
+    public double updatedDIT() {
+        return updatedDIT.doubleValue();
     }
 
-    public double getOldWMC() {
-        return oldWMC;
+    @JsonProperty("oldWMC")
+    public double oldWMC() {
+        return oldWMC.doubleValue();
     }
 
-    public double getUpdatedWMC() {
-        return updatedWMC;
+    @JsonProperty("updatedWMC")
+    public double updatedWMC() {
+        return updatedWMC.doubleValue();
     }
 
-    public double getOldAC() {
-        return oldAC;
+    @JsonProperty("oldAC")
+    public double oldAC() {
+        return oldAC.doubleValue();
     }
 
-    public double getUpdatedAC() {
-        return updatedAC;
+    @JsonProperty("updatedAC")
+    public double updatedAC() {
+        return updatedAC.doubleValue();
     }
 
-    public double getOldEC() {
-        return oldEC;
+    @JsonProperty("oldEC")
+    public double oldEC() {
+        return oldEC.doubleValue();
     }
 
-    public double getUpdatedEC() {
-        return updatedEC;
+    @JsonProperty("updatedEC")
+    public double updatedEC() {
+        return updatedEC.doubleValue();
     }
 
-    public double getOldEncapsulation() {
-        return oldEncapsulation;
+    @JsonProperty("oldEncapsulation")
+    public double oldEncapsulation() {
+        return oldEncapsulation.doubleValue();
     }
 
-    public double getUpdatedEncapsulation() {
-        return updatedEncapsulation;
+    @JsonProperty("updatedEncapsulation")
+    public double updatedEncapsulation() {
+        return updatedEncapsulation.doubleValue();
     }
 }

@@ -1,9 +1,9 @@
 package com.hadii.striff.diagram;
 
-import com.google.common.collect.Sets;
 import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.striff.ChangeSet;
 import com.hadii.striff.extractor.ComponentRelation;
+import com.hadii.striff.extractor.RelationsMap;
 import com.hadii.striff.metrics.OOPMetricsChangeAnalyzer;
 import com.hadii.striff.parse.CodeDiff;
 import org.apache.logging.log4j.LogManager;
@@ -23,31 +23,43 @@ import java.util.stream.Stream;
 public class StriffDiagramModel {
 
     private final Set<DiagramComponent> diagramCmps = new HashSet<>();
-    private final Set<ComponentRelation> contextRelations = new HashSet<>();
-    private Set<ComponentRelation> coreRelations = new HashSet<>();
+    private RelationsMap diagramRels = new RelationsMap();
     private static final Logger LOGGER = LogManager.getLogger(StriffDiagramModel.class);
 
     public StriffDiagramModel(CodeDiff codeDiff) {
-        this(codeDiff, Collections.emptySet());
+        this(codeDiff, Collections.emptySet(), false);
     }
 
-    public StriffDiagramModel(CodeDiff codeDiff, Set<String> sourceFilesFilter) {
+    public StriffDiagramModel(CodeDiff codeDiff, Set<String> sourceFilesFilter, boolean processMetrics) {
         LOGGER.info("Generating diagram model..");
         Set<String> targetCmpNames = codeDiff.mergedModel().components()
                 .filter(cmp -> sourceFilesFilter.contains(cmp.sourceFile())).map(Component::uniqueName)
                 .collect(Collectors.toSet());
         LOGGER.debug("The following components will be analyzed: " + targetCmpNames);
-        LOGGER.info("Calculating metrics...");
-        OOPMetricsChangeAnalyzer oopMetricsChangeAnalyzer = new OOPMetricsChangeAnalyzer(
-                codeDiff.oldModel(), codeDiff.newModel(), targetCmpNames);
-         LOGGER.info("Selecting diagram components...");
-        calculateCoreBaseCmps(codeDiff, sourceFilesFilter).forEach(
-                cmpName -> this.diagramCmps.add(new DiagramComponent(
-                        cmpName, oopMetricsChangeAnalyzer.analyzeChanges(cmpName).get(), codeDiff.mergedModel())));
-        calculateCoreRels(codeDiff.changeSet());
+        if (processMetrics) {
+            LOGGER.info("Calculating metrics...");
+            OOPMetricsChangeAnalyzer oopMetricsChangeAnalyzer = new OOPMetricsChangeAnalyzer(
+                    codeDiff.oldModel(), codeDiff.newModel(), targetCmpNames);
+            getCoreBaseCmps(codeDiff, sourceFilesFilter).forEach(
+                    cmpName -> this.diagramCmps.add(new DiagramComponent(
+                            cmpName, oopMetricsChangeAnalyzer.analyzeChanges(cmpName).get(), codeDiff.mergedModel())));
+        } else {
+            getCoreBaseCmps(codeDiff, sourceFilesFilter).forEach(
+                    cmpName -> this.diagramCmps.add(new DiagramComponent(
+                            cmpName, codeDiff.mergedModel())));
+        }
+        getCoreRelations(this.diagramCmps, codeDiff.extractedRels());
     }
 
-    private Set<String> calculateCoreBaseCmps(CodeDiff codeDiff, Set<String> sourceFilesFilter) {
+    private void getCoreRelations(Set<DiagramComponent> diagramCmps, RelationsMap extractedRels) {
+        LOGGER.info("Selecting diagram relationships...");
+        this.diagramRels = extractedRels
+                .filteredRelations(diagramCmps.stream().map(DiagramComponent::uniqueName).collect(Collectors.toSet()));
+        LOGGER.info(this.diagramRels.size() + " relations will be displayed.");
+    }
+
+    private Set<String> getCoreBaseCmps(CodeDiff codeDiff, Set<String> sourceFilesFilter) {
+        LOGGER.info("Selecting diagram components...");
         Set<String> diagramCmpNames = new HashSet<>();
         ChangeSet changeSet = codeDiff.changeSet();
         Set<String> unfilteredCoreCmps = Stream.of(changeSet.addedComponents(),
@@ -74,12 +86,6 @@ public class StriffDiagramModel {
         return diagramCmpNames;
     }
 
-    private void calculateCoreRels(ChangeSet changeSet) {
-        this.coreRelations = Stream.of(changeSet.addedRelations().allRels(),
-                changeSet.deletedRelations().allRels()).flatMap(Collection::stream).collect(Collectors.toSet());
-        LOGGER.info(this.coreRelations.size() + " relations will be displayed.");
-    }
-
     public Set<DiagramComponent> allBaseCmps() {
         return this.diagramCmps.stream().filter(cmp -> cmp.componentType().isBaseComponent())
                 .collect(Collectors.toSet());
@@ -89,16 +95,8 @@ public class StriffDiagramModel {
         return this.diagramCmps;
     }
 
-    public Set<ComponentRelation> coreRels() {
-        return this.coreRelations;
-    }
-
-    public Set<ComponentRelation> contextRels() {
-        return this.contextRelations;
-    }
-
-    public Set<ComponentRelation> allRels() {
-        return Sets.union(this.contextRelations, this.coreRelations);
+    public RelationsMap diagramRels() {
+        return this.diagramRels;
     }
 
     public boolean empty() {

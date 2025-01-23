@@ -16,7 +16,7 @@ public class CodeDiff {
     private final OOPSourceCodeModel oldModel;
     private final OOPSourceCodeModel newModel;
     private final ChangeSet changeSet;
-    private final ExtractedRelationships relations;
+    private final RelationsMap relationsMap;
     private static final Logger LOGGER = LogManager.getLogger(CodeDiff.class);
 
     /**
@@ -38,7 +38,7 @@ public class CodeDiff {
                     () -> newerModelCopy.insertComponent(oldCmp));
         });
         this.mergedModel = newerModelCopy;
-        this.relations = new ExtractedRelationships(this.mergedModel);
+        this.relationsMap = new ExtractedRelationships(this.mergedModel).result();
     }
 
     public OOPSourceCodeModel mergedModel() {
@@ -46,7 +46,7 @@ public class CodeDiff {
     }
 
     public RelationsMap extractedRels() {
-        return this.relations.result();
+        return this.relationsMap;
     }
 
     public ChangeSet changeSet() {

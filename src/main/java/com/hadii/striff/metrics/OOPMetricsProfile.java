@@ -3,6 +3,7 @@ package com.hadii.striff.metrics;
 import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class OOPMetricsProfile {
@@ -13,7 +14,7 @@ public class OOPMetricsProfile {
     }
 
     public OOPMetricsProfile(OOPSourceCodeModel srcModel) {
-        this(srcModel, null); 
+        this(srcModel, new HashSet<String>());
     }
 
     public double noc(Component cmp) {

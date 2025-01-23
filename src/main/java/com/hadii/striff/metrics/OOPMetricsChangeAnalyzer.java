@@ -12,12 +12,12 @@ public class OOPMetricsChangeAnalyzer {
     private final OOPMetricsProfile oldProfile;
     private final OOPMetricsProfile updatedProfile;
     private Set<String> targetComponents;
-    
-        public OOPMetricsChangeAnalyzer(OOPSourceCodeModel oldModel, OOPSourceCodeModel updatedModel,
-                @NonNull Set<String> targetComponents) {
-            this.oldProfile = new OOPMetricsProfile(oldModel, targetComponents);
-            this.updatedProfile = new OOPMetricsProfile(updatedModel, targetComponents);
-            this.targetComponents = targetComponents;
+
+    public OOPMetricsChangeAnalyzer(OOPSourceCodeModel oldModel, OOPSourceCodeModel updatedModel,
+            @NonNull Set<String> targetComponents) {
+        this.oldProfile = new OOPMetricsProfile(oldModel, targetComponents);
+        this.updatedProfile = new OOPMetricsProfile(updatedModel, targetComponents);
+        this.targetComponents = targetComponents;
     }
 
     public Optional<MetricChange> analyzeChanges(String componentUniqueName) {
@@ -27,7 +27,8 @@ public class OOPMetricsChangeAnalyzer {
         if (!oldComponent.isPresent() && !updatedComponent.isPresent()) {
             throw new IllegalArgumentException(componentUniqueName + " does not exist!");
         }
-        if (this.targetComponents != null && !this.targetComponents.isEmpty() && !this.targetComponents.contains(componentUniqueName)) {
+        if (this.targetComponents != null && !this.targetComponents.isEmpty()
+                && !this.targetComponents.contains(componentUniqueName)) {
             throw new IllegalArgumentException(componentUniqueName + " was not specified for analysis!");
         }
 

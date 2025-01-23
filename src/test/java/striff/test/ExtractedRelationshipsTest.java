@@ -65,7 +65,7 @@ public class ExtractedRelationshipsTest {
         final ExtractedRelationships relations = new ExtractedRelationships(codeModel);
         Component componentA = codeModel.getComponent("com.sample.ClassA").get();
         Set<ComponentRelation> classARelations = relations.result().rels(componentA);
-        assertEquals(classARelations.stream().findFirst().get().getTargetComponentRelationMultiplicity().value(),
+        assertEquals(classARelations.stream().findFirst().get().targetComponentRelationMultiplicity().value(),
                 DefaultClassMultiplicities.NONE.value());
     }
 
@@ -140,7 +140,7 @@ public class ExtractedRelationshipsTest {
         final ExtractedRelationships relations = new ExtractedRelationships(codeModel);
         Component componentA = codeModel.getComponent("com.sample.ClassA").get();
         Set<ComponentRelation> classARelations = relations.result().rels(componentA);
-        assertEquals(classARelations.stream().findFirst().get().getTargetComponentRelationMultiplicity().value(),
+        assertEquals(classARelations.stream().findFirst().get().targetComponentRelationMultiplicity().value(),
                 DefaultClassMultiplicities.NONE.value());
     }
 
@@ -200,7 +200,7 @@ public class ExtractedRelationshipsTest {
         final ExtractedRelationships relations = new ExtractedRelationships(codeModel);
         Component componentA = codeModel.getComponent("com.sample.ClassA").get();
         Set<ComponentRelation> classARelations = relations.result().rels(componentA);
-        assertEquals(classARelations.stream().findFirst().get().getTargetComponentRelationMultiplicity().value(),
+        assertEquals(classARelations.stream().findFirst().get().targetComponentRelationMultiplicity().value(),
                 DefaultClassMultiplicities.NONE.value());
     }
 
@@ -299,7 +299,7 @@ public class ExtractedRelationshipsTest {
         final ExtractedRelationships relations = new ExtractedRelationships(codeModel);
         Component componentA = codeModel.getComponent("com.sample.ClassA").get();
         Set<ComponentRelation> classARelations = relations.result().rels(componentA);
-        assertEquals(classARelations.stream().findFirst().get().getTargetComponentRelationMultiplicity().value(),
+        assertEquals(classARelations.stream().findFirst().get().targetComponentRelationMultiplicity().value(),
                 DefaultClassMultiplicities.NONE.value());
     }
 

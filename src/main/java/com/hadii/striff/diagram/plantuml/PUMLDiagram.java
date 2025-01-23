@@ -1,8 +1,9 @@
 package com.hadii.striff.diagram.plantuml;
 
+import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 import com.hadii.striff.diagram.DiagramComponent;
 import com.hadii.striff.diagram.display.DiagramDisplay;
-import com.hadii.striff.parse.CodeDiff;
+import com.hadii.striff.extractor.RelationsMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,12 +19,14 @@ public class PUMLDiagram {
     private final String svgText;
     private static final Logger LOGGER = LogManager.getLogger(PUMLDiagram.class);
 
-    public PUMLDiagram(final CodeDiff codeDiff, final Set<DiagramComponent> cmps,
-                       final DiagramDisplay diagramDisplay) throws IOException, PUMLDrawException {
+    public PUMLDiagram(RelationsMap diagramRels, RelationsMap addedRels, RelationsMap deletedRels,
+            final DiagramDisplay diagramDisplay, OOPSourceCodeModel mergedModel, Set<String> addedCmps,
+            Set<String> deletedCmps, Set<String> modifiedCmps, final Set<DiagramComponent> diagramCmps)
+            throws IOException, PUMLDrawException {
         LOGGER.info("Generating PlantUML diagram..");
-        this.classDiagramDescription =
-            new PUMLClassDiagramCode(codeDiff, diagramDisplay, cmps).code();
-        this.size = cmps.size();
+        this.classDiagramDescription = new PUMLClassDiagramCode(diagramRels, addedRels, deletedRels, diagramDisplay,
+                mergedModel, addedCmps, deletedCmps, modifiedCmps, diagramCmps).code();
+        this.size = diagramCmps.size();
         this.svgText = generateSVGText();
     }
 
@@ -35,12 +38,12 @@ public class PUMLDiagram {
             final byte[] diagram = PUMLHelper.generateDiagram(plantUMLString);
             diagramStr = decorateClassTextObjsWithCmpIds(new String(diagram, StandardCharsets.UTF_8));
             LOGGER.info("Striff Diagram SVG text was generated in "
-                            + (new Date().getTime() - startTime) + " milliseconds.");
+                    + (new Date().getTime() - startTime) + " milliseconds.");
             if (PUMLHelper.invalidPUMLDiagram(diagramStr)) {
                 LOGGER.debug("Original PUML text:\n" + plantUMLString);
                 LOGGER.debug("Generated diagram text:\n" + diagramStr);
                 throw new PUMLDrawException("A PUML syntax error occurred while generating this "
-                                                + "diagram!");
+                        + "diagram!");
 
             }
         }
@@ -48,15 +51,18 @@ public class PUMLDiagram {
     }
 
     /**
-     * Inserts component unique ids into their corresponding class text objects in the
-     * given SVG diagram. For example, the following text object in the given SVG representing
+     * Inserts component unique ids into their corresponding class text objects in
+     * the
+     * given SVG diagram. For example, the following text object in the given SVG
+     * representing
      * a class name:
      * <p/>
      * "<text fill="#F8F8FF">InternalThreadLocalMap</text>"
      * <p/>
      * Might be replaced with
-     *<p/>
-     * "<text id="org.com.InternalThreadLocalMap" fill="#F8F8FF">InternalThreadLocalMap</text>"
+     * <p/>
+     * "<text id="org.com.InternalThreadLocalMap" fill=
+     * "#F8F8FF">InternalThreadLocalMap</text>"
      */
     private String decorateClassTextObjsWithCmpIds(String pumlGeneratedSVG) {
         String[] svgLines = pumlGeneratedSVG.split("\\r?\\n");
@@ -64,9 +70,8 @@ public class PUMLDiagram {
             if (svgLines[i].startsWith("class ") && svgLines[i].contains("-->")) {
                 String cmpUniqueName = svgLines[i].substring(6, svgLines[i].indexOf("-->"));
                 svgLines[i] = svgLines[i].replaceFirst(
-                    "<text ",
-                    "<text id=\"" + cmpUniqueName + "\" "
-                );
+                        "<text ",
+                        "<text id=\"" + cmpUniqueName + "\" ");
             }
         }
         return String.join(" ", svgLines);
@@ -86,6 +91,5 @@ public class PUMLDiagram {
     private String genPlantUMLString() {
         return this.classDiagramDescription;
     }
-
 
 }

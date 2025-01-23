@@ -44,32 +44,34 @@ public class MetricBadges {
     public String metricBadges(MetricChange metricChange, boolean isDeleted, boolean isAdded)
             throws IOException, TranscoderException {
         StringBuilder badges = new StringBuilder();
-        if (shouldShowBadge(metricChange.getOldNOC(), metricChange.getUpdatedNOC())) {
-            double nocValue = getMetricValue(metricChange.getOldNOC(), metricChange.getUpdatedNOC(), isDeleted,
+        if (shouldShowBadge(metricChange.oldNOC(), metricChange.updatedNOC())) {
+            double nocValue = getMetricValue(metricChange.oldNOC(), metricChange.updatedNOC(), isDeleted,
                     isAdded);
-            badges.append(touchUpSVG(generateBadge("NOC", metricChange.getOldNOC(), nocValue, isDeleted, isAdded)))
+
+            badges.append(touchUpSVG(generateBadge("NOC", metricChange.oldNOC(), nocValue, isDeleted, isAdded)))
                     .append(BADGE_SEPARATOR);
         }
-        if (shouldShowBadge(metricChange.getOldDIT(), metricChange.getUpdatedDIT())
-                && metricChange.getOldDIT() != 1.0) {
-            double ditValue = getMetricValue(metricChange.getOldDIT(), metricChange.getUpdatedDIT(), isDeleted,
+        if (shouldShowBadge(metricChange.oldDIT(), metricChange.updatedDIT())) {
+            double ditValue = getMetricValue(metricChange.oldDIT(), metricChange.updatedDIT(), isDeleted,
                     isAdded);
-            badges.append(touchUpSVG(generateBadge("DIT", metricChange.getOldDIT(), ditValue, isDeleted, isAdded)))
+            badges.append(touchUpSVG(generateBadge("DIT", metricChange.oldDIT(), ditValue, isDeleted, isAdded)))
                     .append(BADGE_SEPARATOR);
         }
-        double wmcValue = getMetricValue(metricChange.getOldWMC(), metricChange.getUpdatedWMC(), isDeleted, isAdded);
-        badges.append(touchUpSVG(generateBadge("WMC", metricChange.getOldWMC(), wmcValue, isDeleted, isAdded)))
+
+        double wmcValue = getMetricValue(metricChange.oldWMC(), metricChange.updatedWMC(), isDeleted,
+                isAdded);
+        badges.append(touchUpSVG(generateBadge("WMC", metricChange.oldWMC(), wmcValue, isDeleted, isAdded)))
                 .append(BADGE_SEPARATOR);
-        double encValue = getMetricValue(metricChange.getOldEncapsulation(), metricChange.getUpdatedEncapsulation(),
+        double encValue = getMetricValue(metricChange.oldEncapsulation(), metricChange.updatedEncapsulation(),
                 isDeleted, isAdded);
         badges.append(
-                touchUpSVG(generateBadge("ENC", metricChange.getOldEncapsulation(), encValue, isDeleted, isAdded)))
+                touchUpSVG(generateBadge("ENC", metricChange.oldEncapsulation(), encValue, isDeleted, isAdded)))
                 .append(BADGE_SEPARATOR);
-        double acValue = getMetricValue(metricChange.getOldAC(), metricChange.getUpdatedAC(), isDeleted, isAdded);
-        badges.append(touchUpSVG(generateBadge("AC", metricChange.getOldAC(), acValue, isDeleted, isAdded)))
+        double acValue = getMetricValue(metricChange.oldAC(), metricChange.updatedAC(), isDeleted, isAdded);
+        badges.append(touchUpSVG(generateBadge("AC", metricChange.oldAC(), acValue, isDeleted, isAdded)))
                 .append(BADGE_SEPARATOR);
-        double ecValue = getMetricValue(metricChange.getOldEC(), metricChange.getUpdatedEC(), isDeleted, isAdded);
-        badges.append(touchUpSVG(generateBadge("EC", metricChange.getOldEC(), ecValue, isDeleted, isAdded)));
+        double ecValue = getMetricValue(metricChange.oldEC(), metricChange.updatedEC(), isDeleted, isAdded);
+        badges.append(touchUpSVG(generateBadge("EC", metricChange.oldEC(), ecValue, isDeleted, isAdded)));
         return badges.toString().trim() + "\n--\n";
     }
 
@@ -98,7 +100,7 @@ public class MetricBadges {
     }
 
     private boolean shouldShowBadge(double oldValue, double newValue) {
-        return oldValue != newValue;
+        return oldValue != newValue || oldValue > 1 || newValue > 1;
     }
 
     private double getMetricValue(double oldValue, double newValue, boolean isDeleted, boolean isAdded) {
@@ -112,8 +114,10 @@ public class MetricBadges {
     }
 
     private String touchUpSVG(String svg) throws IOException, TranscoderException {
-        svg = scaleSVG(modifyFontColor(removeEmptyImageTags(svg), "#000"), "0.9").replace("clip-path=\"url(#r)\"", "");
+        svg = scaleSVG(cleanupPercentageText(removeEmptyImageTags(svg), "#000"), "0.9")
+                .replace("clip-path=\"url(#r)\"", "");
         if (svg.contains(new String(Character.toChars(0x2064)))) {
+            // No percentage change visible, remove right rectangle
             svg = removeRightRectangle(svg);
         }
         byte[] encodedBytes = Base64.getEncoder().encode(svg.getBytes(StandardCharsets.UTF_8));
@@ -124,7 +128,7 @@ public class MetricBadges {
         return svg.replaceAll("<image[^>]*xlink:href=['\"]['\"][^>]*>", "");
     }
 
-    private String modifyFontColor(String svg, String rightTextColor) {
+    private String cleanupPercentageText(String svg, String rightTextColor) {
         Pattern pattern = Pattern.compile("(<text .*?>)(.*?)(</text>)");
         Matcher matcher = pattern.matcher(svg);
         StringBuffer result = new StringBuffer();
@@ -137,6 +141,9 @@ public class MetricBadges {
             if (count == 4) {
                 openingTag = openingTag.replace("<text ", "<text fill=\"" + rightTextColor + "\" ");
             }
+            if (count == 3) {
+                content = "";
+            }
             matcher.appendReplacement(result, openingTag + content + closingTag);
         }
         matcher.appendTail(result);
@@ -148,6 +155,7 @@ public class MetricBadges {
     }
 
     private String removeRightRectangle(String svg) {
+        // Remove text and rect blocks associated with the right rectangle on the badge
         return removeLastNTags(removeLastNTags(svg, "text", 2), "rect", 2);
     }
 

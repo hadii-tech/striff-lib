@@ -23,6 +23,30 @@ import org.junit.Test;
 public class OOPMetricsChangeAnalyzerTest {
 
         @Test
+        public void testMetricChangePrecision() {
+                MetricChange metricChange = new MetricChange(
+                                "TestClass",
+                                1.12345, 2.12345,
+                                3.12345, 4.12345,
+                                5.12345, 6.12345,
+                                7.12345, 8.12345,
+                                9.12345, 10.12345, 9.12345, 10.12345);
+
+                assertEquals(1.12, metricChange.oldNOC(), 0.001);
+                assertEquals(2.12, metricChange.updatedNOC(), 0.001);
+                assertEquals(3.12, metricChange.oldDIT(), 0.001);
+                assertEquals(4.12, metricChange.updatedDIT(), 0.001);
+                assertEquals(5.12, metricChange.oldWMC(), 0.001);
+                assertEquals(6.12, metricChange.updatedWMC(), 0.001);
+                assertEquals(7.12, metricChange.oldAC(), 0.001);
+                assertEquals(8.12, metricChange.updatedAC(), 0.001);
+                assertEquals(9.12, metricChange.oldEC(), 0.001);
+                assertEquals(10.12, metricChange.updatedEC(), 0.001);
+                assertEquals(9.12, metricChange.oldEncapsulation(), 0.001);
+                assertEquals(10.12, metricChange.updatedEncapsulation(), 0.001);
+        }
+
+        @Test
         public void javaSingleClassNoMetricChange() throws CompileException {
                 OOPSourceCodeModel oldModel = createSingleJavaClassModel("test", "ClassA");
                 OOPSourceCodeModel newModel = createSingleJavaClassModel("test", "ClassA");
@@ -64,7 +88,8 @@ public class OOPMetricsChangeAnalyzerTest {
                 String newCode = "package main\ntype DifferentStruct struct {}";
                 OOPSourceCodeModel oldModel = createSingleGoStructModel(oldCode, "OldStruct");
                 OOPSourceCodeModel newModel = createSingleGoStructModel(newCode, "DifferentStruct");
-                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, new HashSet<>(), "main.OldStruct");
+                Optional<MetricChange> maybeChange = analyzeChange(oldModel, newModel, new HashSet<>(),
+                                "main.OldStruct");
                 if (!maybeChange.isPresent()) {
                         maybeChange = analyzeChange(oldModel, newModel, new HashSet<>(), "OldStruct");
                 }
@@ -123,23 +148,23 @@ public class OOPMetricsChangeAnalyzerTest {
                 MetricChange change = maybeChange.get();
 
                 // Example numeric checks: oldNOC=0->1, oldDIT=2->3, oldWMC=2->5, etc.
-                assertEquals(0.0, change.getOldNOC(), 1e-9);
-                assertEquals(1.0, change.getUpdatedNOC(), 1e-9);
+                assertEquals(0.0, change.oldNOC(), 1e-9);
+                assertEquals(1.0, change.updatedNOC(), 1e-9);
 
-                assertEquals(2.0, change.getOldDIT(), 1e-9);
-                assertEquals(3.0, change.getUpdatedDIT(), 1e-9);
+                assertEquals(2.0, change.oldDIT(), 1e-9);
+                assertEquals(3.0, change.updatedDIT(), 1e-9);
 
-                assertEquals(2.0, change.getOldWMC(), 1e-9);
-                assertEquals(5.0, change.getUpdatedWMC(), 1e-9);
+                assertEquals(2.0, change.oldWMC(), 1e-9);
+                assertEquals(5.0, change.updatedWMC(), 1e-9);
 
-                assertEquals(0.0, change.getOldAC(), 1e-9);
-                assertEquals(1.0, change.getUpdatedAC(), 1e-9);
+                assertEquals(0.0, change.oldAC(), 1e-9);
+                assertEquals(1.0, change.updatedAC(), 1e-9);
 
-                assertEquals(3.0, change.getOldEC(), 1e-9);
-                assertEquals(3.0, change.getUpdatedEC(), 1e-9);
+                assertEquals(3.0, change.oldEC(), 1e-9);
+                assertEquals(3.0, change.updatedEC(), 1e-9);
 
-                assertEquals(0.0, change.getOldEncapsulation(), 1e-9);
-                assertEquals(0.5, change.getUpdatedEncapsulation(), 1e-9);
+                assertEquals(0.0, change.oldEncapsulation(), 1e-9);
+                assertEquals(0.5, change.updatedEncapsulation(), 1e-9);
         }
 
         private Optional<MetricChange> analyzeChange(
