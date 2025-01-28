@@ -2,6 +2,7 @@ package com.hadii.striff.diagram;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Charsets;
 import com.hadii.striff.ChangeSet;
 import com.hadii.striff.StriffConfig;
 import com.hadii.striff.annotations.LogExecutionTime;
@@ -20,8 +21,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-
-import org.apache.commons.compress.utils.Charsets;
 
 /**
  * Represents a Striff diagram.
