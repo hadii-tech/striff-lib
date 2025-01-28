@@ -194,14 +194,13 @@ public class StriffOperationTest {
 				.result();
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(striffs);
-		System.out.println(json);
 		JsonNode root = mapper.readTree(json);
 		assert root.has("compileWarnings");
 		assert root.has("diagrams") && root.get("diagrams").isArray();
 		JsonNode diagrams = root.get("diagrams");
 		for (JsonNode diagram : diagrams) {
 			assert diagram.has("packages") && diagram.get("packages").isArray();
-			assert diagram.has("relations") && diagram.get("relations").isArray();
+			assert diagram.has("relations") && diagram.get("relations").isObject();
 			assert diagram.has("changeSet") && diagram.get("changeSet").isObject();
 			assert diagram.has("size") && diagram.get("size").isInt();
 			assert diagram.has("compressedSVG") && diagram.get("compressedSVG").isTextual();

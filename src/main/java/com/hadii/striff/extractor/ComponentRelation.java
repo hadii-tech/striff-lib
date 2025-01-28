@@ -12,8 +12,9 @@ public class ComponentRelation implements Comparable<ComponentRelation> {
 
     private Component originalComponent;
     private Component targetComponent;
-    private ComponentAssociationMultiplicity targetComponentRelationMultiplicity;
-    private ComponentAssociation associationType;
+    private ComponentAssociationMultiplicity targetComponentRelationMultiplicity = new ComponentAssociationMultiplicity(
+            DiagramConstants.DefaultClassMultiplicities.NONE);
+    private ComponentAssociation associationType = ComponentAssociation.NONE;
 
     public ComponentRelation(
             @JsonProperty("originalComponent") Component originalComponent,

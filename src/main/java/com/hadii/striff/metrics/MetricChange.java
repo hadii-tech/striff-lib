@@ -44,13 +44,13 @@ public class MetricChange {
 
     @Override
     public String toString() {
-        return String.format("Metric changes for class '%s':\n"
-                + "- NOC: %.2f -> %.2f\n"
-                + "- DIT: %.2f -> %.2f\n"
-                + "- WMC: %.2f -> %.2f\n"
-                + "- Afferent Coupling: %.2f -> %.2f\n"
-                + "- Efferent Coupling: %.2f -> %.2f\n"
-                + "- Encapsulation: %.2f -> %.2f\n",
+        return String.format("Metric changes for class '%s':%n"
+                + "- NOC: %.2f -> %.2f%n"
+                + "- DIT: %.2f -> %.2f%n"
+                + "- WMC: %.2f -> %.2f%n"
+                + "- Afferent Coupling: %.2f -> %.2f%n"
+                + "- Efferent Coupling: %.2f -> %.2f%n"
+                + "- Encapsulation: %.2f -> %.2f%n",
                 className, oldNOC, updatedNOC, oldDIT, updatedDIT, oldWMC, updatedWMC,
                 oldAC, updatedAC, oldEC, updatedEC, oldEncapsulation, updatedEncapsulation);
     }

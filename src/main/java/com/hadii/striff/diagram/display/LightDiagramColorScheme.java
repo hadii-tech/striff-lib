@@ -137,7 +137,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classBorderColor() {
-        return classAttributeFontColor();
+        return DEFAULT_CLASS_HEADER_COLOR;
     }
 
     @Override
@@ -172,7 +172,7 @@ public class LightDiagramColorScheme implements DiagramColorScheme {
 
     @Override
     public String classStereoTypeFontColor() {
-        return "#888888";
+        return "#000";
     }
 
     @Override

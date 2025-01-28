@@ -6,10 +6,13 @@ import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 import com.hadii.striff.extractor.ExtractedRelationships;
 import com.hadii.striff.extractor.RelationsMap;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
 
 /**
  * Represents the differences between a primary and secondary code base.

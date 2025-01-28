@@ -7,6 +7,7 @@ import com.hadii.clarpse.compiler.Lang;
 import com.hadii.clarpse.compiler.ProjectFile;
 import com.hadii.clarpse.compiler.ProjectFiles;
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
+import com.hadii.striff.annotations.LogExecutionTime;
 import com.hadii.striff.diagram.StriffOutput;
 import com.hadii.striff.diagram.plantuml.PUMLDrawException;
 import com.hadii.striff.parse.CodeDiff;
@@ -28,14 +29,15 @@ public class StriffOperation {
 
     private final StriffOutput striffOutput;
 
+    @LogExecutionTime
     public StriffOperation(ProjectFiles originalPFs, ProjectFiles newPFs, StriffConfig config)
             throws IOException, PUMLDrawException, CompileException {
         LOGGER.info("Starting new operation with config: " + config);
-        validatePFs(originalPFs, newPFs, config.filesFilter());
+        validateProjectFiles(originalPFs, newPFs, config.filesFilter());
         HashSet<ProjectFile> allFailures = new HashSet<>();
         LOGGER.info("Generating code diff metadata..");
         CodeDiff diffedModel = generateCodeDiff(originalPFs, newPFs, config, allFailures);
-        LOGGER.info("Generating striff output metadat.. ");
+        LOGGER.info("Generating striff output metadata.. ");
         this.striffOutput = new StriffOutput(diffedModel, config, allFailures);
     }
 
@@ -44,6 +46,7 @@ public class StriffOperation {
         this(originalPFs, newPFs, new StriffConfig());
     }
 
+    @LogExecutionTime
     private static CodeDiff generateCodeDiff(ProjectFiles originalPFs, ProjectFiles newPFs,
             StriffConfig config,
             HashSet<ProjectFile> allFailures) throws CompileException {
@@ -61,7 +64,7 @@ public class StriffOperation {
         return new CodeDiff(oldModel, newModel);
     }
 
-    private void validatePFs(ProjectFiles originalFiles, ProjectFiles newFiles,
+    private void validateProjectFiles(ProjectFiles originalFiles, ProjectFiles newFiles,
             Set<String> filesFilter) {
         LOGGER.info("Validating input project files..");
         if (!filterFilesExistInProjects(originalFiles, newFiles, filesFilter)) {

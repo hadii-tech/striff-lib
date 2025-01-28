@@ -9,19 +9,21 @@ import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants;
 import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants.AccessModifiers;
 import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants.ComponentType;
+import com.hadii.striff.annotations.LogExecutionTime;
 
 import java.util.Set;
 
 /**
  * Extracts and manages relationships from an {@link OOPSourceCodeModel}.
  */
+
 public class ExtractedRelationships {
 
     private final RelationsMap relationMap = new RelationsMap();
     private static final Logger LOGGER = LogManager.getLogger(ExtractedRelationships.class);
 
+    @LogExecutionTime
     public ExtractedRelationships(final OOPSourceCodeModel sourceCodeModel) {
-        LOGGER.info("Starting relationship extraction from source code model...");
         sourceCodeModel.components()
                 .filter(this::isRelevantComponent)
                 .forEach(component -> processComponentRelations(component, sourceCodeModel));

@@ -6,9 +6,12 @@ import com.hadii.striff.diagram.display.LightDiagramColorScheme;
 import com.hadii.striff.diagram.display.OutputMode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.stathissideris.ascii2image.graphics.Diagram;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

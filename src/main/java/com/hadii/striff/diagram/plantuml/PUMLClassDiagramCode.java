@@ -1,11 +1,6 @@
 package com.hadii.striff.diagram.plantuml;
 
-import com.hadii.striff.diagram.display.DiagramDisplay;
-import com.hadii.striff.extractor.RelationsMap;
-import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
-import com.hadii.striff.diagram.DiagramComponent;
 import com.hadii.striff.diagram.display.DiagramColorScheme;
-import java.util.Set;
 
 final class PUMLClassDiagramCode {
 
@@ -13,16 +8,12 @@ final class PUMLClassDiagramCode {
     private static final String PLANT_UML_END_STRING = "\n@enduml";
     private final String code;
 
-    PUMLClassDiagramCode(RelationsMap diagramRels, RelationsMap addedRels, RelationsMap deletedRels,
-            final DiagramDisplay diagramDisplay, OOPSourceCodeModel mergedModel, Set<String> addedCmps,
-            Set<String> deletedCmps, Set<String> modifiedCmps, final Set<DiagramComponent> diagramCmps) {
+    PUMLClassDiagramCode(PUMLDiagramData data) {
         this.code = PLANT_UML_BEGIN_STRING
-                + plantUMLSkinParamText(diagramDisplay.colorScheme())
-                + new PUMLPackageCode(diagramDisplay, mergedModel, addedCmps, deletedCmps, modifiedCmps,
-                        diagramCmps).value()
+                + plantUMLSkinParamText(data.diagramDisplay().colorScheme())
+                + "\n" + new PUMLPackageCode(data).value()
                 + "\n"
-                + new PUMLClassRelationsCode(diagramCmps, diagramRels, addedRels, deletedRels, diagramDisplay)
-                        .value()
+                + new PUMLClassRelationsCode(data).value()
                 + PLANT_UML_END_STRING;
     }
 
@@ -56,10 +47,6 @@ final class PUMLClassDiagramCode {
                 + "\nskinparam packageBorderColor " + colorScheme.packageBorderColor()
                 + "\nskinparam packageFontColor " + colorScheme.packageFontColor()
                 + "\nskinparam packageFontName " + colorScheme.packageFontName()
-                + "\nskinparam packageFontStyle " + colorScheme.packageFontStyle()
-                + "\nskinparam classBorderThickness " + colorScheme.classBorderThickness()
-                + "\nskinparam classHeaderBackgroundColor " + colorScheme.classHeaderBackgroundColor()
-                + "\nskinparam classBorderColor " + colorScheme.classBorderColor()
-                + "\nskinparam minClassWidth " + colorScheme.minClassWidth() + "\n";
+                + "\nskinparam packageFontStyle " + colorScheme.packageFontStyle();
     }
 }

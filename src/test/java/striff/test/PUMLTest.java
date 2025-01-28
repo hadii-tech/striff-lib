@@ -10,7 +10,6 @@ import com.hadii.striff.diagram.StriffDiagram;
 import com.hadii.striff.diagram.display.OutputMode;
 import com.hadii.striff.diagram.plantuml.PUMLDrawException;
 import com.hadii.striff.diagram.plantuml.PUMLHelper;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;

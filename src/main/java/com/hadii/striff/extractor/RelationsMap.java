@@ -5,13 +5,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.striff.diagram.DiagramComponent;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class RelationsMap {
 
     /**
-     * Map< originalComponentUniqueName, Map< targetComponent, TreeSet<Relation> > >
+     * Map< originalComponentUniqueName, Map< targetComponent, TreeSet<Relation> > >.
      */
     private Map<String, Map<Component, TreeSet<ComponentRelation>>> relMap = new HashMap<>();
     private int size = 0;

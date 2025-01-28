@@ -2,7 +2,6 @@ package com.hadii.striff.diagram.plantuml;
 
 import com.hadii.clarpse.sourcemodel.OOPSourceCodeModel;
 import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants;
-import com.hadii.striff.ChangeSet;
 import com.hadii.striff.diagram.DiagramComponent;
 import com.hadii.striff.diagram.display.MetricBadges;
 import com.hadii.striff.diagram.display.DiagramDisplay;
@@ -30,13 +29,12 @@ final class PUMLClassFieldsCode {
     private int commentTextIndex = 1;
     private static final Logger LOGGER = LogManager.getLogger(PUMLClassFieldsCode.class);
 
-    PUMLClassFieldsCode(OOPSourceCodeModel mergedModel, Set<String> addedCmps, Set<String> deletedCmps,
-            Set<String> modifiedCmps, DiagramDisplay diagramDisplay) {
-        this.mergedModel = mergedModel;
-        this.addedComponents = addedCmps;
-        this.deletedComponents = deletedCmps;
-        this.modifiedComponents = modifiedCmps;
-        this.diagramDisplay = diagramDisplay;
+    PUMLClassFieldsCode(PUMLDiagramData data) {
+        this.mergedModel = data.mergedModel();
+        this.addedComponents = data.addedCmps();
+        this.deletedComponents = data.deletedCmps();
+        this.modifiedComponents = data.modifiedCmps();
+        this.diagramDisplay = data.diagramDisplay();
     }
 
     public String value(Collection<DiagramComponent> cmps) {

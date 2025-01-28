@@ -2,7 +2,7 @@ package com.hadii.striff.diagram;
 
 import com.hadii.clarpse.sourcemodel.Component;
 import com.hadii.striff.ChangeSet;
-import com.hadii.striff.extractor.ComponentRelation;
+import com.hadii.striff.annotations.LogExecutionTime;
 import com.hadii.striff.extractor.RelationsMap;
 import com.hadii.striff.metrics.OOPMetricsChangeAnalyzer;
 import com.hadii.striff.parse.CodeDiff;
@@ -20,6 +20,7 @@ import java.util.stream.Stream;
  * Represents the set of components and relations that are to be displayed in a
  * Striff diagram.
  */
+
 public class StriffDiagramModel {
 
     private final Set<DiagramComponent> diagramCmps = new HashSet<>();
@@ -30,6 +31,7 @@ public class StriffDiagramModel {
         this(codeDiff, Collections.emptySet(), false);
     }
 
+    @LogExecutionTime
     public StriffDiagramModel(CodeDiff codeDiff, Set<String> sourceFilesFilter, boolean processMetrics) {
         LOGGER.info("Generating diagram model..");
         Set<String> targetCmpNames = codeDiff.mergedModel().components()

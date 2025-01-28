@@ -19,13 +19,12 @@ final class PUMLClassRelationsCode {
     private final DiagramDisplay diagramDisplay;
     private StringBuilder tempStrBuilder;
 
-    PUMLClassRelationsCode(Set<DiagramComponent> diagramComponents, RelationsMap diagramRels, RelationsMap addedRels,
-            RelationsMap deletedRels, DiagramDisplay diagramDisplay) {
-        this.diagramComponents = diagramComponents;
-        this.diagramRels = diagramRels;
-        this.addedRels = addedRels;
-        this.deletedRels = deletedRels;
-        this.diagramDisplay = diagramDisplay;
+    PUMLClassRelationsCode(PUMLDiagramData data) {
+        this.diagramComponents = data.diagramCmps();
+        this.diagramRels = data.diagramRels();
+        this.addedRels = data.addedRels();
+        this.deletedRels = data.deletedRels();
+        this.diagramDisplay = data.diagramDisplay();
         genCode();
     }
 

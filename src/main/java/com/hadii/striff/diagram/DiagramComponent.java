@@ -9,7 +9,11 @@ import com.hadii.clarpse.sourcemodel.OOPSourceModelConstants;
 import com.hadii.clarpse.sourcemodel.Package;
 import com.hadii.striff.metrics.MetricChange;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DiagramComponent {
@@ -132,7 +136,7 @@ public class DiagramComponent {
 
     @JsonProperty("package")
     private String packageName() {
-        return this.cmp.pkg.toString();
+        return this.cmp.pkg().toString();
     }
 
     @JsonIgnore
