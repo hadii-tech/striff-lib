@@ -8,7 +8,6 @@ import org.apache.batik.transcoder.TranscoderException;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.hadii.striff.diagram.display.DiagramColorScheme;
 import com.hadii.striff.diagram.display.LightDiagramColorScheme;
 import com.hadii.striff.diagram.display.MetricBadges;
 import com.hadii.striff.metrics.MetricChange;
@@ -16,11 +15,10 @@ import com.hadii.striff.metrics.MetricChange;
 public class MetricBadgesTest {
 
         private MetricBadges metricBadges;
-        private DiagramColorScheme mockColorScheme;
 
         @Before
         public void setup() {
-                mockColorScheme = new LightDiagramColorScheme();
+                LightDiagramColorScheme mockColorScheme = new LightDiagramColorScheme();
                 metricBadges = new MetricBadges(mockColorScheme);
         }
 
