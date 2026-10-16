@@ -2,6 +2,7 @@ package com.hadi.striff.diagram;
 
 import com.hadi.clarpse.sourcemodel.OOPSourceCodeModel;
 import com.hadi.clarpse.sourcemodel.Component;
+import com.hadi.clarpse.sourcemodel.OOPSourceModelConstants;
 import com.hadi.striff.ChangeSet;
 import com.hadi.striff.parse.CodeDiff;
 import com.hadi.striff.spi.DiagramAugmenter;
@@ -86,7 +87,7 @@ public class SyntheticModuleAugmenter implements DiagramAugmenter {
         // read off them and neither the component nor anything reached through it is retained. A
         // copy per changed component, and a second per reference of each, would be pure churn.
         for (String componentName : diffComponentNames) {
-            Component cmp = model.component(componentName).orElse(null);
+            Component cmp = drawn(model, componentName);
             if (cmp != null && cmp.module() != null && !cmp.module().trim().isEmpty()) {
                 relevantModuleKeys.add(SyntheticModuleSupport.moduleKey(cmp));
             }
@@ -94,7 +95,7 @@ public class SyntheticModuleAugmenter implements DiagramAugmenter {
 
         // Find modules containing module-level components referenced by changed components
         for (String componentName : diffComponentNames) {
-            Component cmp = model.component(componentName).orElse(null);
+            Component cmp = drawn(model, componentName);
             if (cmp != null) {
                 // Find all components this component references
                 cmp.internalDependencies().forEach(ref -> {
@@ -110,6 +111,16 @@ public class SyntheticModuleAugmenter implements DiagramAugmenter {
         }
 
         return relevantModuleKeys;
+    }
+
+    /**
+     * The component of this name a diagram can draw on its account, or null: a type alias draws
+     * nothing, so its change or its references make no module relevant.
+     */
+    private static Component drawn(OOPSourceCodeModel model, String name) {
+        return model.component(name)
+                .filter(cmp -> cmp.componentType() != OOPSourceModelConstants.ComponentType.TYPE_ALIAS)
+                .orElse(null);
     }
 
     @Override
